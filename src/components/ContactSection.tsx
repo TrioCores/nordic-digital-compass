@@ -33,8 +33,8 @@ const ContactSection = () => {
                     <MapPin className="text-primary" size={20} />
                   </div>
                   <div>
-                    <p className="font-semibold text-fjord">Danmark</p>
-                    <p className="text-muted-foreground">vi arbejder med hele Norden</p>
+                    <p className="font-semibold text-fjord">Aalborg, Danmark</p>
+                    <p className="text-muted-foreground">Vi arbejder med hele Danmark remote.</p>
                   </div>
                 </div>
                 
@@ -54,7 +54,7 @@ const ContactSection = () => {
                   </div>
                   <div>
                     <p className="font-semibold text-fjord">+45 XX XX XX XX</p>
-                    <p className="text-muted-foreground">Hverdage 9-17</p>
+                    <p className="text-muted-foreground">Hverdage 17-00:00</p>
                   </div>
                 </div>
               </div>
