@@ -2,39 +2,62 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+/* Nordic Design System - Inspired by Scandinavian nature and aurora borealis
 All colors MUST be HSL.
 */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Nordic color palette */
+    --background: 210 20% 98%;
+    --foreground: 220 13% 18%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 210 20% 99%;
+    --card-foreground: 220 13% 18%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 210 20% 99%;
+    --popover-foreground: 220 13% 18%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Aurora Blue - primary brand color */
+    --primary: 210 100% 56%;
+    --primary-foreground: 210 20% 98%;
+    --primary-hover: 210 100% 50%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Ice Blue - secondary accents */
+    --secondary: 210 40% 94%;
+    --secondary-foreground: 220 13% 18%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Nordic Gold - accent color */
+    --nordic-gold: 45 100% 60%;
+    --nordic-gold-foreground: 220 13% 18%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Deep Fjord - dark blues */
+    --fjord: 220 30% 25%;
+    --fjord-light: 220 25% 35%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    /* Muted tones */
+    --muted: 210 25% 92%;
+    --muted-foreground: 220 13% 45%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --accent: 210 40% 94%;
+    --accent-foreground: 220 13% 18%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 20% 98%;
+
+    --border: 210 25% 88%;
+    --input: 210 25% 88%;
+    --ring: 210 100% 56%;
+
+    /* Nordic gradients */
+    --gradient-aurora: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--nordic-gold)) 100%);
+    --gradient-fjord: linear-gradient(180deg, hsl(var(--fjord)) 0%, hsl(var(--fjord-light)) 100%);
+    --gradient-ice: linear-gradient(135deg, hsl(var(--background)) 0%, hsl(var(--secondary)) 100%);
+    
+    /* Nordic shadows */
+    --shadow-aurora: 0 10px 40px -12px hsl(var(--primary) / 0.25);
+    --shadow-gold: 0 8px 32px -8px hsl(var(--nordic-gold) / 0.3);
+    --shadow-elevation: 0 4px 20px -4px hsl(var(--fjord) / 0.1);
 
     --radius: 0.5rem;
 
@@ -100,6 +123,118 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground overflow-x-hidden;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  }
+  
+  /* Nordic animations and effects */
+  .aurora-glow {
+    background: var(--gradient-aurora);
+    box-shadow: var(--shadow-aurora);
+  }
+  
+  .gold-glow {
+    box-shadow: var(--shadow-gold);
+  }
+  
+  .nordic-card {
+    background: var(--gradient-ice);
+    box-shadow: var(--shadow-elevation);
+  }
+}
+
+@layer components {
+  /* Compass animation */
+  @keyframes compass-rotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  /* Starfield floating animation */
+  @keyframes star-float {
+    0%, 100% { transform: translateY(0px) scale(1); opacity: 0.6; }
+    50% { transform: translateY(-10px) scale(1.1); opacity: 1; }
+  }
+  
+  /* Aurora wave animation */
+  @keyframes aurora-wave {
+    0%, 100% { transform: translateX(0%) scale(1); }
+    33% { transform: translateX(-2%) scale(1.02); }
+    66% { transform: translateX(2%) scale(0.98); }
+  }
+  
+  /* Mountain parallax */
+  @keyframes mountain-parallax {
+    0% { transform: translateX(-50px); }
+    100% { transform: translateX(50px); }
+  }
+  
+  /* Nordic button hover effects */
+  .nordic-button-primary {
+    @apply relative bg-primary text-primary-foreground hover:bg-primary/90 
+           transition-all duration-300 ease-out;
+    background: var(--gradient-aurora);
+  }
+  
+  .nordic-button-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-aurora);
+  }
+  
+  .nordic-button-gold {
+    @apply relative text-nordic-gold-foreground hover:scale-105 
+           transition-all duration-300 ease-out;
+    background: hsl(var(--nordic-gold));
+  }
+  
+  .nordic-button-gold:hover {
+    box-shadow: var(--shadow-gold);
+  }
+  
+  /* Progress scroll indicator */
+  .scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: var(--gradient-aurora);
+    transform-origin: left;
+    z-index: 1000;
+  }
+  
+  /* Animated compass */
+  .compass-rotate {
+    animation: compass-rotate 20s linear infinite;
+  }
+  
+  /* Floating stars */
+  .star-float {
+    animation: star-float 4s ease-in-out infinite;
+  }
+  
+  /* Aurora background */
+  .aurora-bg {
+    animation: aurora-wave 8s ease-in-out infinite;
+  }
+  
+  /* Nordic hover card */
+  .nordic-hover-card {
+    @apply transition-all duration-300 ease-out cursor-pointer;
+  }
+  
+  .nordic-hover-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: var(--shadow-elevation);
+  }
+  
+  /* Pulse animation for CTA */
+  @keyframes nordic-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 hsl(var(--primary) / 0.7); }
+    50% { box-shadow: 0 0 0 20px hsl(var(--primary) / 0); }
+  }
+  
+  .pulse-cta {
+    animation: nordic-pulse 2s infinite;
   }
 }
