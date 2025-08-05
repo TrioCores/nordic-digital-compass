@@ -1,22 +1,53 @@
-# Welcome to your Lovable project
+# Nordweb - Professionelle hjemmesider til danske virksomheder
 
-## Project info
+## 🚀 Performance & SEO Optimeret
 
-**URL**: https://lovable.dev/projects/7ba684e3-f867-4597-8425-a7aa9251ca69
+Dette projekt er fuldt optimeret for hastighed, SEO og brugeroplevelse med følgende funktioner:
 
-## How can I edit this code?
+### 📊 **SEO Optimering**
 
-There are several ways of editing your application.
+- ✅ Strukturerede data (JSON-LD)
+- ✅ Open Graph & Twitter Cards
+- ✅ Semantisk HTML5 struktur
+- ✅ Optimeret meta tags
+- ✅ Sitemap.xml og robots.txt
+- ✅ Danske nøgleord optimering
+- ✅ Canonical URLs
 
-**Use Lovable**
+### ⚡ **Performance Optimering**
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/7ba684e3-f867-4597-8425-a7aa9251ca69) and start prompting.
+- ✅ Lazy loading af komponenter
+- ✅ Code splitting og chunk optimering
+- ✅ Image optimering med lazy loading
+- ✅ CSS optimering og minification
+- ✅ JavaScript minification med Terser
+- ✅ Performance monitoring hooks
+- ✅ Core Web Vitals tracking
 
-Changes made via Lovable will be committed automatically to this repo.
+### 🎨 **Design & Animation**
 
-**Use your preferred IDE**
+- ✅ Framer Motion animationer
+- ✅ Responsive design (mobile-first)
+- ✅ Nordic-inspireret farvepalette
+- ✅ Accessibility (WCAG 2.1)
+- ✅ Reduced motion support
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### 📱 **Features**
+
+- ✅ Progressive Web App ready
+- ✅ Offline support preparation
+- ✅ Form tracking og analytics
+- ✅ Error tracking
+- ✅ Google Analytics integration ready
+
+## 🛠️ Tech Stack
+
+- **Framework**: React 18 + TypeScript
+- **Build Tool**: Vite
+- **Styling**: Tailwind CSS + Shadcn/ui
+- **Animations**: Framer Motion
+- **SEO**: React Helmet Async
+- **Performance**: Custom hooks og optimering
 
 The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
 

@@ -50,10 +50,22 @@ All colors MUST be HSL.
     --ring: 210 100% 56%;
 
     /* Nordic gradients */
-    --gradient-aurora: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--nordic-gold)) 100%);
-    --gradient-fjord: linear-gradient(180deg, hsl(var(--fjord)) 0%, hsl(var(--fjord-light)) 100%);
-    --gradient-ice: linear-gradient(135deg, hsl(var(--background)) 0%, hsl(var(--secondary)) 100%);
-    
+    --gradient-aurora: linear-gradient(
+      135deg,
+      hsl(var(--primary)) 0%,
+      hsl(var(--nordic-gold)) 100%
+    );
+    --gradient-fjord: linear-gradient(
+      180deg,
+      hsl(var(--fjord)) 0%,
+      hsl(var(--fjord-light)) 100%
+    );
+    --gradient-ice: linear-gradient(
+      135deg,
+      hsl(var(--background)) 0%,
+      hsl(var(--secondary)) 100%
+    );
+
     /* Nordic shadows */
     --shadow-aurora: 0 10px 40px -12px hsl(var(--primary) / 0.25);
     --shadow-gold: 0 8px 32px -8px hsl(var(--nordic-gold) / 0.3);
@@ -124,19 +136,20 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground overflow-x-hidden;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, system-ui,
+      sans-serif;
   }
-  
+
   /* Nordic animations and effects */
   .aurora-glow {
     background: var(--gradient-aurora);
     box-shadow: var(--shadow-aurora);
   }
-  
+
   .gold-glow {
     box-shadow: var(--shadow-gold);
   }
-  
+
   .nordic-card {
     background: var(--gradient-ice);
     box-shadow: var(--shadow-elevation);
@@ -146,51 +159,161 @@ All colors MUST be HSL.
 @layer components {
   /* Compass animation */
   @keyframes compass-rotate {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
   }
-  
+
   /* Starfield floating animation */
   @keyframes star-float {
-    0%, 100% { transform: translateY(0px) scale(1); opacity: 0.6; }
-    50% { transform: translateY(-10px) scale(1.1); opacity: 1; }
+    0%,
+    100% {
+      transform: translateY(0px) scale(1);
+      opacity: 0.6;
+    }
+    50% {
+      transform: translateY(-10px) scale(1.1);
+      opacity: 1;
+    }
   }
-  
+
   /* Aurora wave animation */
   @keyframes aurora-wave {
-    0%, 100% { transform: translateX(0%) scale(1); }
-    33% { transform: translateX(-2%) scale(1.02); }
-    66% { transform: translateX(2%) scale(0.98); }
+    0%,
+    100% {
+      transform: translateX(0%) scale(1);
+    }
+    33% {
+      transform: translateX(-2%) scale(1.02);
+    }
+    66% {
+      transform: translateX(2%) scale(0.98);
+    }
   }
-  
+
   /* Mountain parallax */
   @keyframes mountain-parallax {
-    0% { transform: translateX(-50px); }
-    100% { transform: translateX(50px); }
+    0% {
+      transform: translateX(-50px) translateY(0px);
+    }
+    50% {
+      transform: translateX(0px) translateY(-5px);
+    }
+    100% {
+      transform: translateX(-50px) translateY(0px);
+    }
   }
-  
+
+  /* Floating elements */
+  @keyframes float-gentle {
+    0%,
+    100% {
+      transform: translateY(0px) rotate(0deg);
+    }
+    50% {
+      transform: translateY(-15px) rotate(5deg);
+    }
+  }
+
+  /* Pulse glow effect */
+  @keyframes pulse-glow {
+    0%,
+    100% {
+      box-shadow: 0 0 5px rgba(59, 130, 246, 0.3);
+    }
+    50% {
+      box-shadow: 0 0 20px rgba(59, 130, 246, 0.6),
+        0 0 30px rgba(59, 130, 246, 0.4);
+    }
+  }
+
+  /* Text shimmer */
+  @keyframes text-shimmer {
+    0% {
+      background-position: -200% center;
+    }
+    100% {
+      background-position: 200% center;
+    }
+  }
+
+  /* Magnetic button effect */
+  @keyframes magnetic-pulse {
+    0%,
+    100% {
+      transform: scale(1);
+      filter: brightness(1);
+    }
+    50% {
+      transform: scale(1.02);
+      filter: brightness(1.1);
+    }
+  }
+
+  .compass-rotate {
+    animation: compass-rotate 20s linear infinite;
+  }
+
+  .star-float {
+    animation: star-float 4s ease-in-out infinite;
+  }
+
+  .aurora-bg {
+    animation: aurora-wave 15s ease-in-out infinite;
+  }
+
+  .mountain-move {
+    animation: mountain-parallax 30s ease-in-out infinite;
+  }
+
+  .float-gentle {
+    animation: float-gentle 6s ease-in-out infinite;
+  }
+
+  .pulse-glow {
+    animation: pulse-glow 3s ease-in-out infinite;
+  }
+
+  .text-shimmer {
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.4),
+      transparent
+    );
+    background-size: 200% 100%;
+    animation: text-shimmer 3s ease-in-out infinite;
+  }
+
+  .magnetic-hover:hover {
+    animation: magnetic-pulse 0.6s ease-in-out infinite;
+  }
+
   /* Nordic button hover effects */
   .nordic-button-primary {
     @apply relative bg-primary text-primary-foreground hover:bg-primary/90 
            transition-all duration-300 ease-out;
     background: var(--gradient-aurora);
   }
-  
+
   .nordic-button-primary:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-aurora);
   }
-  
+
   .nordic-button-gold {
     @apply relative text-nordic-gold-foreground hover:scale-105 
            transition-all duration-300 ease-out;
     background: hsl(var(--nordic-gold));
   }
-  
+
   .nordic-button-gold:hover {
     box-shadow: var(--shadow-gold);
   }
-  
+
   /* Progress scroll indicator */
   .scroll-progress {
     position: fixed;
@@ -202,38 +325,43 @@ All colors MUST be HSL.
     transform-origin: left;
     z-index: 1000;
   }
-  
+
   /* Animated compass */
   .compass-rotate {
     animation: compass-rotate 20s linear infinite;
   }
-  
+
   /* Floating stars */
   .star-float {
     animation: star-float 4s ease-in-out infinite;
   }
-  
+
   /* Aurora background */
   .aurora-bg {
     animation: aurora-wave 8s ease-in-out infinite;
   }
-  
+
   /* Nordic hover card */
   .nordic-hover-card {
     @apply transition-all duration-300 ease-out cursor-pointer;
   }
-  
+
   .nordic-hover-card:hover {
     transform: translateY(-8px) scale(1.02);
     box-shadow: var(--shadow-elevation);
   }
-  
+
   /* Pulse animation for CTA */
   @keyframes nordic-pulse {
-    0%, 100% { box-shadow: 0 0 0 0 hsl(var(--primary) / 0.7); }
-    50% { box-shadow: 0 0 0 20px hsl(var(--primary) / 0); }
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 hsl(var(--primary) / 0.7);
+    }
+    50% {
+      box-shadow: 0 0 0 20px hsl(var(--primary) / 0);
+    }
   }
-  
+
   .pulse-cta {
     animation: nordic-pulse 2s infinite;
   }
@@ -241,10 +369,68 @@ All colors MUST be HSL.
 
 /* Slow spin animation for compass */
 @keyframes spin-slow {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .animate-spin-slow {
   animation: spin-slow 8s linear infinite;
+}
+
+/* Performance optimering */
+@layer utilities {
+  /* Hardware acceleration for smooth animations */
+  .gpu-accelerated {
+    transform: translateZ(0);
+    will-change: transform;
+  }
+
+  /* Optimeret scroll behavior */
+  .smooth-scroll {
+    scroll-behavior: smooth;
+  }
+
+  /* Reduce motion for accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* Focus states for accessibility */
+  .focus-visible {
+    @apply outline-none ring-2 ring-primary ring-offset-2;
+  }
+
+  /* Image optimization classes */
+  .img-optimized {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: optimizeQuality;
+  }
+
+  /* Text optimization */
+  .text-optimized {
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Loading states */
+  .loading-skeleton {
+    @apply animate-pulse bg-muted rounded;
+  }
+
+  /* Content preload */
+  .content-preload {
+    content-visibility: auto;
+    contain-intrinsic-size: 0 400px;
+  }
 }

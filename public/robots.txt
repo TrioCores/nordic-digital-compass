@@ -1,4 +1,28 @@
+User-agent: *
+Allow: /
+
+# Tillad alle hovedsider
+Allow: /solutions
+Allow: /about
+Allow: /contact
+Allow: /portfolio
+
+# SEO forbedringer
+Sitemap: https://nordweb.dk/sitemap.xml
+Crawl-delay: 1
+
+# Specific bots
 User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: facebookexternalhit
+Allow: /oglebot
 Allow: /
 
 User-agent: Bingbot
