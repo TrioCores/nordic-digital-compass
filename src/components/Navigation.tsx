@@ -14,6 +14,11 @@ const Navigation = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const navigateToPage = (path: string) => {
+    window.location.href = path;
+    setIsOpen(false);
+  };
+
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
@@ -23,11 +28,11 @@ const Navigation = () => {
   };
 
   const navItems = [
-    { name: "Hjem", id: "hero" },
-    { name: "Løsninger", id: "solutions" },
-    { name: "Priser", id: "pricing" },
-    { name: "Om os", id: "about" },
-    { name: "Kontakt", id: "contact" },
+    { name: "Hjem", path: "/" },
+    { name: "Løsninger", path: "/solutions" },
+    { name: "Portfolio", path: "/portfolio" },
+    { name: "Om os", path: "/about" },
+    { name: "Kontakt", path: "/contact" },
   ];
 
   return (
@@ -41,7 +46,7 @@ const Navigation = () => {
           {/* Logo */}
           <div 
             className="flex items-center cursor-pointer hover-scale"
-            onClick={() => scrollToSection("hero")}
+            onClick={() => navigateToPage("/")}
           >
             <Compass className="text-primary mr-2 animate-spin-slow" size={28} />
             <span className="text-xl font-bold text-fjord">Nordweb</span>
@@ -51,15 +56,15 @@ const Navigation = () => {
           <div className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => (
               <button
-                key={item.id}
-                onClick={() => scrollToSection(item.id)}
+                key={item.path}
+                onClick={() => navigateToPage(item.path)}
                 className="text-fjord/80 hover:text-primary transition-colors duration-200 font-medium"
               >
                 {item.name}
               </button>
             ))}
             <Button 
-              onClick={() => scrollToSection("contact")}
+              onClick={() => navigateToPage("/contact")}
               className="nordic-button-primary"
             >
               Kom i gang
@@ -81,15 +86,15 @@ const Navigation = () => {
             <div className="flex flex-col space-y-4">
               {navItems.map((item) => (
                 <button
-                  key={item.id}
-                  onClick={() => scrollToSection(item.id)}
+                  key={item.path}
+                  onClick={() => navigateToPage(item.path)}
                   className="text-left text-fjord/80 hover:text-primary transition-colors duration-200 font-medium py-2"
                 >
                   {item.name}
                 </button>
               ))}
               <Button 
-                onClick={() => scrollToSection("contact")}
+                onClick={() => navigateToPage("/contact")}
                 className="nordic-button-primary w-full mt-4"
               >
                 Kom i gang
