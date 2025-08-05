@@ -36,11 +36,21 @@ const Navigation = () => {
   ];
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-      isScrolled 
-        ? "bg-card/95 backdrop-blur-lg border-b border-border/10 shadow-lg" 
-        : "bg-transparent"
-    }`}>
+    <>
+      {/* Demo Banner */}
+      <div className="fixed top-0 left-0 right-0 z-[60] bg-gradient-to-r from-amber-500 to-orange-500 text-white text-center py-2 px-4 text-sm font-medium shadow-lg">
+        <div className="flex items-center justify-center gap-2">
+          <span className="animate-pulse">🚧</span>
+          <span>DEMO VERSION - Hjemmeside under udvikling</span>
+          <span className="animate-pulse">🚧</span>
+        </div>
+      </div>
+
+      <nav className={`fixed left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled 
+          ? "bg-card/95 backdrop-blur-lg border-b border-border/10 shadow-lg top-10" 
+          : "bg-transparent top-10"
+      }`}>
       <div className="container mx-auto px-6">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
@@ -104,6 +114,7 @@ const Navigation = () => {
         )}
       </div>
     </nav>
+    </>
   );
 };
 

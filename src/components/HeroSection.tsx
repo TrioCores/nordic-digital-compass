@@ -9,7 +9,7 @@ const HeroSection = () => {
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-background via-secondary/30 to-background"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-background via-secondary/30 to-background pt-20"
     >
       {/* Animated background elements */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
