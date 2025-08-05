@@ -23,7 +23,7 @@ const PricingSection = () => {
   ];
 
   return (
-    <section className="py-24 bg-gradient-to-b from-secondary/30 via-background to-secondary/30">
+    <section id="pricing" className="py-24 bg-gradient-to-b from-secondary/30 via-background to-secondary/30">
       <div className="container mx-auto px-6">
         {/* Header */}
         <div className="text-center mb-16">

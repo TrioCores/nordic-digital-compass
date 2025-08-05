@@ -3,7 +3,7 @@ import { Compass, Mountain, Star, ArrowRight } from "lucide-react";
 
 const HeroSection = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-background via-secondary/30 to-background">
+    <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-background via-secondary/30 to-background">
       {/* Animated background elements */}
       <div className="absolute inset-0 pointer-events-none">
         {/* Starfield */}
