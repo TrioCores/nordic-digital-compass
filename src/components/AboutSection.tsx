@@ -1,4 +1,4 @@
-import { Users, Heart, MapPin, Globe, User, Code, Palette } from "lucide-react";
+import { Users, Heart, User, Code } from "lucide-react";
 import { motion } from "framer-motion";
 
 const AboutSection = () => {
@@ -19,7 +19,7 @@ const AboutSection = () => {
           </h2>
 
           <p className="text-2xl text-primary mb-6 font-semibold">
-            To gutter. Én mission: At få dig online.
+            To gutter. Én mission: At få dig og din virksomhed online.
           </p>
 
           <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
@@ -68,16 +68,17 @@ const AboutSection = () => {
               whileInView={{ opacity: 1, y: 0, rotateY: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               whileHover={{
-                scale: 1.02,
-                rotateY: 5,
-                boxShadow: "0 20px 40px rgba(0,0,0,0.1)",
+                y: -8,
+                transition: { type: "spring", stiffness: 400, damping: 25 }
               }}
-              className="nordic-card rounded-2xl p-8 text-center perspective-1000"
+              className="nordic-card rounded-2xl p-8 text-center hover:shadow-xl transition-shadow duration-300"
             >
               <motion.div
                 className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6"
-                whileHover={{ scale: 1.1, rotate: 5 }}
-                transition={{ type: "spring", stiffness: 300 }}
+                whileHover={{ 
+                  scale: 1.1,
+                  transition: { type: "spring", stiffness: 500, damping: 20 }
+                }}
               >
                 <User className="text-primary" size={32} />
               </motion.div>
@@ -88,7 +89,7 @@ const AboutSection = () => {
                 whileInView={{ opacity: 1 }}
                 transition={{ delay: 0.4 }}
               >
-                Emil
+                Emil Hytting
               </motion.h4>
               <motion.p
                 className="text-primary font-semibold mb-4"
@@ -96,7 +97,7 @@ const AboutSection = () => {
                 whileInView={{ opacity: 1 }}
                 transition={{ delay: 0.5 }}
               >
-                Frontend Udvikler & Designer
+                Direktør & Udvikler
               </motion.p>
 
               <motion.div
@@ -108,10 +109,10 @@ const AboutSection = () => {
                 {["React", "Design", "UX/UI"].map((skill, index) => (
                   <motion.div
                     key={skill}
-                    className="px-3 py-1 bg-primary/10 rounded-full text-sm text-primary"
+                    className="px-3 py-1 bg-primary/10 rounded-full text-sm text-primary hover:bg-primary/20 transition-colors duration-200"
                     whileHover={{
-                      scale: 1.1,
-                      backgroundColor: "rgba(59, 130, 246, 0.2)",
+                      scale: 1.05,
+                      transition: { type: "spring", stiffness: 500, damping: 25 }
                     }}
                     initial={{ opacity: 0, scale: 0.8 }}
                     whileInView={{ opacity: 1, scale: 1 }}
@@ -167,16 +168,17 @@ const AboutSection = () => {
               whileInView={{ opacity: 1, y: 0, rotateY: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
               whileHover={{
-                scale: 1.02,
-                rotateY: -5,
-                boxShadow: "0 20px 40px rgba(0,0,0,0.1)",
+                y: -8,
+                transition: { type: "spring", stiffness: 400, damping: 25 }
               }}
-              className="nordic-card rounded-2xl p-8 text-center perspective-1000"
+              className="nordic-card rounded-2xl p-8 text-center hover:shadow-xl transition-shadow duration-300"
             >
               <motion.div
                 className="w-20 h-20 bg-nordic-gold/10 rounded-full flex items-center justify-center mx-auto mb-6"
-                whileHover={{ scale: 1.1, rotate: -5 }}
-                transition={{ type: "spring", stiffness: 300 }}
+                whileHover={{ 
+                  scale: 1.1,
+                  transition: { type: "spring", stiffness: 500, damping: 20 }
+                }}
               >
                 <Code className="text-nordic-gold" size={32} />
               </motion.div>
@@ -187,7 +189,7 @@ const AboutSection = () => {
                 whileInView={{ opacity: 1 }}
                 transition={{ delay: 0.6 }}
               >
-                [Dit Navn]
+                Mikkel Wang
               </motion.h4>
               <motion.p
                 className="text-nordic-gold font-semibold mb-4"
@@ -195,7 +197,7 @@ const AboutSection = () => {
                 whileInView={{ opacity: 1 }}
                 transition={{ delay: 0.7 }}
               >
-                Backend Udvikler & Teknisk Lead
+                Direktør & Salgschef
               </motion.p>
 
               <motion.div
@@ -207,10 +209,10 @@ const AboutSection = () => {
                 {["Node.js", "Database", "DevOps"].map((skill, index) => (
                   <motion.div
                     key={skill}
-                    className="px-3 py-1 bg-nordic-gold/10 rounded-full text-sm text-nordic-gold"
+                    className="px-3 py-1 bg-nordic-gold/10 rounded-full text-sm text-nordic-gold hover:bg-nordic-gold/20 transition-colors duration-200"
                     whileHover={{
-                      scale: 1.1,
-                      backgroundColor: "rgba(251, 191, 36, 0.2)",
+                      scale: 1.05,
+                      transition: { type: "spring", stiffness: 500, damping: 25 }
                     }}
                     initial={{ opacity: 0, scale: 0.8 }}
                     whileInView={{ opacity: 1, scale: 1 }}

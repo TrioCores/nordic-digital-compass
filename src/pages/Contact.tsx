@@ -23,10 +23,22 @@ const Contact = () => {
 
   const contactInfo = [
     {
+      icon: Clock,
+      title: "Åbningstider",
+      value: "Man-Fre: 8-00:00",
+      action: null
+    },
+    {
       icon: Mail,
       title: "Email",
       value: "kontakt@nordweb.dk",
       action: "mailto:kontakt@nordweb.dk"
+    },
+    {
+      icon: Phone,
+      title: "Telefontider",
+      value: "Man-Fre: 17-23:30",
+      action: null
     },
     {
       icon: Phone,
@@ -37,15 +49,9 @@ const Contact = () => {
     {
       icon: MapPin,
       title: "Lokation",
-      value: "Danmark - vi arbejder med hele Norden",
+      value: "Danmark, Aalborg",
       action: null
     },
-    {
-      icon: Clock,
-      title: "Åbningstider",
-      value: "Man-Fre: 9:00-17:00",
-      action: null
-    }
   ];
 
   return (

@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Globe, Smartphone, Search, Palette, Headphones, BarChart } from "lucide-react";
+import { motion } from "framer-motion";
 
 const SolutionsSection = () => {
   const solutions = [
@@ -86,6 +87,86 @@ const SolutionsSection = () => {
           ))}
         </div>
 
+        {/* Domain Check Section */}
+        <div className="mb-16">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="nordic-card rounded-2xl p-6 md:p-8 border-2 border-nordic-gold/20 bg-gradient-to-br from-nordic-gold/5 to-primary/5"
+          >
+            <div className="text-center mb-6">
+              <motion.div
+                className="w-16 h-16 bg-nordic-gold/10 rounded-full flex items-center justify-center mx-auto mb-4"
+                whileHover={{ scale: 1.1 }}
+                transition={{ type: "spring", stiffness: 400 }}
+              >
+                <Globe className="text-nordic-gold" size={28} />
+              </motion.div>
+              
+              <h3 className="text-xl md:text-2xl lg:text-3xl font-bold text-fjord mb-4 px-2">
+                ⚠️ Vigtig: Tjek dit domænenavn først!
+              </h3>
+              
+              <p className="text-base md:text-lg text-muted-foreground mb-6 max-w-2xl mx-auto px-4 leading-relaxed">
+                Inden du booker et møde med os, skal du sikre dig at dit ønskede domænenavn 
+                (f.eks. ditfirma.dk) ikke allerede er optaget. Det sparer os alle for tid og 
+                undgår skuffelser senere i processen.
+              </p>
+            </div>
+
+            <div className="grid gap-6 md:grid-cols-2 mb-6">
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.2 }}
+                className="bg-white/50 rounded-xl p-4 md:p-6"
+              >
+                <h4 className="font-semibold text-fjord mb-3 flex items-center flex-wrap">
+                  <span className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-white text-sm mr-2 flex-shrink-0">✓</span>
+                  <span>Hvordan tjekker jeg?</span>
+                </h4>
+                <ul className="text-sm text-muted-foreground space-y-2">
+                  <li className="break-words">• Gå til <strong>dk-hostmaster.dk</strong> eller <strong>one.com</strong></li>
+                  <li>• Søg på dit ønskede navn (f.eks. "mitfirma")</li>
+                  <li>• Se om .dk, .com eller andre endelser er ledige</li>
+                  <li>• Notér hvilke der er tilgængelige</li>
+                </ul>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.4 }}
+                className="bg-white/50 rounded-xl p-4 md:p-6"
+              >
+                <h4 className="font-semibold text-fjord mb-3 flex items-center flex-wrap">
+                  <span className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm mr-2 flex-shrink-0">i</span>
+                  <span>Gode råd</span>
+                </h4>
+                <ul className="text-sm text-muted-foreground space-y-2">
+                  <li>• Vælg et kort og nemt navn</li>
+                  <li>• Undgå bindestreger hvis muligt</li>
+                  <li>• .dk er ofte bedst for danske virksomheder</li>
+                  <li>• Overvej at sikre både .dk og .com</li>
+                </ul>
+              </motion.div>
+            </div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6 }}
+              className="bg-amber-50 border border-amber-200 rounded-xl p-4 text-center"
+            >
+              <p className="text-amber-800 font-medium text-sm md:text-base leading-relaxed">
+                <strong>Husk:</strong> Vi kan ikke starte dit projekt hvis dit ønskede domæne ikke er ledigt. 
+                Tjek det derfor før vores møde, så vi kan komme direkte i gang! 🚀
+              </p>
+            </motion.div>
+          </motion.div>
+        </div>
+
         {/* CTA Section */}
         <div className="text-center nordic-card rounded-3xl p-12 bg-gradient-to-br from-primary/5 via-card to-nordic-gold/5 border border-primary/10">
           <h3 className="text-3xl font-bold text-fjord mb-4">
@@ -114,6 +195,7 @@ const SolutionsSection = () => {
             </Button>
           </div>
         </div>
+
       </div>
     </section>
   );
