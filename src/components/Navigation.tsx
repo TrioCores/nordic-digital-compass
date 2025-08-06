@@ -1,10 +1,14 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X, Compass } from "lucide-react";
+import { LoginDialog } from "@/components/auth/LoginDialog";
+import { UserMenu } from "@/components/auth/UserMenu";
+import { supabase } from "@/lib/supabase";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -12,6 +16,20 @@ const Navigation = () => {
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    // Get initial session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+    });
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
   const navigateToPage = (path: string) => {
@@ -73,12 +91,19 @@ const Navigation = () => {
                 {item.name}
               </button>
             ))}
-            <Button 
-              onClick={() => navigateToPage("/contact")}
-              className="nordic-button-primary"
-            >
-              Kom i gang
-            </Button>
+            <div className="flex items-center space-x-4">
+              {user ? (
+                <UserMenu />
+              ) : (
+                <LoginDialog />
+              )}
+              <Button 
+                onClick={() => navigateToPage("/contact")}
+                className="nordic-button-primary"
+              >
+                Kom i gang
+              </Button>
+            </div>
           </div>
 
           {/* Mobile Menu Button */}
@@ -103,12 +128,19 @@ const Navigation = () => {
                   {item.name}
                 </button>
               ))}
-              <Button 
-                onClick={() => navigateToPage("/contact")}
-                className="nordic-button-primary w-full mt-4"
-              >
-                Kom i gang
-              </Button>
+              <div className="flex flex-col space-y-2 mt-4">
+                {user ? (
+                  <UserMenu />
+                ) : (
+                  <LoginDialog />
+                )}
+                <Button 
+                  onClick={() => navigateToPage("/contact")}
+                  className="nordic-button-primary w-full"
+                >
+                  Kom i gang
+                </Button>
+              </div>
             </div>
           </div>
         )}
