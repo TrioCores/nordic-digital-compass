@@ -13,6 +13,7 @@ import Contact from "./pages/Contact";
 import Portfolio from "./pages/Portfolio";
 import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
+import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
 
 // Optimeret QueryClient konfiguration
@@ -87,6 +88,12 @@ const AnimatedRoutes = () => {
             <PageTransition>
               <Profile />
             </PageTransition>
+          }
+        />
+        <Route
+          path="/admin"
+          element={
+            <Admin />
           }
         />
         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

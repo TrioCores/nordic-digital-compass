@@ -270,8 +270,10 @@ const HeroSection = () => {
                 ease: "easeInOut",
               }}
             >
-              Få en stærk digital base
+              Få en stærk digital base bygget i norden.
             </motion.span>
+          <br />
+          <br />
             <span className="block text-4xl md:text-6xl mt-2">
               <motion.span
                 animate={{
@@ -284,7 +286,6 @@ const HeroSection = () => {
                   delay: 1,
                 }}
               >
-                – bygget i Norden
               </motion.span>
             </span>
           </motion.h2>
