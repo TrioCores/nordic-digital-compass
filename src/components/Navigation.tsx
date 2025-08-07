@@ -4,6 +4,7 @@ import { Menu, X, Compass } from "lucide-react";
 import { LoginDialog } from "@/components/auth/LoginDialog";
 import { UserMenu } from "@/components/auth/UserMenu";
 import { supabase } from "@/integrations/supabase/client";
+import { Link } from "react-router-dom";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -93,7 +94,16 @@ const Navigation = () => {
             ))}
             <div className="flex items-center space-x-4">
               {user ? (
-                <UserMenu />
+                <>
+                  <Button
+                    variant="ghost"
+                    asChild
+                    className="text-fjord/80 hover:text-primary"
+                  >
+                    <Link to="/dashboard">Dashboard</Link>
+                  </Button>
+                  <UserMenu />
+                </>
               ) : (
                 <LoginDialog />
               )}
@@ -128,9 +138,18 @@ const Navigation = () => {
                   {item.name}
                 </button>
               ))}
-              <div className="flex flex-col space-y-2 mt-4">
+               <div className="flex flex-col space-y-2 mt-4">
                 {user ? (
-                  <UserMenu />
+                  <>
+                    <Button
+                      variant="ghost"
+                      asChild
+                      className="text-fjord/80 hover:text-primary justify-start"
+                    >
+                      <Link to="/dashboard">Dashboard</Link>
+                    </Button>
+                    <UserMenu />
+                  </>
                 ) : (
                   <LoginDialog />
                 )}
