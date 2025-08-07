@@ -16,70 +16,58 @@ export type Database = {
         Row: {
           id: string
           email: string
-          full_name: string | null
+          full_name: string
           role: 'user' | 'admin' | 'owner'
+          subscription_type: string | null
           created_at: string
           updated_at: string
         }
         Insert: {
           id: string
           email: string
-          full_name?: string | null
+          full_name: string
           role?: 'user' | 'admin' | 'owner'
+          subscription_type?: string | null
           created_at?: string
           updated_at?: string
         }
         Update: {
           id?: string
           email?: string
-          full_name?: string | null
+          full_name?: string
           role?: 'user' | 'admin' | 'owner'
+          subscription_type?: string | null
           created_at?: string
           updated_at?: string
         }
       }
-      documents: {
+      projects: {
         Row: {
           id: string
+          user_id: string
           name: string
-          original_name: string
-          file_path: string
-          file_size: number
-          file_type: string
-          uploaded_by: string
           description: string | null
-          tags: string[] | null
+          status: 'draft' | 'in_progress' | 'completed' | 'maintenance'
           created_at: string
           updated_at: string
-          uploaded_at: string
         }
         Insert: {
           id?: string
+          user_id: string
           name: string
-          original_name: string
-          file_path: string
-          file_size: number
-          file_type: string
-          uploaded_by: string
           description?: string | null
-          tags?: string[] | null
+          status?: 'draft' | 'in_progress' | 'completed' | 'maintenance'
           created_at?: string
           updated_at?: string
-          uploaded_at?: string
         }
         Update: {
           id?: string
+          user_id?: string
           name?: string
-          original_name?: string
-          file_path?: string
-          file_size?: number
-          file_type?: string
-          uploaded_by?: string
           description?: string | null
-          tags?: string[] | null
+          status?: 'draft' | 'in_progress' | 'completed' | 'maintenance'
           created_at?: string
           updated_at?: string
-          uploaded_at?: string
         }
       }
     }

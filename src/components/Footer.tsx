@@ -19,7 +19,6 @@ const Footer = () => {
             <p className="text-lg">Skabt i Danmark.</p>
             <p className="text-lg text-nordic-gold">Inspireret af Norden.</p>
             <p className="text-lg">Din digitale partner.</p>
-            <p className="text-lg">CVR: 45785513</p>
           </div>
           
           {/* Social links */}
@@ -36,6 +35,13 @@ const Footer = () => {
               className="w-12 h-12 rounded-full bg-white/10 hover:bg-nordic-gold/20 flex items-center justify-center transition-all duration-300 hover:scale-110"
             >
               <Instagram className="text-white hover:text-nordic-gold transition-colors duration-300" size={20} />
+            </a>
+            
+            <a 
+              href="#" 
+              className="w-12 h-12 rounded-full bg-white/10 hover:bg-nordic-gold/20 flex items-center justify-center transition-all duration-300 hover:scale-110"
+            >
+              <Github className="text-white hover:text-nordic-gold transition-colors duration-300" size={20} />
             </a>
           </div>
         </div>
