@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -37,7 +38,10 @@ import {
   Settings,
   File,
   Image,
-  FileSpreadsheet
+  FileSpreadsheet,
+  Tag,
+  X,
+  Filter
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -79,6 +83,7 @@ interface Document {
   file_size: number;
   uploaded_by: string;
   created_at: string;
+  tags?: string[];
 }
 
 export default function Admin() {
@@ -91,8 +96,40 @@ export default function Admin() {
   const [selectedProject, setSelectedProject] = useState<string>("");
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
+  const [documentFilter, setDocumentFilter] = useState<string>("");
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [allTags, setAllTags] = useState<string[]>([]);
+  const [newTagInput, setNewTagInput] = useState<string>("");
   const navigate = useNavigate();
   const { toast } = useToast();
+
+  // Predefinerede tags organiseret i kategorier
+  const TAG_CATEGORIES = {
+    "📄 Dokumenttyper": [
+      "📄 Kontrakt", "🧾 Faktura", "💰 Tilbud", "📊 Rapport", "📖 Manual"
+    ],
+    "🎯 Prioritet": [
+      "🔥 Vigtig", "⚠️ Kritisk", "📝 Almindelig", "⬇️ Lav"
+    ],
+    "🏷️ Kategorier": [
+      "🎨 Logo", "📢 Marketing", "🌐 Web", "🖨️ Print", "📱 Social"
+    ],
+    "📆 Tidsperioder": [
+      "🗓️ 2025", "📅 2024", "🌸 Q1", "☀️ Q2", "🍂 Q3", "❄️ Q4"
+    ],
+    "💼 Økonomi": [
+      "💸 Moms", "💼 Regnskab", "💰 Budget", "📈 Investering"
+    ],
+    "🚀 Projekter": [
+      "🖥️ Website", "📱 App", "🎨 Design", "⚡ Udvikling"
+    ],
+    "📊 Status": [
+      "✅ Færdig", "🔄 Igangværende", "⏳ Afventer", "📦 Arkiveret"
+    ]
+  };
+
+  // Flatten alle tags til bagudkompatibilitet
+  const PREDEFINED_TAGS = Object.values(TAG_CATEGORIES).flat();
 
   useEffect(() => {
     initializeAdmin();
@@ -257,11 +294,99 @@ export default function Admin() {
         .order('created_at', { ascending: false });
 
       if (data) {
-        setDocuments(data);
+        const documentsWithTags = data.map(doc => ({
+          ...doc,
+          tags: doc.tags || []
+        }));
+        setDocuments(documentsWithTags);
+        
+        // Brug predefinerede tags plus eksisterende tags fra dokumenter
+        const existingTags = new Set<string>();
+        documentsWithTags.forEach(doc => {
+          if (doc.tags) {
+            doc.tags.forEach(tag => existingTags.add(tag));
+          }
+        });
+        
+        // Kombiner predefinerede tags med eksisterende (uden dubletter)
+        const combinedTags = [...new Set([...PREDEFINED_TAGS, ...Array.from(existingTags)])];
+        setAllTags(combinedTags.sort());
       }
     } catch (error) {
       console.error('Error fetching documents:', error);
     }
+  };
+
+  const addTagToDocument = async (documentId: string, tag: string) => {
+    try {
+      const document = documents.find(doc => doc.id === documentId);
+      if (!document) return;
+
+      const newTags = [...(document.tags || []), tag];
+      
+      const { error } = await supabase
+        .from('documents')
+        .update({ tags: newTags })
+        .eq('id', documentId);
+
+      if (error) throw error;
+
+      toast({
+        title: "Tag tilføjet",
+        description: `Tag "${tag}" er tilføjet til dokumentet.`,
+      });
+
+      fetchDocuments();
+    } catch (error) {
+      console.error('Error adding tag:', error);
+      toast({
+        title: "Fejl",
+        description: "Der opstod en fejl ved tilføjelse af tag.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const removeTagFromDocument = async (documentId: string, tagToRemove: string) => {
+    try {
+      const document = documents.find(doc => doc.id === documentId);
+      if (!document) return;
+
+      const newTags = (document.tags || []).filter(tag => tag !== tagToRemove);
+      
+      const { error } = await supabase
+        .from('documents')
+        .update({ tags: newTags })
+        .eq('id', documentId);
+
+      if (error) throw error;
+
+      toast({
+        title: "Tag fjernet",
+        description: `Tag "${tagToRemove}" er fjernet fra dokumentet.`,
+      });
+
+      fetchDocuments();
+    } catch (error) {
+      console.error('Error removing tag:', error);
+      toast({
+        title: "Fejl",
+        description: "Der opstod en fejl ved fjernelse af tag.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const getFilteredDocuments = () => {
+    return documents.filter(doc => {
+      const matchesSearch = doc.name.toLowerCase().includes(documentFilter.toLowerCase()) ||
+                          doc.original_name.toLowerCase().includes(documentFilter.toLowerCase());
+      
+      const matchesTags = selectedTags.length === 0 || 
+                         selectedTags.some(tag => doc.tags?.includes(tag));
+      
+      return matchesSearch && matchesTags;
+    });
   };
 
   const updateUserRole = async (userId: string, role: string) => {
@@ -921,29 +1046,123 @@ export default function Admin() {
                         <Input
                           placeholder="Søg dokumenter..."
                           className="pl-8 w-64"
+                          value={documentFilter}
+                          onChange={(e) => setDocumentFilter(e.target.value)}
                         />
                       </div>
+                      
+                      {/* Tag filter */}
+                      <div className="flex items-center gap-2">
+                        <Filter className="h-4 w-4 text-muted-foreground" />
+                        <Select 
+                          value="" 
+                          onValueChange={(tag) => {
+                            if (tag && !selectedTags.includes(tag)) {
+                              setSelectedTags([...selectedTags, tag]);
+                            }
+                          }}
+                        >
+                          <SelectTrigger className="w-48">
+                            <SelectValue placeholder="Filtrer efter tags" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {/* Predefinerede tags organiseret i kategorier */}
+                            {Object.entries(TAG_CATEGORIES).map(([categoryName, tags], categoryIndex) => (
+                              <div key={categoryName}>
+                                {categoryIndex > 0 && <Separator className="my-1" />}
+                                <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground">
+                                  {categoryName}
+                                </div>
+                                {tags.map((tag) => (
+                                  <SelectItem key={tag} value={tag} className="pl-4">
+                                    <div className="flex items-center gap-2">
+                                      <Tag className="h-3 w-3" />
+                                      {tag}
+                                    </div>
+                                  </SelectItem>
+                                ))}
+                              </div>
+                            ))}
+                            
+                            {/* Eksisterende tags der ikke er i predefinerede kategorier */}
+                            {(() => {
+                              const existingTags = allTags.filter(tag => !PREDEFINED_TAGS.includes(tag));
+                              if (existingTags.length > 0) {
+                                return (
+                                  <div>
+                                    <Separator className="my-1" />
+                                    <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground">
+                                      🔖 Eksisterende Tags
+                                    </div>
+                                    {existingTags.map((tag) => (
+                                      <SelectItem key={tag} value={tag} className="pl-4">
+                                        <div className="flex items-center gap-2">
+                                          <Tag className="h-3 w-3" />
+                                          {tag}
+                                        </div>
+                                      </SelectItem>
+                                    ))}
+                                  </div>
+                                );
+                              }
+                              return null;
+                            })()}
+                          </SelectContent>
+                        </Select>
+                      </div>
                     </div>
+                    
+                    {/* Active tag filters */}
+                    {selectedTags.length > 0 && (
+                      <div className="flex items-center gap-2 mt-2">
+                        <span className="text-sm text-muted-foreground">Aktive filtre:</span>
+                        {selectedTags.map((tag) => (
+                          <Badge 
+                            key={tag} 
+                            variant="secondary" 
+                            className="flex items-center gap-1 cursor-pointer hover:bg-destructive hover:text-destructive-foreground"
+                            onClick={() => setSelectedTags(selectedTags.filter(t => t !== tag))}
+                          >
+                            <Tag className="h-3 w-3" />
+                            {tag}
+                            <X className="h-3 w-3" />
+                          </Badge>
+                        ))}
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          onClick={() => setSelectedTags([])}
+                          className="text-muted-foreground hover:text-foreground"
+                        >
+                          Ryd alle
+                        </Button>
+                      </div>
+                    )}
                   </div>
                 </CardHeader>
                 <CardContent>
-                  {documents.length === 0 ? (
+                  {getFilteredDocuments().length === 0 ? (
                     <div className="text-center py-8">
                       <FileText className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                      <h3 className="text-lg font-semibold mb-2">Ingen dokumenter</h3>
+                      <h3 className="text-lg font-semibold mb-2">
+                        {documents.length === 0 ? "Ingen dokumenter" : "Ingen dokumenter matcher din søgning"}
+                      </h3>
                       <p className="text-muted-foreground">
-                        Upload det første dokument for at komme i gang
+                        {documents.length === 0 
+                          ? "Upload det første dokument for at komme i gang"
+                          : "Prøv at justere dine søgekriterier eller tags"
+                        }
                       </p>
                     </div>
                   ) : (
                     <div className="space-y-3">
-                      {documents.map((doc) => (
-                        <div key={doc.id} className="flex items-center justify-between p-4 border rounded-lg hover:shadow-md transition-shadow">
-                          <div className="flex items-center gap-4">
-                            <div className="flex-shrink-0">
+                      {getFilteredDocuments().map((doc) => (
+                        <div key={doc.id} className="flex items-start justify-between p-4 border rounded-lg hover:shadow-md transition-shadow">
+                          <div className="flex items-start gap-4 flex-1">
+                            <div className="flex-shrink-0 mt-1">
                               {getFileIcon(doc.file_type)}
                             </div>
-                            <div className="space-y-1">
+                            <div className="space-y-2 flex-1">
                               <div className="flex items-center gap-2">
                                 <h4 className="font-semibold">{doc.name}</h4>
                                 <Badge variant="outline" className="text-xs">
@@ -964,10 +1183,73 @@ export default function Admin() {
                                   })}
                                 </span>
                               </div>
+                              
+                              {/* Tags sektion */}
+                              <div className="space-y-2">
+                                {/* Eksisterende tags */}
+                                {doc.tags && doc.tags.length > 0 && (
+                                  <div className="flex items-center gap-2 flex-wrap">
+                                    <span className="text-xs text-muted-foreground">Tags:</span>
+                                    {doc.tags.map((tag) => (
+                                      <Badge 
+                                        key={tag} 
+                                        variant="secondary" 
+                                        className="text-xs flex items-center gap-1 group cursor-pointer"
+                                        onClick={() => removeTagFromDocument(doc.id, tag)}
+                                      >
+                                        <Tag className="h-3 w-3" />
+                                        {tag}
+                                        <X className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+                                      </Badge>
+                                    ))}
+                                  </div>
+                                )}
+                                
+                                {/* Tilføj nyt tag */}
+                                <div className="flex items-center gap-2">
+                                  <Select
+                                    value={newTagInput}
+                                    onValueChange={(value) => setNewTagInput(value)}
+                                  >
+                                    <SelectTrigger className="h-6 text-xs flex-1 max-w-32">
+                                      <SelectValue placeholder="Vælg tag..." />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                      {Object.entries(TAG_CATEGORIES).map(([categoryName, tags], categoryIndex) => (
+                                        <div key={categoryName}>
+                                          {categoryIndex > 0 && <Separator className="my-1" />}
+                                          <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground">
+                                            {categoryName}
+                                          </div>
+                                          {tags.map((tag) => (
+                                            <SelectItem key={tag} value={tag} className="pl-4">
+                                              {tag}
+                                            </SelectItem>
+                                          ))}
+                                        </div>
+                                      ))}
+                                    </SelectContent>
+                                  </Select>
+                                  <Button 
+                                    size="sm" 
+                                    variant="ghost"
+                                    onClick={() => {
+                                      if (newTagInput.trim()) {
+                                        addTagToDocument(doc.id, newTagInput.trim());
+                                        setNewTagInput("");
+                                      }
+                                    }}
+                                    className="h-6 w-6 p-0"
+                                    disabled={!newTagInput.trim()}
+                                  >
+                                    <Plus className="h-3 w-3" />
+                                  </Button>
+                                </div>
+                              </div>
                             </div>
                           </div>
                           
-                          <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-2 ml-4">
                             <Button 
                               variant="outline" 
                               size="sm"
