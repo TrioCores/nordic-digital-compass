@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Menu, X, Compass } from "lucide-react";
 import { LoginDialog } from "@/components/auth/LoginDialog";
 import { UserMenu } from "@/components/auth/UserMenu";
+import { ModeToggle } from "@/components/mode-toggle";
 import { supabase } from "@/integrations/supabase/client";
 import { Link } from "react-router-dom";
 
@@ -107,6 +108,7 @@ const Navigation = () => {
               ) : (
                 <LoginDialog />
               )}
+              <ModeToggle />
               <Button 
                 onClick={() => navigateToPage("/contact")}
                 className="nordic-button-primary"
@@ -153,6 +155,10 @@ const Navigation = () => {
                 ) : (
                   <LoginDialog />
                 )}
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-fjord/80">Tema:</span>
+                  <ModeToggle />
+                </div>
                 <Button 
                   onClick={() => navigateToPage("/contact")}
                   className="nordic-button-primary w-full"

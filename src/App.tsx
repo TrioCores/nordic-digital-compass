@@ -7,6 +7,7 @@ import { AnimatePresence } from "framer-motion";
 import { HelmetProvider } from "react-helmet-async";
 import PageTransition from "./components/PageTransition";
 import { ProtectedRoute } from "./components/auth/ProtectedRoute";
+import { ThemeProvider } from "./components/theme-provider";
 import Index from "./pages/Index";
 import Solutions from "./pages/Solutions";
 import About from "./pages/About";
@@ -121,15 +122,17 @@ const AnimatedRoutes = () => {
 
 const App = () => (
   <HelmetProvider>
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <AnimatedRoutes />
-        </BrowserRouter>
-      </TooltipProvider>
-    </QueryClientProvider>
+    <ThemeProvider defaultTheme="light" storageKey="nordweb-ui-theme">
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <AnimatedRoutes />
+          </BrowserRouter>
+        </TooltipProvider>
+      </QueryClientProvider>
+    </ThemeProvider>
   </HelmetProvider>
 );
 

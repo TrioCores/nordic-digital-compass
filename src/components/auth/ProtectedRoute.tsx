@@ -28,6 +28,16 @@ export const ProtectedRoute = ({ children, requiredRole = 'user', adminOnly = fa
         return;
       }
 
+      // Hvis det er Emil eller Mikkel, giv altid admin adgang
+      const isOwner = session.user.email === 'emilmh.nw@outlook.com' || 
+                     session.user.email === 'Mikkelwb.nw@outlook.dk';
+
+      if (isOwner) {
+        setAuthorized(true);
+        setLoading(false);
+        return;
+      }
+
       // If we only need authentication (not specific roles), allow access
       if (!adminOnly && requiredRole === 'user') {
         setAuthorized(true);
@@ -42,7 +52,43 @@ export const ProtectedRoute = ({ children, requiredRole = 'user', adminOnly = fa
         .eq('id', session.user.id)
         .single();
 
-      if (error || !profileData) {
+      if (error) {
+        console.error('Error fetching profile:', error);
+        
+        // Hvis RLS blokerer, men brugeren er autentificeret, prøv at oprette profilen
+        if (error.code === 'PGRST116' || error.message?.includes('row-level security')) {
+          // Prøv at oprette profil hvis den mangler
+          const { error: insertError } = await supabase
+            .from('user_profiles')
+            .insert({
+              id: session.user.id,
+              email: session.user.email,
+              full_name: session.user.user_metadata?.full_name || session.user.email,
+              role: 'user'
+            });
+
+          if (!insertError) {
+            // Hvis profil blev oprettet, prøv igen
+            setLoading(false);
+            checkAccess();
+            return;
+          }
+        }
+
+        // Hvis admin/owner adgang kræves, nægt adgang
+        if (adminOnly || requiredRole !== 'user') {
+          toast({
+            title: "Adgang nægtet",
+            description: "Din brugerprofil kunne ikke findes. Kontakt support.",
+            variant: "destructive",
+          });
+          navigate('/');
+          return;
+        } else {
+          // Tillad almindelig brugeradgang
+          setAuthorized(true);
+        }
+      } else if (!profileData) {
         // If profile doesn't exist yet, deny admin access but allow user access
         if (adminOnly || requiredRole !== 'user') {
           toast({
@@ -93,7 +139,17 @@ export const ProtectedRoute = ({ children, requiredRole = 'user', adminOnly = fa
       }
     } catch (error) {
       console.error('Error checking access:', error);
-      navigate('/');
+      
+      // Fallback for ejere hvis der er database problemer
+      const { data: { session } } = await supabase.auth.getSession();
+      const isOwner = session?.user?.email === 'emilmh.nw@outlook.com' || 
+                     session?.user?.email === 'Mikkelwb.nw@outlook.dk';
+      
+      if (isOwner) {
+        setAuthorized(true);
+      } else {
+        navigate('/');
+      }
     } finally {
       setLoading(false);
     }

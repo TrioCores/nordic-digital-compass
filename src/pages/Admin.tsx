@@ -9,6 +9,17 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { 
   Users, 
   FileText, 
@@ -19,7 +30,14 @@ import {
   Search,
   Shield,
   Crown,
-  BarChart3
+  BarChart3,
+  Download,
+  Trash2,
+  UserPlus,
+  Settings,
+  File,
+  Image,
+  FileSpreadsheet
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -91,14 +109,49 @@ export default function Admin() {
 
       setUser(session.user);
       
-      const { data: profileData } = await supabase
-        .from('user_profiles')
-        .select('*')
-        .eq('id', session.user.id)
-        .single();
+      // Forsøg at hente profil data
+      try {
+        const { data: profileData, error } = await supabase
+          .from('user_profiles')
+          .select('*')
+          .eq('id', session.user.id)
+          .single();
 
-      if (profileData) {
-        setProfile({...profileData, role: profileData.role as 'user' | 'admin' | 'owner'});
+        if (profileData) {
+          setProfile({...profileData, role: profileData.role as 'user' | 'admin' | 'owner'});
+        } else if (error) {
+          console.error('Error fetching profile:', error);
+          
+          // Hvis profil ikke findes, opret en ny for ejere
+          const isOwner = session.user.email === 'emilmh.nw@outlook.com' || 
+                         session.user.email === 'Mikkelwb.nw@outlook.dk';
+          
+          if (isOwner) {
+            // Sæt default profil for ejere
+            setProfile({
+              id: session.user.id,
+              email: session.user.email!,
+              full_name: session.user.user_metadata?.full_name || session.user.email!,
+              role: 'owner',
+              created_at: new Date().toISOString()
+            });
+          }
+        }
+      } catch (profileError) {
+        console.error('Profile fetch failed:', profileError);
+        // Fallback profil hvis alt fejler
+        const isOwner = session.user.email === 'emilmh.nw@outlook.com' || 
+                       session.user.email === 'Mikkelwb.nw@outlook.dk';
+        
+        if (isOwner) {
+          setProfile({
+            id: session.user.id,
+            email: session.user.email!,
+            full_name: session.user.user_metadata?.full_name || session.user.email!,
+            role: 'owner',
+            created_at: new Date().toISOString()
+          });
+        }
       }
       
       await fetchData();
@@ -119,16 +172,49 @@ export default function Admin() {
 
   const fetchUsers = async () => {
     try {
-      const { data } = await supabase
+      console.log('Fetching users...');
+      
+      const { data, error } = await supabase
         .from('user_profiles')
         .select('*')
         .order('created_at', { ascending: false });
 
+      if (error) {
+        console.error('Error fetching users:', error);
+        
+        // Hvis RLS blokerer, prøv med service role eller fallback
+        if (error.code === 'PGRST116' || error.message?.includes('row-level security')) {
+          console.log('RLS blocking user fetch, trying alternative approach...');
+          
+          // Prøv at få den nuværende brugers profil i det mindste
+          const { data: { session } } = await supabase.auth.getSession();
+          if (session) {
+            const { data: currentUser } = await supabase
+              .from('user_profiles')
+              .select('*')
+              .eq('id', session.user.id)
+              .single();
+            
+            if (currentUser) {
+              setUsers([{...currentUser, role: currentUser.role as 'user' | 'admin' | 'owner'}]);
+            }
+          }
+          return;
+        }
+        throw error;
+      }
+
       if (data) {
+        console.log('Users fetched successfully:', data.length);
         setUsers(data.map(user => ({...user, role: user.role as 'user' | 'admin' | 'owner'})));
+      } else {
+        console.log('No users found');
+        setUsers([]);
       }
     } catch (error) {
       console.error('Error fetching users:', error);
+      // Vis tom liste hvis der er fejl
+      setUsers([]);
     }
   };
 
@@ -180,24 +266,40 @@ export default function Admin() {
 
   const updateUserRole = async (userId: string, role: string) => {
     try {
-      const { error } = await supabase
+      console.log('Updating user role:', { userId, role });
+      
+      const { data, error } = await supabase
         .from('user_profiles')
         .update({ role })
-        .eq('id', userId);
+        .eq('id', userId)
+        .select();
 
-      if (error) throw error;
+      if (error) {
+        console.error('Supabase error:', error);
+        throw error;
+      }
+
+      console.log('Update successful:', data);
+
+      // Opdater lokal state med det samme
+      setUsers(prev => prev.map(user => 
+        user.id === userId 
+          ? { ...user, role: role as 'user' | 'admin' | 'owner' }
+          : user
+      ));
 
       toast({
         title: "Rolle opdateret",
-        description: "Brugerens rolle er blevet opdateret.",
+        description: `Brugerens rolle er ændret til ${role === 'admin' ? 'Admin' : role === 'owner' ? 'Ejer' : 'Bruger'}.`,
       });
 
-      fetchUsers();
+      // Fetch igen for at sikre konsistens
+      await fetchUsers();
     } catch (error) {
       console.error('Error updating user role:', error);
       toast({
         title: "Fejl",
-        description: "Der opstod en fejl ved opdatering af rolle.",
+        description: "Der opstod en fejl ved opdatering af rolle. Prøv igen.",
         variant: "destructive",
       });
     }
@@ -231,46 +333,67 @@ export default function Admin() {
   };
 
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
+    const files = Array.from(event.target.files || []);
+    if (files.length === 0) return;
 
     setUploading(true);
     try {
-      const fileExt = file.name.split('.').pop();
-      const fileName = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}.${fileExt}`;
-      const filePath = `admin-documents/${fileName}`;
+      let successCount = 0;
+      let errorCount = 0;
 
-      const { error: uploadError } = await supabase.storage
-        .from('admin-documents')
-        .upload(filePath, file);
+      for (const file of files) {
+        try {
+          const fileExt = file.name.split('.').pop();
+          const fileName = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}.${fileExt}`;
+          const filePath = `admin-documents/${fileName}`;
 
-      if (uploadError) throw uploadError;
+          const { error: uploadError } = await supabase.storage
+            .from('admin-documents')
+            .upload(filePath, file);
 
-      const { error: dbError } = await supabase
-        .from('documents')
-        .insert({
-          name: file.name.split('.')[0],
-          original_name: file.name,
-          file_path: filePath,
-          file_type: file.type,
-          file_size: file.size,
-          uploaded_by: user.id,
+          if (uploadError) throw uploadError;
+
+          const { error: dbError } = await supabase
+            .from('documents')
+            .insert({
+              name: file.name.split('.')[0],
+              original_name: file.name,
+              file_path: filePath,
+              file_type: file.type,
+              file_size: file.size,
+              uploaded_by: user.id,
+            });
+
+          if (dbError) throw dbError;
+          successCount++;
+        } catch (error) {
+          console.error(`Error uploading file ${file.name}:`, error);
+          errorCount++;
+        }
+      }
+
+      if (successCount > 0) {
+        toast({
+          title: "Upload fuldført",
+          description: `${successCount} dokument(er) uploadet succesfuldt${errorCount > 0 ? `, ${errorCount} fejlede` : ''}.`,
         });
+        fetchDocuments();
+      }
 
-      if (dbError) throw dbError;
+      if (errorCount > 0 && successCount === 0) {
+        toast({
+          title: "Upload fejl",
+          description: "Alle uploads fejlede. Prøv igen.",
+          variant: "destructive",
+        });
+      }
 
-      toast({
-        title: "Dokument uploadet",
-        description: "Dokumentet er blevet uploadet succesfuldt.",
-      });
-
-      fetchDocuments();
       event.target.value = '';
     } catch (error) {
-      console.error('Error uploading file:', error);
+      console.error('Error uploading files:', error);
       toast({
         title: "Upload fejl",
-        description: "Der opstod en fejl ved upload af dokumentet.",
+        description: "Der opstod en uventet fejl ved upload.",
         variant: "destructive",
       });
     } finally {
@@ -304,6 +427,39 @@ export default function Admin() {
     }
   };
 
+  const deleteDocument = async (document: Document) => {
+    try {
+      // Delete from storage
+      const { error: storageError } = await supabase.storage
+        .from('admin-documents')
+        .remove([document.file_path]);
+
+      if (storageError) throw storageError;
+
+      // Delete from database
+      const { error: dbError } = await supabase
+        .from('documents')
+        .delete()
+        .eq('id', document.id);
+
+      if (dbError) throw dbError;
+
+      toast({
+        title: "Dokument slettet",
+        description: "Dokumentet er blevet slettet succesfuldt.",
+      });
+
+      fetchDocuments();
+    } catch (error) {
+      console.error('Error deleting document:', error);
+      toast({
+        title: "Sletning fejl",
+        description: "Der opstod en fejl ved sletning af dokumentet.",
+        variant: "destructive",
+      });
+    }
+  };
+
   const getRoleIcon = (role: string) => {
     switch (role) {
       case 'owner':
@@ -313,6 +469,28 @@ export default function Admin() {
       default:
         return <Users className="h-4 w-4 text-gray-500" />;
     }
+  };
+
+  const getFileIcon = (fileType: string) => {
+    if (fileType.startsWith('image/')) return <Image className="h-5 w-5 text-green-500" />;
+    if (fileType === 'application/pdf') return <FileText className="h-5 w-5 text-red-500" />;
+    if (fileType.includes('spreadsheet') || fileType.includes('excel')) return <FileSpreadsheet className="h-5 w-5 text-green-600" />;
+    if (fileType.includes('document') || fileType.includes('word')) return <File className="h-5 w-5 text-blue-500" />;
+    return <FileText className="h-5 w-5 text-gray-500" />;
+  };
+
+  const formatFileSize = (bytes: number) => {
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+    return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+  };
+
+  const getFileTypeLabel = (fileType: string) => {
+    if (fileType.startsWith('image/')) return 'Billede';
+    if (fileType === 'application/pdf') return 'PDF';
+    if (fileType.includes('spreadsheet') || fileType.includes('excel')) return 'Regneark';
+    if (fileType.includes('document') || fileType.includes('word')) return 'Dokument';
+    return 'Fil';
   };
 
   const getStatusColor = (status: string) => {
@@ -360,11 +538,11 @@ export default function Admin() {
             </div>
           </div>
 
-          <Tabs defaultValue="projects" className="space-y-6">
+          <Tabs defaultValue="users" className="space-y-6">
             <TabsList>
-              <TabsTrigger value="projects">Projekt Management</TabsTrigger>
-              <TabsTrigger value="users">Brugere</TabsTrigger>
+              <TabsTrigger value="users">Brugerhåndtering</TabsTrigger>
               <TabsTrigger value="documents">Dokumenter</TabsTrigger>
+              <TabsTrigger value="projects">Projekt Management</TabsTrigger>
             </TabsList>
 
             <TabsContent value="projects" className="space-y-6">
@@ -465,42 +643,152 @@ export default function Admin() {
             </TabsContent>
 
             <TabsContent value="users" className="space-y-6">
+              {/* User Stats */}
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">Total Brugere</CardTitle>
+                    <Users className="h-4 w-4 text-muted-foreground" />
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold">{users.length}</div>
+                  </CardContent>
+                </Card>
+                
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">Administratorer</CardTitle>
+                    <Shield className="h-4 w-4 text-blue-500" />
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold">
+                      {users.filter(u => u.role === 'admin').length}
+                    </div>
+                  </CardContent>
+                </Card>
+                
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">Ejere</CardTitle>
+                    <Crown className="h-4 w-4 text-yellow-500" />
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold">
+                      {users.filter(u => u.role === 'owner').length}
+                    </div>
+                  </CardContent>
+                </Card>
+                
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">Almindelige Brugere</CardTitle>
+                    <Users className="h-4 w-4 text-gray-500" />
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold">
+                      {users.filter(u => u.role === 'user').length}
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* User Management */}
               <Card>
                 <CardHeader>
-                  <CardTitle>Brugerhåndtering</CardTitle>
-                  <CardDescription>
-                    Administrer brugerroller og tilladelser
-                  </CardDescription>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <CardTitle className="flex items-center gap-2">
+                        <Users className="h-5 w-5" />
+                        Brugerhåndtering
+                      </CardTitle>
+                      <CardDescription>
+                        Administrer brugerroller og tilladelser
+                      </CardDescription>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="relative">
+                        <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                        <Input
+                          placeholder="Søg brugere..."
+                          className="pl-8 w-64"
+                        />
+                      </div>
+                    </div>
+                  </div>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
                     {users.map((userData) => (
-                      <div key={userData.id} className="flex items-center justify-between p-4 border rounded-lg">
-                        <div className="space-y-1">
-                          <div className="flex items-center gap-2">
+                      <div key={userData.id} className="flex items-center justify-between p-4 border rounded-lg hover:shadow-md transition-shadow">
+                        <div className="flex items-center space-x-4">
+                          <div className="flex-shrink-0">
                             {getRoleIcon(userData.role)}
-                            <h4 className="font-semibold">{userData.full_name}</h4>
                           </div>
-                          <p className="text-sm text-muted-foreground">{userData.email}</p>
-                          <p className="text-xs text-muted-foreground">
-                            Oprettet: {new Date(userData.created_at).toLocaleDateString('da-DK')}
-                          </p>
+                          <div className="space-y-1">
+                            <div className="flex items-center gap-2">
+                              <h4 className="font-semibold text-lg">{userData.full_name}</h4>
+                              <Badge 
+                                variant={userData.role === 'owner' ? 'default' : userData.role === 'admin' ? 'secondary' : 'outline'}
+                                className={`
+                                  ${userData.role === 'owner' ? 'bg-yellow-500 text-white' : ''}
+                                  ${userData.role === 'admin' ? 'bg-blue-500 text-white' : ''}
+                                `}
+                              >
+                                {userData.role === 'owner' ? 'Ejer' : userData.role === 'admin' ? 'Admin' : 'Bruger'}
+                              </Badge>
+                            </div>
+                            <p className="text-sm text-muted-foreground">{userData.email}</p>
+                            <p className="text-xs text-muted-foreground">
+                              Oprettet: {new Date(userData.created_at).toLocaleDateString('da-DK', {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric'
+                              })}
+                            </p>
+                          </div>
                         </div>
-                        <div className="flex items-center gap-2">
-                          <Select 
-                            value={userData.role} 
-                            onValueChange={(value) => updateUserRole(userData.id, value)}
-                            disabled={userData.email === 'emilmh.nw@outlook.com'}
-                          >
-                            <SelectTrigger className="w-32">
-                              <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="user">Bruger</SelectItem>
-                              <SelectItem value="admin">Admin</SelectItem>
-                              <SelectItem value="owner">Ejer</SelectItem>
-                            </SelectContent>
-                          </Select>
+                        
+                        <div className="flex items-center gap-3">
+                          {userData.email !== 'emilmh.nw@outlook.com' && userData.email !== 'Mikkelwb.nw@outlook.dk' && (
+                            <Select 
+                              key={`role-select-${userData.id}-${userData.role}`}
+                              value={userData.role} 
+                              onValueChange={(value) => updateUserRole(userData.id, value)}
+                            >
+                              <SelectTrigger className="w-32">
+                                <SelectValue />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="user">
+                                  <div className="flex items-center gap-2">
+                                    <Users className="h-4 w-4" />
+                                    Bruger
+                                  </div>
+                                </SelectItem>
+                                <SelectItem value="admin">
+                                  <div className="flex items-center gap-2">
+                                    <Shield className="h-4 w-4" />
+                                    Admin
+                                  </div>
+                                </SelectItem>
+                                <SelectItem value="owner">
+                                  <div className="flex items-center gap-2">
+                                    <Crown className="h-4 w-4" />
+                                    Ejer
+                                  </div>
+                                </SelectItem>
+                              </SelectContent>
+                            </Select>
+                          )}
+                          {(userData.email === 'emilmh.nw@outlook.com' || userData.email === 'Mikkelwb.nw@outlook.dk') && (
+                            <Badge variant="outline" className="text-xs">
+                              Beskyttet
+                            </Badge>
+                          )}
+                          
+                          <Button variant="outline" size="sm">
+                            <Settings className="h-4 w-4" />
+                          </Button>
                         </div>
                       </div>
                     ))}
@@ -510,60 +798,219 @@ export default function Admin() {
             </TabsContent>
 
             <TabsContent value="documents" className="space-y-6">
+              {/* Document Stats */}
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">Total Dokumenter</CardTitle>
+                    <FileText className="h-4 w-4 text-muted-foreground" />
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold">{documents.length}</div>
+                  </CardContent>
+                </Card>
+                
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">PDF Filer</CardTitle>
+                    <FileText className="h-4 w-4 text-red-500" />
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold">
+                      {documents.filter(d => d.file_type === 'application/pdf').length}
+                    </div>
+                  </CardContent>
+                </Card>
+                
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">Billeder</CardTitle>
+                    <Image className="h-4 w-4 text-green-500" />
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold">
+                      {documents.filter(d => d.file_type.startsWith('image/')).length}
+                    </div>
+                  </CardContent>
+                </Card>
+                
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">Total Størrelse</CardTitle>
+                    <BarChart3 className="h-4 w-4 text-muted-foreground" />
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold">
+                      {formatFileSize(documents.reduce((sum, doc) => sum + doc.file_size, 0))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* Upload Section */}
               <Card>
                 <CardHeader>
-                  <CardTitle>Dokumenthåndtering</CardTitle>
-                  <CardDescription>
-                    Upload og administrer sikre dokumenter
-                  </CardDescription>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <CardTitle className="flex items-center gap-2">
+                        <Upload className="h-5 w-5" />
+                        Upload Dokumenter
+                      </CardTitle>
+                      <CardDescription>
+                        Upload PDF, billeder, dokumenter og andre filer
+                      </CardDescription>
+                    </div>
+                  </div>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-4">
-                    <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-6">
-                      <div className="flex flex-col items-center gap-2">
+                  <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-8 hover:border-muted-foreground/50 transition-colors">
+                    <div className="flex flex-col items-center gap-4">
+                      <div className="rounded-full bg-muted p-3">
                         <Upload className="h-8 w-8 text-muted-foreground" />
+                      </div>
+                      <div className="text-center">
                         <Label htmlFor="file-upload" className="cursor-pointer">
-                          <span className="text-sm font-medium">Klik for at uploade</span>
-                          <span className="text-sm text-muted-foreground"> eller træk og slip</span>
+                          <span className="text-lg font-medium hover:text-primary transition-colors">
+                            Klik for at uploade filer
+                          </span>
+                          <br />
+                          <span className="text-sm text-muted-foreground">
+                            eller træk og slip her
+                          </span>
                         </Label>
+                        <p className="text-xs text-muted-foreground mt-2">
+                          Understøtter: PDF, Word, Excel, billeder (PNG, JPG, GIF)
+                        </p>
+                      </div>
+                      <Input
+                        id="file-upload"
+                        type="file"
+                        className="hidden"
+                        onChange={handleFileUpload}
+                        disabled={uploading}
+                        multiple
+                        accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg,.jpeg,.gif,.txt"
+                      />
+                      {uploading && (
+                        <div className="flex items-center gap-2">
+                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary"></div>
+                          <p className="text-sm text-muted-foreground">Uploader filer...</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Documents List */}
+              <Card>
+                <CardHeader>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <CardTitle className="flex items-center gap-2">
+                        <FileText className="h-5 w-5" />
+                        Dokumentbibliotek
+                      </CardTitle>
+                      <CardDescription>
+                        Administrer og download uploadede dokumenter
+                      </CardDescription>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="relative">
+                        <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
                         <Input
-                          id="file-upload"
-                          type="file"
-                          className="hidden"
-                          onChange={handleFileUpload}
-                          disabled={uploading}
+                          placeholder="Søg dokumenter..."
+                          className="pl-8 w-64"
                         />
-                        {uploading && (
-                          <p className="text-sm text-muted-foreground">Uploader...</p>
-                        )}
                       </div>
                     </div>
-
-                    <div className="space-y-2">
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  {documents.length === 0 ? (
+                    <div className="text-center py-8">
+                      <FileText className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                      <h3 className="text-lg font-semibold mb-2">Ingen dokumenter</h3>
+                      <p className="text-muted-foreground">
+                        Upload det første dokument for at komme i gang
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="space-y-3">
                       {documents.map((doc) => (
-                        <div key={doc.id} className="flex items-center justify-between p-3 border rounded-lg">
-                          <div className="flex items-center gap-3">
-                            <FileText className="h-4 w-4 text-muted-foreground" />
-                            <div>
-                              <p className="font-medium">{doc.name}</p>
+                        <div key={doc.id} className="flex items-center justify-between p-4 border rounded-lg hover:shadow-md transition-shadow">
+                          <div className="flex items-center gap-4">
+                            <div className="flex-shrink-0">
+                              {getFileIcon(doc.file_type)}
+                            </div>
+                            <div className="space-y-1">
+                              <div className="flex items-center gap-2">
+                                <h4 className="font-semibold">{doc.name}</h4>
+                                <Badge variant="outline" className="text-xs">
+                                  {getFileTypeLabel(doc.file_type)}
+                                </Badge>
+                              </div>
                               <p className="text-sm text-muted-foreground">
-                                {(doc.file_size / 1024 / 1024).toFixed(2)} MB • 
-                                {new Date(doc.created_at).toLocaleDateString('da-DK')}
+                                {doc.original_name}
                               </p>
+                              <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                                <span>{formatFileSize(doc.file_size)}</span>
+                                <span>•</span>
+                                <span>
+                                  Uploadet {new Date(doc.created_at).toLocaleDateString('da-DK', {
+                                    year: 'numeric',
+                                    month: 'long',
+                                    day: 'numeric'
+                                  })}
+                                </span>
+                              </div>
                             </div>
                           </div>
-                          <Button 
-                            variant="outline" 
-                            size="sm"
-                            onClick={() => downloadDocument(doc)}
-                          >
-                            <Eye className="h-4 w-4 mr-2" />
-                            Download
-                          </Button>
+                          
+                          <div className="flex items-center gap-2">
+                            <Button 
+                              variant="outline" 
+                              size="sm"
+                              onClick={() => downloadDocument(doc)}
+                            >
+                              <Download className="h-4 w-4 mr-2" />
+                              Download
+                            </Button>
+                            <AlertDialog>
+                              <AlertDialogTrigger asChild>
+                                <Button 
+                                  variant="outline" 
+                                  size="sm"
+                                  className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                                >
+                                  <Trash2 className="h-4 w-4" />
+                                </Button>
+                              </AlertDialogTrigger>
+                              <AlertDialogContent>
+                                <AlertDialogHeader>
+                                  <AlertDialogTitle>Slet dokument</AlertDialogTitle>
+                                  <AlertDialogDescription>
+                                    Er du sikker på du vil slette "{doc.name}"? 
+                                    <br />
+                                    Denne handling kan ikke fortrydes.
+                                  </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                  <AlertDialogCancel>Annuller</AlertDialogCancel>
+                                  <AlertDialogAction 
+                                    onClick={() => deleteDocument(doc)}
+                                    className="bg-red-600 hover:bg-red-700"
+                                  >
+                                    Slet dokument
+                                  </AlertDialogAction>
+                                </AlertDialogFooter>
+                              </AlertDialogContent>
+                            </AlertDialog>
+                          </div>
                         </div>
                       ))}
                     </div>
-                  </div>
+                  )}
                 </CardContent>
               </Card>
             </TabsContent>
