@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { HelmetProvider } from "react-helmet-async";
 import PageTransition from "./components/PageTransition";
+import { ProtectedRoute } from "./components/auth/ProtectedRoute";
 import Index from "./pages/Index";
 import Solutions from "./pages/Solutions";
 import About from "./pages/About";
@@ -78,7 +79,9 @@ const AnimatedRoutes = () => {
           path="/dashboard"
           element={
             <PageTransition>
-              <Dashboard />
+              <ProtectedRoute requiredRole="user">
+                <Dashboard />
+              </ProtectedRoute>
             </PageTransition>
           }
         />
@@ -86,7 +89,9 @@ const AnimatedRoutes = () => {
           path="/profile"
           element={
             <PageTransition>
-              <Profile />
+              <ProtectedRoute requiredRole="user">
+                <Profile />
+              </ProtectedRoute>
             </PageTransition>
           }
         />
@@ -94,7 +99,9 @@ const AnimatedRoutes = () => {
           path="/admin"
           element={
             <PageTransition>
-              <Admin />
+              <ProtectedRoute adminOnly={true}>
+                <Admin />
+              </ProtectedRoute>
             </PageTransition>
           }
         />

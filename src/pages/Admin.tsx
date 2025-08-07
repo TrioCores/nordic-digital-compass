@@ -77,10 +77,10 @@ export default function Admin() {
   const { toast } = useToast();
 
   useEffect(() => {
-    checkAdminAccess();
+    initializeAdmin();
   }, []);
 
-  const checkAdminAccess = async () => {
+  const initializeAdmin = async () => {
     try {
       const { data: { session } } = await supabase.auth.getSession();
       
@@ -97,21 +97,13 @@ export default function Admin() {
         .eq('id', session.user.id)
         .single();
 
-      if (!profileData || !['admin', 'owner'].includes(profileData.role)) {
-        toast({
-          title: "Adgang nægtet",
-          description: "Du har ikke tilladelse til at se denne side.",
-          variant: "destructive",
-        });
-        navigate('/dashboard');
-        return;
+      if (profileData) {
+        setProfile({...profileData, role: profileData.role as 'user' | 'admin' | 'owner'});
       }
-
-      setProfile({...profileData, role: profileData.role as 'user' | 'admin' | 'owner'});
+      
       await fetchData();
     } catch (error) {
-      console.error('Error checking admin access:', error);
-      navigate('/');
+      console.error('Error initializing admin:', error);
     } finally {
       setLoading(false);
     }

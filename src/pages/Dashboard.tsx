@@ -47,10 +47,10 @@ export default function Dashboard() {
   const { toast } = useToast();
 
   useEffect(() => {
-    checkUser();
+    initializeDashboard();
   }, []);
 
-  const checkUser = async () => {
+  const initializeDashboard = async () => {
     try {
       const { data: { session } } = await supabase.auth.getSession();
       
@@ -63,8 +63,7 @@ export default function Dashboard() {
       await fetchUserProfile(session.user.id);
       await fetchProjects(session.user.id);
     } catch (error) {
-      console.error('Error checking user:', error);
-      navigate('/');
+      console.error('Error initializing dashboard:', error);
     } finally {
       setLoading(false);
     }

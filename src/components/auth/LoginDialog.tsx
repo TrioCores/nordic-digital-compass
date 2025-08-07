@@ -35,7 +35,19 @@ export const LoginDialog = () => {
         password: loginData.password,
       });
 
-      if (error) throw error;
+      if (error) {
+        // Check if it's an email not confirmed error
+        if (error.message.includes('email not confirmed') || error.message.includes('Email not confirmed')) {
+          toast({
+            title: "Email ikke bekræftet",
+            description: "Tjek din email for bekræftelseslink, eller kontakt support hvis du ikke modtog en email.",
+            variant: "destructive",
+          });
+        } else {
+          throw error;
+        }
+        return;
+      }
 
       toast({
         title: "Velkommen tilbage!",
@@ -67,6 +79,7 @@ export const LoginDialog = () => {
     setLoading(true);
 
     try {
+      // First create the auth user
       const { data, error } = await supabase.auth.signUp({
         email: registerData.email,
         password: registerData.password,
@@ -79,10 +92,40 @@ export const LoginDialog = () => {
 
       if (error) throw error;
 
-      toast({
-        title: "Konto oprettet!",
-        description: "Tjek din email for at bekræfte din konto.",
-      });
+      // Then manually create the user profile (as backup for missing trigger)
+      if (data.user && data.user.id) {
+        try {
+          const { error: profileError } = await supabase
+            .from('user_profiles')
+            .insert({
+              id: data.user.id,
+              email: registerData.email,
+              full_name: registerData.fullName || registerData.email,
+              role: 'user'
+            });
+
+          // Log profile creation error but don't fail the registration
+          if (profileError) {
+            console.warn('Failed to create user profile:', profileError);
+          }
+        } catch (profileError) {
+          console.warn('Failed to create user profile:', profileError);
+        }
+      }
+
+      // Check if user needs email confirmation
+      if (data.user && !data.user.email_confirmed_at) {
+        toast({
+          title: "Konto oprettet!",
+          description: "Tjek din email for at bekræfte din konto, eller log ind direkte hvis email bekræftelse ikke er påkrævet.",
+        });
+      } else {
+        toast({
+          title: "Konto oprettet og bekræftet!",
+          description: "Du kan nu logge ind med din nye konto.",
+        });
+      }
+      
       setOpen(false);
     } catch (error: any) {
       toast({
