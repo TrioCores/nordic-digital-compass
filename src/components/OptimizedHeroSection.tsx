@@ -1,9 +1,18 @@
 import { Button } from "@/components/ui/button";
-import { Compass, Mountain, Star, ArrowRight } from "lucide-react";
+import {
+  Compass,
+  Mountain,
+  Star,
+  ArrowRight,
+  Sparkles,
+  Globe,
+  Zap,
+  Shield,
+} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
-const HeroSection = () => {
+const OptimizedHeroSection = () => {
   const navigate = useNavigate();
 
   return (
@@ -11,11 +20,11 @@ const HeroSection = () => {
       id="hero"
       className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-background via-secondary/30 to-background pt-32"
     >
-      {/* Animated background elements */}
+      {/* Enhanced animated background elements */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {/* Enhanced Starfield with different speeds */}
+        {/* Extended starfield with more stars */}
         <motion.div
-          className="star-float absolute top-20 left-1/4 text-primary/40"
+          className="absolute top-20 left-1/4 text-primary/40"
           animate={{
             y: [0, -20, 0],
             opacity: [0.4, 0.8, 0.4],
@@ -31,102 +40,164 @@ const HeroSection = () => {
         </motion.div>
 
         <motion.div
-          className="star-float absolute top-32 right-1/3 text-primary/30"
+          className="absolute top-32 right-1/3 text-primary/30"
           animate={{
-            y: [0, 15, 0],
             opacity: [0.3, 0.7, 0.3],
             rotate: [0, 180, 360],
+            scale: [0.8, 1.2, 0.8],
           }}
           transition={{
-            duration: 6,
+            duration: 8,
             repeat: Infinity,
             ease: "easeInOut",
-            delay: 1,
           }}
         >
           <Star size={12} fill="currentColor" />
         </motion.div>
 
         <motion.div
-          className="star-float absolute top-48 left-1/6 text-primary/50"
+          className="absolute top-48 left-1/6 text-primary/50"
           animate={{
             y: [0, -25, 0],
-            x: [0, 10, 0],
             opacity: [0.5, 1, 0.5],
+            x: [0, 10, 0],
           }}
           transition={{
-            duration: 5,
+            duration: 6,
             repeat: Infinity,
             ease: "easeInOut",
-            delay: 2,
           }}
         >
           <Star size={14} fill="currentColor" />
         </motion.div>
 
+        {/* Additional stars */}
         <motion.div
-          className="star-float absolute top-40 right-1/4 text-primary/35"
+          className="absolute top-60 right-1/4 text-nordic-gold/40"
           animate={{
-            y: [0, 20, 0],
+            y: [0, 15, 0],
+            opacity: [0.2, 0.6, 0.2],
             rotate: [0, -90, 0],
+          }}
+          transition={{
+            duration: 5,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 1,
+          }}
+        >
+          <Sparkles size={18} />
+        </motion.div>
+
+        <motion.div
+          className="absolute top-40 left-1/3 text-primary/35"
+          animate={{
             scale: [1, 1.5, 1],
+            opacity: [0.3, 0.7, 0.3],
+            rotate: [0, 45, 0],
           }}
           transition={{
             duration: 7,
             repeat: Infinity,
             ease: "easeInOut",
-            delay: 0.5,
+            delay: 2,
           }}
         >
-          <Star size={18} fill="currentColor" />
+          <Star size={10} fill="currentColor" />
         </motion.div>
 
-        {/* Enhanced rotating compass with multiple animations */}
+        {/* Floating tech icons */}
         <motion.div
-          className="absolute top-16 right-16 text-primary/10"
+          className="absolute top-1/3 left-12 text-primary/20"
           animate={{
-            rotate: 360,
-            scale: [1, 1.1, 1],
-            opacity: [0.1, 0.2, 0.1],
-          }}
-          transition={{
-            rotate: { duration: 20, repeat: Infinity, ease: "linear" },
-            scale: { duration: 8, repeat: Infinity, ease: "easeInOut" },
-            opacity: { duration: 6, repeat: Infinity, ease: "easeInOut" },
-          }}
-        >
-          <Compass size={120} />
-        </motion.div>
-
-        {/* Floating secondary compass */}
-        <motion.div
-          className="absolute top-1/3 left-8 text-nordic-gold/20"
-          animate={{
-            rotate: -360,
             y: [0, -30, 0],
-            x: [0, 15, 0],
+            rotate: [0, 360, 0],
+            opacity: [0.2, 0.4, 0.2],
           }}
           transition={{
-            rotate: { duration: 25, repeat: Infinity, ease: "linear" },
-            y: { duration: 8, repeat: Infinity, ease: "easeInOut" },
-            x: { duration: 6, repeat: Infinity, ease: "easeInOut" },
+            duration: 15,
+            repeat: Infinity,
+            ease: "easeInOut",
           }}
         >
-          <Compass size={60} />
+          <Globe size={40} />
         </motion.div>
 
-        {/* Floating mountains in background */}
         <motion.div
-          className="absolute bottom-32 left-1/4 text-fjord/10"
+          className="absolute bottom-1/3 right-12 text-nordic-gold/25"
           animate={{
-            y: [0, -15, 0],
-            opacity: [0.1, 0.2, 0.1],
+            y: [0, 20, 0],
+            x: [0, -15, 0],
+            opacity: [0.25, 0.5, 0.25],
           }}
           transition={{
             duration: 12,
             repeat: Infinity,
             ease: "easeInOut",
+            delay: 3,
+          }}
+        >
+          <Zap size={35} />
+        </motion.div>
+
+        <motion.div
+          className="absolute top-2/3 left-1/5 text-fjord/20"
+          animate={{
+            scale: [1, 1.3, 1],
+            opacity: [0.2, 0.4, 0.2],
+            rotate: [0, -180, 0],
+          }}
+          transition={{
+            duration: 18,
+            repeat: Infinity,
+            ease: "easeInOut",
             delay: 1,
+          }}
+        >
+          <Shield size={32} />
+        </motion.div>
+
+        {/* Multiple rotating compasses */}
+        <motion.div
+          className="absolute top-16 right-16 text-primary/10"
+          animate={{
+            rotate: 360,
+            scale: [1, 1.1, 1],
+          }}
+          transition={{
+            rotate: { duration: 20, repeat: Infinity, ease: "linear" },
+            scale: { duration: 8, repeat: Infinity, ease: "easeInOut" },
+          }}
+        >
+          <Compass size={120} />
+        </motion.div>
+
+        <motion.div
+          className="absolute top-1/4 left-8 text-nordic-gold/15"
+          animate={{
+            rotate: -360,
+            y: [0, -20, 0],
+          }}
+          transition={{
+            rotate: { duration: 25, repeat: Infinity, ease: "linear" },
+            y: { duration: 10, repeat: Infinity, ease: "easeInOut" },
+          }}
+        >
+          <Compass size={60} />
+        </motion.div>
+
+        {/* Enhanced floating mountains */}
+        <motion.div
+          className="absolute bottom-32 left-1/4 text-fjord/10"
+          animate={{
+            y: [0, -15, 0],
+            opacity: [0.1, 0.2, 0.1],
+            scale: [1, 1.05, 1],
+          }}
+          transition={{
+            duration: 12,
+            repeat: Infinity,
+            ease: "easeInOut",
           }}
         >
           <Mountain size={80} />
@@ -140,7 +211,7 @@ const HeroSection = () => {
             opacity: [0.15, 0.25, 0.15],
           }}
           transition={{
-            duration: 10,
+            duration: 14,
             repeat: Infinity,
             ease: "easeInOut",
             delay: 2,
@@ -149,11 +220,27 @@ const HeroSection = () => {
           <Mountain size={100} />
         </motion.div>
 
-        {/* Enhanced Aurora effect with movement */}
+        <motion.div
+          className="absolute bottom-24 center text-fjord/8"
+          animate={{
+            y: [0, -10, 0],
+            opacity: [0.08, 0.15, 0.08],
+          }}
+          transition={{
+            duration: 16,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 4,
+          }}
+        >
+          <Mountain size={60} />
+        </motion.div>
+
+        {/* Enhanced aurora effect with movement */}
         <motion.div
           className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-nordic-gold/5"
           animate={{
-            opacity: [0.3, 0.8, 0.3],
+            opacity: [0.3, 0.6, 0.3],
             background: [
               "linear-gradient(90deg, rgba(59, 130, 246, 0.05) 0%, transparent 50%, rgba(251, 191, 36, 0.05) 100%)",
               "linear-gradient(90deg, rgba(251, 191, 36, 0.05) 0%, transparent 50%, rgba(59, 130, 246, 0.05) 100%)",
@@ -161,28 +248,34 @@ const HeroSection = () => {
             ],
           }}
           transition={{
-            duration: 15,
+            duration: 12,
             repeat: Infinity,
             ease: "easeInOut",
           }}
         />
 
-        {/* Subtle grid pattern animation */}
-        <motion.div
-          className="absolute inset-0 opacity-5"
-          style={{
-            backgroundImage: `radial-gradient(circle at 1px 1px, rgba(59, 130, 246, 0.3) 1px, transparent 0)`,
-            backgroundSize: "40px 40px",
-          }}
-          animate={{
-            backgroundPosition: ["0px 0px", "40px 40px", "0px 0px"],
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            ease: "linear",
-          }}
-        />
+        {/* Floating particles */}
+        {[...Array(6)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-2 h-2 bg-primary/20 rounded-full"
+            style={{
+              left: `${20 + i * 12}%`,
+              top: `${30 + i * 8}%`,
+            }}
+            animate={{
+              y: [0, -40, 0],
+              opacity: [0, 0.6, 0],
+              scale: [0, 1, 0],
+            }}
+            transition={{
+              duration: 4 + i,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: i * 0.5,
+            }}
+          />
+        ))}
       </div>
 
       <div className="container mx-auto px-6 relative z-10">
@@ -192,13 +285,13 @@ const HeroSection = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          {/* Logo and compass icon with enhanced animation */}
+          {/* Logo and compass icon with simple animation */}
           <motion.div
             className="flex items-center justify-center mb-8"
-            initial={{ scale: 0, rotate: -180 }}
-            animate={{ scale: 1, rotate: 0 }}
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
             transition={{
-              duration: 1,
+              duration: 0.8,
               type: "spring",
               stiffness: 100,
               delay: 0.2,
@@ -210,7 +303,7 @@ const HeroSection = () => {
                 scale: [1, 1.1, 1],
               }}
               transition={{
-                rotate: { duration: 20, repeat: Infinity, ease: "linear" },
+                rotate: { duration: 15, repeat: Infinity, ease: "linear" },
                 scale: { duration: 4, repeat: Infinity, ease: "easeInOut" },
               }}
             >
@@ -258,11 +351,6 @@ const HeroSection = () => {
             <motion.span
               animate={{
                 scale: [1, 1.02, 1],
-                filter: [
-                  "brightness(1) contrast(1)",
-                  "brightness(1.1) contrast(1.1)",
-                  "brightness(1) contrast(1)",
-                ],
               }}
               transition={{
                 duration: 5,
@@ -275,7 +363,7 @@ const HeroSection = () => {
             <span className="block text-4xl md:text-6xl mt-2">
               <motion.span
                 animate={{
-                  scale: [1, 1.03, 1],
+                  scale: [1, 1.01, 1],
                 }}
                 transition={{
                   duration: 6,
@@ -285,11 +373,13 @@ const HeroSection = () => {
                 }}
               >
                 – bygget i Norden
+                <br />
+                <br />
               </motion.span>
             </span>
           </motion.h2>
 
-          {/* Subtitle with typing effect */}
+          {/* Subtitle */}
           <motion.p
             className="text-xl md:text-2xl text-muted-foreground mb-12 leading-relaxed max-w-3xl mx-auto"
             initial={{ opacity: 0 }}
@@ -301,7 +391,7 @@ const HeroSection = () => {
             enkelhed, æstetik og en fast pris – uden bøvl.
           </motion.p>
 
-          {/* Enhanced CTA Buttons with more complex animations */}
+          {/* CTA Buttons with hover animations */}
           <motion.div
             className="flex flex-col sm:flex-row gap-6 justify-center items-center"
             initial={{ opacity: 0, y: 20 }}
@@ -311,8 +401,8 @@ const HeroSection = () => {
             <motion.div
               whileHover={{
                 scale: 1.05,
-                rotate: [0, -1, 1, 0],
                 boxShadow: "0 10px 30px rgba(59, 130, 246, 0.3)",
+                rotate: [0, -1, 1, 0],
               }}
               whileTap={{ scale: 0.95 }}
               animate={{
@@ -328,7 +418,7 @@ const HeroSection = () => {
             >
               <Button
                 size="lg"
-                className="nordic-button-primary px-8 py-6 text-lg font-semibold min-w-[250px] pulse-cta relative overflow-hidden"
+                className="nordic-button-primary px-8 py-6 text-lg font-semibold min-w-[250px] relative overflow-hidden"
                 onClick={() => navigate("/solutions")}
               >
                 <motion.span
@@ -349,7 +439,7 @@ const HeroSection = () => {
                   Se vores løsninger
                 </motion.span>
                 <motion.div
-                  animate={{ x: [0, 5, 0] }}
+                  animate={{ x: [0, 3, 0] }}
                   transition={{
                     duration: 2,
                     repeat: Infinity,
@@ -364,130 +454,52 @@ const HeroSection = () => {
             <motion.div
               whileHover={{
                 scale: 1.05,
-                rotate: [0, 1, -1, 0],
-                boxShadow: "0 10px 30px rgba(251, 191, 36, 0.3)",
+                borderColor: "hsl(var(--primary))",
               }}
               whileTap={{ scale: 0.95 }}
-              animate={{
-                borderColor: [
-                  "rgba(251, 191, 36, 0.8)",
-                  "rgba(251, 191, 36, 1)",
-                  "rgba(251, 191, 36, 0.8)",
-                ],
-              }}
-              transition={{
-                borderColor: {
-                  duration: 3,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                },
-              }}
             >
               <Button
                 variant="outline"
                 size="lg"
-                className="nordic-button-gold px-8 py-6 text-lg font-semibold min-w-[250px] border-2 border-nordic-gold text-nordic-gold hover:bg-nordic-gold hover:text-nordic-gold-foreground relative overflow-hidden"
+                className="border-primary text-primary hover:bg-primary hover:text-primary-foreground px-8 py-6 text-lg font-semibold min-w-[250px]"
+                onClick={() => navigate("/contact")}
               >
-                <motion.span
-                  animate={{
-                    color: [
-                      "rgb(251, 191, 36)",
-                      "rgb(255, 215, 80)",
-                      "rgb(251, 191, 36)",
-                    ],
-                  }}
-                  transition={{
-                    duration: 2.5,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }}
-                >
-                  Book en gratis samtale
-                </motion.span>
-                <motion.div
-                  animate={{ x: [0, 5, 0] }}
-                  transition={{
-                    duration: 2.5,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    delay: 0.5,
-                  }}
-                >
-                  <ArrowRight className="ml-2" size={20} />
-                </motion.div>
+                Få gratis konsultation
               </Button>
             </motion.div>
           </motion.div>
+
+          {/* Features preview with staggered animation */}
+          <motion.div
+            className="flex flex-wrap justify-center gap-8 mt-16 text-muted-foreground"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 1.5 }}
+          >
+            {[
+              "✓ Fast pris",
+              "✓ Ingen binding",
+              "✓ 24/7 support",
+              "✓ GDPR sikret",
+            ].map((feature, index) => (
+              <motion.span
+                key={feature}
+                className="text-sm font-medium"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: 0.5,
+                  delay: 1.7 + index * 0.1,
+                }}
+              >
+                {feature}
+              </motion.span>
+            ))}
+          </motion.div>
         </motion.div>
       </div>
-
-      {/* Enhanced Mountain silhouette bottom with parallax movement */}
-      <motion.div
-        className="absolute bottom-0 left-0 right-0 text-fjord/20 w-full"
-        animate={{
-          y: [0, -8, 0],
-          x: [0, -3, 0],
-        }}
-        transition={{
-          duration: 20,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-      >
-        <motion.svg
-          viewBox="0 0 1920 120"
-          className="w-full h-24 md:h-32"
-          preserveAspectRatio="none"
-          animate={{
-            scale: [1, 1.02, 1],
-          }}
-          transition={{
-            duration: 15,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 1,
-          }}
-        >
-          <motion.path
-            d="M0,120 L0,60 L150,30 L300,50 L450,20 L600,40 L750,25 L900,35 L1050,15 L1200,30 L1350,45 L1500,20 L1650,35 L1800,25 L1920,30 L1920,120 Z"
-            fill="currentColor"
-            animate={{
-              d: [
-                "M0,120 L0,60 L150,30 L300,50 L450,20 L600,40 L750,25 L900,35 L1050,15 L1200,30 L1350,45 L1500,20 L1650,35 L1800,25 L1920,30 L1920,120 Z",
-                "M0,120 L0,55 L150,25 L300,45 L450,15 L600,35 L750,20 L900,30 L1050,10 L1200,25 L1350,40 L1500,15 L1650,30 L1800,20 L1920,25 L1920,120 Z",
-                "M0,120 L0,60 L150,30 L300,50 L450,20 L600,40 L750,25 L900,35 L1050,15 L1200,30 L1350,45 L1500,20 L1650,35 L1800,25 L1920,30 L1920,120 Z",
-              ],
-            }}
-            transition={{
-              duration: 25,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-          />
-
-          {/* Secondary mountain layer for depth */}
-          <motion.path
-            d="M0,120 L0,80 L200,70 L400,75 L600,65 L800,70 L1000,60 L1200,65 L1400,70 L1600,60 L1800,65 L1920,70 L1920,120 Z"
-            fill="currentColor"
-            opacity="0.4"
-            animate={{
-              d: [
-                "M0,120 L0,80 L200,70 L400,75 L600,65 L800,70 L1000,60 L1200,65 L1400,70 L1600,60 L1800,65 L1920,70 L1920,120 Z",
-                "M0,120 L0,75 L200,65 L400,70 L600,60 L800,65 L1000,55 L1200,60 L1400,65 L1600,55 L1800,60 L1920,65 L1920,120 Z",
-                "M0,120 L0,80 L200,70 L400,75 L600,65 L800,70 L1000,60 L1200,65 L1400,70 L1600,60 L1800,65 L1920,70 L1920,120 Z",
-              ],
-            }}
-            transition={{
-              duration: 18,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: 2,
-            }}
-          />
-        </motion.svg>
-      </motion.div>
     </section>
   );
 };
 
-export default HeroSection;
+export default OptimizedHeroSection;

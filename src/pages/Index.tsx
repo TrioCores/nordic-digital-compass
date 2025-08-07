@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import Navigation from "@/components/Navigation";
-import HeroSection from "@/components/HeroSection";
+import OptimizedHeroSection from "@/components/OptimizedHeroSection";
 import SEO from "@/components/SEO";
 import {
   LazyWhyChooseSection,
@@ -26,7 +26,7 @@ const Index = () => {
 
       <div className="min-h-screen">
         <Navigation />
-        <HeroSection />
+        <OptimizedHeroSection />
 
         <Suspense fallback={<SectionLoadingFallback />}>
           <LazyWhyChooseSection />

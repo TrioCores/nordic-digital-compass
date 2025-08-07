@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="da">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hero Section Debug</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: system-ui, -apple-system, sans-serif;
+      }
+
+      .hero-test {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(to bottom, #f8fafc, #e2e8f0, #f8fafc);
+        padding-top: 80px;
+      }
+
+      .hero-content {
+        text-align: center;
+        max-width: 800px;
+        padding: 0 20px;
+      }
+
+      .hero-title {
+        font-size: 3rem;
+        font-weight: bold;
+        margin-bottom: 1rem;
+        background: linear-gradient(to right, #1e40af, #3b82f6, #fbbf24);
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+      }
+
+      .hero-subtitle {
+        font-size: 1.25rem;
+        color: #64748b;
+        margin-bottom: 2rem;
+      }
+
+      .hero-button {
+        background: #3b82f6;
+        color: white;
+        padding: 12px 24px;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background 0.3s ease;
+      }
+
+      .hero-button:hover {
+        background: #2563eb;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="hero-test">
+      <div class="hero-content">
+        <h1 class="hero-title">Få en stærk digital base – bygget i Norden</h1>
+        <br />
+        <br />
+        <p class="hero-subtitle">
+          Hos Nordweb hjælper vi nystartede og mindre virksomheder med at komme
+          professionelt online. Vi bygger hjemmesider med nordisk enkelhed,
+          æstetik og en fast pris – uden bøvl.
+        </p>
+        <button class="hero-button">Se vores løsninger</button>
+      </div>
+    </div>
+  </body>
+</html>
