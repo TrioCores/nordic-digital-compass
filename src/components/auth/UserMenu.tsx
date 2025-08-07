@@ -64,7 +64,7 @@ export const UserMenu = () => {
       }
 
       if (data) {
-        setProfile(data);
+        setProfile({...data, role: data.role as 'user' | 'admin' | 'owner'});
       } else {
         // Create profile if it doesn't exist
         const { data: newProfile, error: createError } = await supabase
@@ -81,7 +81,7 @@ export const UserMenu = () => {
         if (createError) {
           console.error('Error creating profile:', createError);
         } else {
-          setProfile(newProfile);
+          setProfile({...newProfile, role: newProfile.role as 'user' | 'admin' | 'owner'});
         }
       }
     } catch (error) {

@@ -63,7 +63,7 @@ export default function Profile() {
         .single();
 
       if (data) {
-        setProfile(data);
+        setProfile({...data, role: data.role as 'user' | 'admin' | 'owner'});
         setFormData({
           full_name: data.full_name,
           email: data.email,

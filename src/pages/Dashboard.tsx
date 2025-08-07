@@ -29,11 +29,13 @@ interface UserProfile {
 
 interface Project {
   id: string;
-  name: string;
+  project_name: string;
+  client_name: string;
   description: string;
-  status: 'draft' | 'in_progress' | 'completed' | 'maintenance';
+  status: string;
   created_at: string;
   updated_at: string;
+  user_id: string;
 }
 
 export default function Dashboard() {
@@ -77,7 +79,7 @@ export default function Dashboard() {
         .single();
 
       if (data) {
-        setProfile(data);
+        setProfile({...data, role: data.role as 'user' | 'admin' | 'owner'});
       }
     } catch (error) {
       console.error('Error fetching profile:', error);
@@ -258,7 +260,7 @@ export default function Dashboard() {
                           className="flex items-center justify-between p-4 border rounded-lg"
                         >
                           <div className="space-y-1">
-                            <h4 className="font-semibold">{project.name}</h4>
+                            <h4 className="font-semibold">{project.project_name}</h4>
                             <p className="text-sm text-muted-foreground">
                               {project.description}
                             </p>
