@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Menu, X, Compass } from "lucide-react";
 import { LoginDialog } from "@/components/auth/LoginDialog";
 import { UserMenu } from "@/components/auth/UserMenu";
-import { supabase } from "@/lib/supabase";
+import { supabase } from "@/integrations/supabase/client";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
