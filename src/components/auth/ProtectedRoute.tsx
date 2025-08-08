@@ -28,11 +28,15 @@ export const ProtectedRoute = ({ children, requiredRole = 'user', adminOnly = fa
         return;
       }
 
-      // Hvis det er Emil eller Mikkel, giv altid admin adgang
-      const isOwner = session.user.email === 'emilmh.nw@outlook.com' || 
-                     session.user.email === 'Mikkelwb.nw@outlook.dk';
+      // Check user profile and role first
+      const { data: profileData, error } = await supabase
+        .from('user_profiles')
+        .select('role')
+        .eq('id', session.user.id)
+        .single();
 
-      if (isOwner) {
+      // If user has owner role, always allow access
+      if (profileData?.role === 'owner') {
         setAuthorized(true);
         setLoading(false);
         return;
@@ -45,12 +49,7 @@ export const ProtectedRoute = ({ children, requiredRole = 'user', adminOnly = fa
         return;
       }
 
-      // Check user profile and role
-      const { data: profileData, error } = await supabase
-        .from('user_profiles')
-        .select('role')
-        .eq('id', session.user.id)
-        .single();
+      // If we already checked profile above and it failed, handle error
 
       if (error) {
         console.error('Error fetching profile:', error);
@@ -140,16 +139,8 @@ export const ProtectedRoute = ({ children, requiredRole = 'user', adminOnly = fa
     } catch (error) {
       console.error('Error checking access:', error);
       
-      // Fallback for ejere hvis der er database problemer
-      const { data: { session } } = await supabase.auth.getSession();
-      const isOwner = session?.user?.email === 'emilmh.nw@outlook.com' || 
-                     session?.user?.email === 'Mikkelwb.nw@outlook.dk';
-      
-      if (isOwner) {
-        setAuthorized(true);
-      } else {
-        navigate('/');
-      }
+      // Navigate to home on error
+      navigate('/');
     } finally {
       setLoading(false);
     }
