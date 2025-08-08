@@ -195,6 +195,33 @@ export type Database = {
         }
         Relationships: []
       }
+      user_role_audit: {
+        Row: {
+          changed_at: string | null
+          changed_by: string | null
+          id: string
+          new_role: string | null
+          old_role: string | null
+          target_user_id: string
+        }
+        Insert: {
+          changed_at?: string | null
+          changed_by?: string | null
+          id?: string
+          new_role?: string | null
+          old_role?: string | null
+          target_user_id: string
+        }
+        Update: {
+          changed_at?: string | null
+          changed_by?: string | null
+          id?: string
+          new_role?: string | null
+          old_role?: string | null
+          target_user_id?: string
+        }
+        Relationships: []
+      }
       website_metrics: {
         Row: {
           avg_session_duration: number | null
@@ -241,6 +268,10 @@ export type Database = {
       get_current_user_role: {
         Args: Record<PropertyKey, never>
         Returns: string
+      }
+      update_user_role_admin: {
+        Args: { target_user_id: string; new_role: string }
+        Returns: boolean
       }
     }
     Enums: {
