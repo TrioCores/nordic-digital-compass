@@ -1,0 +1,11 @@
+DETTE SKAL FIXES
+Remaining warnings 
+(OTP expiry and password protection) 
+require Supabase dashboard configuration, 
+not code changes.
+
+
+
+Hvad er blevet lavet: 
+Systemet er nu fuldt dynamisk - admin kan styre projekt-fremgang 
+fra admin-panelet, og brugerne kan følge med på deres dashboard!
