@@ -9,15 +9,17 @@ import {
   Globe, 
   Settings, 
   Plus, 
-  Eye, 
-  Edit3, 
   Calendar,
   Crown,
   Shield,
-  User as UserIcon
+  User as UserIcon,
+  TrendingUp,
+  Clock,
+  CheckCircle
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { ProjectPhaseCard } from "@/components/ProjectPhaseCard";
 
 interface UserProfile {
   id: string;
@@ -38,10 +40,23 @@ interface Project {
   user_id: string;
 }
 
+interface ProjectStats {
+  totalProjects: number;
+  activeProjects: number;
+  completedProjects: number;
+  totalProgress: number;
+}
+
 export default function Dashboard() {
   const [user, setUser] = useState<any>(null);
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [projects, setProjects] = useState<Project[]>([]);
+  const [projectStats, setProjectStats] = useState<ProjectStats>({
+    totalProjects: 0,
+    activeProjects: 0,
+    completedProjects: 0,
+    totalProgress: 0
+  });
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -89,16 +104,51 @@ export default function Dashboard() {
     try {
       const { data, error } = await supabase
         .from('projects')
-        .select('*')
+        .select(`
+          *,
+          project_phases (
+            id,
+            phase_name,
+            phase_order,
+            status,
+            progress
+          )
+        `)
         .eq('user_id', userId)
         .order('created_at', { ascending: false });
 
       if (data) {
         setProjects(data);
+        calculateProjectStats(data);
       }
     } catch (error) {
       console.error('Error fetching projects:', error);
     }
+  };
+
+  const calculateProjectStats = (projectsData: any[]) => {
+    const totalProjects = projectsData.length;
+    const activeProjects = projectsData.filter(p => p.status === 'in_progress').length;
+    const completedProjects = projectsData.filter(p => p.status === 'completed').length;
+    
+    // Calculate overall progress across all projects
+    let totalProgress = 0;
+    if (projectsData.length > 0) {
+      const projectProgresses = projectsData.map(project => {
+        if (project.project_phases && project.project_phases.length > 0) {
+          return project.project_phases.reduce((sum: number, phase: any) => sum + phase.progress, 0) / project.project_phases.length;
+        }
+        return 0;
+      });
+      totalProgress = projectProgresses.reduce((sum, progress) => sum + progress, 0) / projectsData.length;
+    }
+
+    setProjectStats({
+      totalProjects,
+      activeProjects,
+      completedProjects,
+      totalProgress
+    });
   };
 
   const getStatusColor = (status: string) => {
@@ -180,19 +230,20 @@ export default function Dashboard() {
             </TabsList>
 
             <TabsContent value="projects" className="space-y-6">
-              {/* Stats Cards */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* Enhanced Stats Cards */}
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">
                       Aktive Projekter
                     </CardTitle>
-                    <Globe className="h-4 w-4 text-muted-foreground" />
+                    <Clock className="h-4 w-4 text-blue-500" />
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold">
-                      {projects.filter(p => p.status === 'in_progress').length}
-                    </div>
+                    <div className="text-2xl font-bold text-blue-600">{projectStats.activeProjects}</div>
+                    <p className="text-xs text-muted-foreground">
+                      I gang med udvikling
+                    </p>
                   </CardContent>
                 </Card>
 
@@ -201,12 +252,13 @@ export default function Dashboard() {
                     <CardTitle className="text-sm font-medium">
                       Færdige Projekter
                     </CardTitle>
-                    <Settings className="h-4 w-4 text-muted-foreground" />
+                    <CheckCircle className="h-4 w-4 text-green-500" />
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold">
-                      {projects.filter(p => p.status === 'completed').length}
-                    </div>
+                    <div className="text-2xl font-bold text-green-600">{projectStats.completedProjects}</div>
+                    <p className="text-xs text-muted-foreground">
+                      Klar til brug
+                    </p>
                   </CardContent>
                 </Card>
 
@@ -215,82 +267,70 @@ export default function Dashboard() {
                     <CardTitle className="text-sm font-medium">
                       Total Projekter
                     </CardTitle>
-                    <Calendar className="h-4 w-4 text-muted-foreground" />
+                    <Globe className="h-4 w-4 text-purple-500" />
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold">{projects.length}</div>
+                    <div className="text-2xl font-bold text-purple-600">{projectStats.totalProjects}</div>
+                    <p className="text-xs text-muted-foreground">
+                      Alle projekter
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">
+                      Samlet Fremgang
+                    </CardTitle>
+                    <TrendingUp className="h-4 w-4 text-orange-500" />
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold text-orange-600">{Math.round(projectStats.totalProgress)}%</div>
+                    <p className="text-xs text-muted-foreground">
+                      Gennemsnitlig fremgang
+                    </p>
                   </CardContent>
                 </Card>
               </div>
 
-              {/* Projects List */}
-              <Card>
-                <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <CardTitle>Mine Projekter</CardTitle>
-                      <CardDescription>
-                        Administrer og se status på dine hjemmesider
-                      </CardDescription>
-                    </div>
-                    <Button onClick={() => navigate('/contact')}>
-                      <Plus className="h-4 w-4 mr-2" />
-                      Nyt Projekt
-                    </Button>
+              {/* Enhanced Projects Display */}
+              <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h2 className="text-2xl font-bold tracking-tight">Mine Projekter</h2>
+                    <p className="text-muted-foreground">
+                      Følg fremgangen på dine hjemmeside projekter
+                    </p>
                   </div>
-                </CardHeader>
-                <CardContent>
-                  {projects.length === 0 ? (
-                    <div className="text-center py-8">
-                      <Globe className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                      <h3 className="text-lg font-semibold mb-2">Ingen projekter endnu</h3>
-                      <p className="text-muted-foreground mb-4">
-                        Få lavet din første hjemmeside hos os
+                  <Button onClick={() => navigate('/contact')}>
+                    <Plus className="h-4 w-4 mr-2" />
+                    Nyt Projekt
+                  </Button>
+                </div>
+
+                {projects.length === 0 ? (
+                  <Card>
+                    <CardContent className="flex flex-col items-center justify-center py-16">
+                      <Globe className="h-16 w-16 text-muted-foreground mb-4" />
+                      <h3 className="text-xl font-semibold mb-2">Ingen projekter endnu</h3>
+                      <p className="text-muted-foreground text-center mb-6 max-w-md">
+                        Få lavet din første professionelle hjemmeside hos os. 
+                        Vi guiderer dig gennem hele processen fra start til slut.
                       </p>
-                      <Button onClick={() => navigate('/contact')}>
+                      <Button onClick={() => navigate('/contact')} size="lg">
+                        <Plus className="h-4 w-4 mr-2" />
                         Start dit første projekt
                       </Button>
-                    </div>
-                  ) : (
-                    <div className="space-y-4">
-                      {projects.map((project) => (
-                        <div
-                          key={project.id}
-                          className="flex items-center justify-between p-4 border rounded-lg"
-                        >
-                          <div className="space-y-1">
-                            <h4 className="font-semibold">{project.project_name}</h4>
-                            <p className="text-sm text-muted-foreground">
-                              {project.description}
-                            </p>
-                            <div className="flex items-center gap-2">
-                              <Badge
-                                variant="outline"
-                                className={`${getStatusColor(project.status)} text-white`}
-                              >
-                                {getStatusText(project.status)}
-                              </Badge>
-                              <span className="text-xs text-muted-foreground">
-                                Oprettet {new Date(project.created_at).toLocaleDateString('da-DK')}
-                              </span>
-                            </div>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <Button variant="outline" size="sm">
-                              <Eye className="h-4 w-4 mr-2" />
-                              Se
-                            </Button>
-                            <Button variant="outline" size="sm">
-                              <Edit3 className="h-4 w-4 mr-2" />
-                              Rediger
-                            </Button>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
+                    </CardContent>
+                  </Card>
+                ) : (
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    {projects.map((project) => (
+                      <ProjectPhaseCard key={project.id} project={project} />
+                    ))}
+                  </div>
+                )}
+              </div>
             </TabsContent>
 
             <TabsContent value="settings">
@@ -315,7 +355,10 @@ export default function Dashboard() {
                         Rolle: {profile?.role}
                       </p>
                     </div>
-                    <Button variant="outline">
+                    <Button 
+                      variant="outline"
+                      onClick={() => navigate('/profile')}
+                    >
                       Rediger Profil
                     </Button>
                   </div>
