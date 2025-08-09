@@ -308,18 +308,46 @@ export default function Admin() {
     }
   };
 
+  // Debug: log projekter når de hentes
   const fetchProjects = async () => {
     try {
       const { data } = await supabase
         .from("projects")
         .select("*")
         .order("created_at", { ascending: false });
-
+      console.log("[fetchProjects] Projekter fra DB:", data);
       if (data) {
         setProjects(data);
       }
     } catch (error) {
       console.error("Error fetching projects:", error);
+    }
+  };
+
+  // Debug: log respons når projekt oprettes
+  const createProject = async (
+    customerId: string,
+    projectName: string,
+    description: string
+  ) => {
+    try {
+      const { data, error } = await supabase.from("projects").insert({
+        user_id: customerId,
+        client_name:
+          customers.find((c) => c.id === customerId)?.full_name || "",
+        project_name: projectName,
+        description,
+      });
+      console.log("[createProject] Insert response:", data, error);
+      if (error) throw error;
+      toast({
+        title: "Projekt oprettet",
+        description: `Projektet ${projectName} er oprettet.`,
+      });
+      fetchProjects();
+    } catch (error) {
+      console.error("Fejl ved oprettelse af projekt:", error);
+      toast({ title: "Fejl", description: "Kunne ikke oprette projektet." });
     }
   };
 
@@ -789,31 +817,6 @@ export default function Admin() {
     }
   };
 
-  const createProject = async (
-    customerId: string,
-    projectName: string,
-    description: string
-  ) => {
-    try {
-      const { data, error } = await supabase.from("projects").insert({
-        user_id: customerId,
-        client_name:
-          customers.find((c) => c.id === customerId)?.full_name || "",
-        project_name: projectName,
-        description,
-      });
-      if (error) throw error;
-      toast({
-        title: "Projekt oprettet",
-        description: `Projektet ${projectName} er oprettet.`,
-      });
-      fetchProjects();
-    } catch (error) {
-      console.error("Fejl ved oprettelse af projekt:", error);
-      toast({ title: "Fejl", description: "Kunne ikke oprette projektet." });
-    }
-  };
-
   const handleCreateProject = () => {
     createProject(
       newProject.customerId,
@@ -888,11 +891,17 @@ export default function Admin() {
                       <SelectValue placeholder="Vælg et projekt" />
                     </SelectTrigger>
                     <SelectContent>
-                      {projects.map((project) => (
-                        <SelectItem key={project.id} value={project.id}>
-                          {project.project_name} - {project.client_name}
-                        </SelectItem>
-                      ))}
+                      {projects.length === 0 ? (
+                        <div className="px-4 py-2 text-muted-foreground">
+                          Ingen projekter fundet
+                        </div>
+                      ) : (
+                        projects.map((project) => (
+                          <SelectItem key={project.id} value={project.id}>
+                            {project.project_name} - {project.client_name}
+                          </SelectItem>
+                        ))
+                      )}
                     </SelectContent>
                   </Select>
                 </CardContent>

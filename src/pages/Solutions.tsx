@@ -76,21 +76,6 @@ const Solutions = () => {
       price: "Fra 3.995 kr.",
     },
     {
-      icon: Headphones,
-      title: "Løbende support",
-      description:
-        "Vi er her når du har brug for hjælp, ændringer eller har spørgsmål til din hjemmeside.",
-      features: [
-        "Mail og chat support i åbningstiden",
-        "Månedlige timer til ændringer",
-        "Akut hjælp ved kritiske problemer",
-        "Teknisk support og fejlretning",
-        "Indhold opdateringer og tilføjelser",
-        "Backup og sikkerhedsopdateringer",
-      ],
-      price: "1-2 timer inkluderet",
-    },
-    {
       icon: BarChart,
       title: "Performance & Analytics",
       description:
@@ -104,6 +89,21 @@ const Solutions = () => {
         "Anbefalinger til forbedringer",
       ],
       price: "Fra 349 kr./md.",
+    },
+    {
+      icon: Headphones,
+      title: "Løbende support",
+      description:
+        "Vi er her når du har brug for hjælp, ændringer eller har spørgsmål til din hjemmeside.",
+      features: [
+        "Mail og chat support i åbningstiden",
+        "Månedlige timer til ændringer",
+        "Akut hjælp ved kritiske problemer",
+        "Teknisk support og fejlretning",
+        "Indhold opdateringer og tilføjelser",
+        "Backup og sikkerhedsopdateringer",
+      ],
+      price: "1-2 timer inkluderet",
     },
   ];
 

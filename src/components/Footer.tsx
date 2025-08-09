@@ -2,11 +2,11 @@ import {
   Compass,
   Linkedin,
   Instagram,
-  Github,
   Mail,
   Phone,
   MapPin,
   Facebook,
+  Navigation2,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -54,6 +54,10 @@ const Footer = () => {
                 <MapPin className="mr-3 text-nordic-gold" size={16} />
                 <span>Aalborg, Danmark</span>
               </div>
+              <div className="flex items-center">
+                <Navigation2 className="mr-3 text-nordic-gold" size={16} />
+                <span>CVR: 45785513</span>
+              </div>
             </div>
           </div>
 
@@ -68,7 +72,7 @@ const Footer = () => {
                   href="/solutions"
                   className="hover:text-nordic-gold transition-colors duration-300"
                 >
-                  Webudvikling
+                  Hjemmeside udvikling
                 </a>
               </li>
               <li>
@@ -76,7 +80,7 @@ const Footer = () => {
                   href="/solutions"
                   className="hover:text-nordic-gold transition-colors duration-300"
                 >
-                  E-commerce
+                  Mobil-optimering
                 </a>
               </li>
               <li>
@@ -84,7 +88,7 @@ const Footer = () => {
                   href="/solutions"
                   className="hover:text-nordic-gold transition-colors duration-300"
                 >
-                  SEO Optimering
+                  SEO Optimering & Synlighed
                 </a>
               </li>
               <li>
@@ -92,7 +96,7 @@ const Footer = () => {
                   href="/solutions"
                   className="hover:text-nordic-gold transition-colors duration-300"
                 >
-                  Digital Markedsføring
+                  Design & Branding
                 </a>
               </li>
               <li>
@@ -100,7 +104,7 @@ const Footer = () => {
                   href="/solutions"
                   className="hover:text-nordic-gold transition-colors duration-300"
                 >
-                  Branding
+                  Performance & Analytics
                 </a>
               </li>
             </ul>

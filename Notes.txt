@@ -9,3 +9,17 @@ not code changes.
 Hvad er blevet lavet: 
 Systemet er nu fuldt dynamisk - admin kan styre projekt-fremgang 
 fra admin-panelet, og brugerne kan følge med på deres dashboard!
+
+Virksomheden "Nordweb" udvikler og leverer moderne digitale løsninger 
+med fokus på nordisk kvalitet og enkelhed. 
+De hjælper især nystartede og mindre virksomheder med at komme professionelt online. 
+Nordweb tilbyder blandt andet:
+
+Udvikling af hjemmesider og webshops
+Hosting og domæneregistrering
+Vedligeholdelse, opdatering og support
+SEO-optimering og design
+
+Virksomheden lægger vægt på fast pris, gennemsigtighed og en problemfri proces for kunden. 
+Alt udvikles med nordisk æstetik og funktionalitet.
+

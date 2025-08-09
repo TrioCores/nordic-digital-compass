@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Compass, Mountain, Star, ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import nordicHero from "@/assets/nordic-hero.jpg";
 
 const HeroSection = () => {
   const navigate = useNavigate();
@@ -184,6 +185,14 @@ const HeroSection = () => {
           }}
         />
       </div>
+
+      {/* Hero image overlay - nu uden blend mode og med højere z-index */}
+      <img
+        src={nordicHero}
+        alt="Nordic Hero"
+        className="absolute inset-0 w-full h-full object-cover z-20 pointer-events-none"
+        style={{ opacity: 0.95 }}
+      />
 
       <div className="container mx-auto px-6 relative z-10">
         <motion.div
