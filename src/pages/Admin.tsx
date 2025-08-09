@@ -45,6 +45,7 @@ import {
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { AdminProjectManagement } from "@/components/AdminProjectManagement";
 
 interface UserProfile {
   id: string;
@@ -671,100 +672,10 @@ export default function Admin() {
             </TabsList>
 
             <TabsContent value="projects" className="space-y-6">
-              {/* Project Selection */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Vælg Projekt</CardTitle>
-                  <CardDescription>
-                    Vælg et projekt for at administrere dets fremskridt
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Select value={selectedProject} onValueChange={(value) => {
-                    setSelectedProject(value);
-                    fetchProjectPhases(value);
-                  }}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Vælg et projekt" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {projects.map((project) => (
-                        <SelectItem key={project.id} value={project.id}>
-                          {project.project_name} - {project.client_name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </CardContent>
-              </Card>
-
-              {/* Project Phases */}
-              {selectedProject && (
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Projekt Faser</CardTitle>
-                    <CardDescription>
-                      Opdater fremskridt og status for hver fase
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-4">
-                      {phases.map((phase) => (
-                        <div key={phase.id} className="border rounded-lg p-4">
-                          <div className="flex items-center justify-between mb-2">
-                            <h4 className="font-semibold">{phase.phase_name}</h4>
-                            <Badge className={getStatusColor(phase.status)}>
-                              {phase.status}
-                            </Badge>
-                          </div>
-                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <div>
-                              <Label htmlFor={`progress-${phase.id}`}>Fremskridt (%)</Label>
-                              <Input
-                                id={`progress-${phase.id}`}
-                                type="number"
-                                min="0"
-                                max="100"
-                                value={phase.progress}
-                                onChange={(e) => {
-                                  const newProgress = parseInt(e.target.value);
-                                  const newStatus = newProgress === 100 ? 'completed' : 
-                                                  newProgress > 0 ? 'in_progress' : 'pending';
-                                  updatePhaseProgress(phase.id, newProgress, newStatus);
-                                }}
-                              />
-                            </div>
-                            <div>
-                              <Label htmlFor={`status-${phase.id}`}>Status</Label>
-                              <Select 
-                                value={phase.status} 
-                                onValueChange={(value) => updatePhaseProgress(phase.id, phase.progress, value)}
-                              >
-                                <SelectTrigger>
-                                  <SelectValue />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  <SelectItem value="pending">Afventer</SelectItem>
-                                  <SelectItem value="in_progress">I gang</SelectItem>
-                                  <SelectItem value="completed">Færdig</SelectItem>
-                                </SelectContent>
-                              </Select>
-                            </div>
-                            <div className="flex items-end">
-                              <div className="w-full bg-gray-200 rounded-full h-2">
-                                <div 
-                                  className="bg-blue-600 h-2 rounded-full transition-all duration-300"
-                                  style={{ width: `${phase.progress}%` }}
-                                ></div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              )}
+              <AdminProjectManagement 
+                projects={projects} 
+                onProjectsUpdate={fetchProjects}
+              />
             </TabsContent>
 
             <TabsContent value="users" className="space-y-6">

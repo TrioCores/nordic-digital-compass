@@ -24,6 +24,9 @@ interface Project {
   created_at: string;
   updated_at: string;
   user_id: string;
+  start_date?: string;
+  estimated_launch_date?: string;
+  actual_launch_date?: string;
 }
 
 interface ProjectPhase {
@@ -32,6 +35,7 @@ interface ProjectPhase {
   phase_order: number;
   status: 'pending' | 'in_progress' | 'completed';
   progress: number;
+  phase_type?: string;
 }
 
 interface ProjectUpdate {
@@ -61,6 +65,41 @@ export const ProjectPhaseCard = ({ project }: ProjectPhaseCardProps) => {
 
   useEffect(() => {
     fetchProjectData();
+    
+    // Set up real-time subscription for project updates
+    const channel = supabase
+      .channel('project-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'project_updates',
+          filter: `project_id=eq.${project.id}`
+        },
+        () => {
+          console.log('Project update detected, refreshing...');
+          fetchProjectData();
+        }
+      )
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'project_phases',
+          filter: `project_id=eq.${project.id}`
+        },
+        () => {
+          console.log('Project phase update detected, refreshing...');
+          fetchProjectData();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, [project.id]);
 
   const fetchProjectData = async () => {
@@ -173,21 +212,51 @@ export const ProjectPhaseCard = ({ project }: ProjectPhaseCardProps) => {
           <Progress value={totalProgress} className="h-2" />
         </div>
 
-        {/* Quick Phase Overview */}
+        {/* Timeline Information */}
+        <div className="grid grid-cols-1 gap-4 p-4 rounded-lg border bg-card/50">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Calendar className="h-4 w-4 text-blue-500" />
+              <span className="text-sm font-medium">Projekt tidsplan</span>
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-4 text-sm">
+            <div>
+              <p className="text-muted-foreground mb-1">Startdato</p>
+              <p className="font-medium">
+                {project.start_date 
+                  ? new Date(project.start_date).toLocaleDateString('da-DK')
+                  : 'Ikke fastsat'
+                }
+              </p>
+            </div>
+            <div>
+              <p className="text-muted-foreground mb-1">Forventet lancering</p>
+              <p className="font-medium">
+                {project.estimated_launch_date 
+                  ? new Date(project.estimated_launch_date).toLocaleDateString('da-DK')
+                  : 'Ikke fastsat'
+                }
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Frontend/Backend Progress */}
         <div className="grid grid-cols-2 gap-4">
           <div className="text-center p-3 rounded-lg bg-muted/50">
-            <CheckCircle className="h-5 w-5 text-green-500 mx-auto mb-1" />
-            <p className="text-sm font-medium">Færdige faser</p>
+            <div className="h-5 w-5 bg-gradient-to-r from-blue-500 to-purple-500 rounded mx-auto mb-1"></div>
+            <p className="text-sm font-medium">Frontend</p>
             <p className="text-xs text-muted-foreground">
-              {phases.filter(p => p.status === 'completed').length} af {phases.length}
+              {Math.round(phases.filter(p => p.phase_type === 'frontend').reduce((sum, phase) => sum + phase.progress, 0) / Math.max(phases.filter(p => p.phase_type === 'frontend').length, 1))}%
             </p>
           </div>
           
           <div className="text-center p-3 rounded-lg bg-muted/50">
-            <Clock className="h-5 w-5 text-blue-500 mx-auto mb-1" />
-            <p className="text-sm font-medium">Nuværende fase</p>
+            <div className="h-5 w-5 bg-gradient-to-r from-green-500 to-blue-500 rounded mx-auto mb-1"></div>
+            <p className="text-sm font-medium">Backend</p>
             <p className="text-xs text-muted-foreground">
-              {phases.find(p => p.status === 'in_progress')?.phase_name || 'Ingen aktive'}
+              {Math.round(phases.filter(p => p.phase_type === 'backend').reduce((sum, phase) => sum + phase.progress, 0) / Math.max(phases.filter(p => p.phase_type === 'backend').length, 1))}%
             </p>
           </div>
         </div>

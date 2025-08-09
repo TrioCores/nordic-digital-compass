@@ -65,6 +65,7 @@ export type Database = {
           id: string
           phase_name: string
           phase_order: number
+          phase_type: string | null
           progress: number | null
           project_id: string | null
           status: string | null
@@ -75,6 +76,7 @@ export type Database = {
           id?: string
           phase_name: string
           phase_order: number
+          phase_type?: string | null
           progress?: number | null
           project_id?: string | null
           status?: string | null
@@ -85,6 +87,7 @@ export type Database = {
           id?: string
           phase_name?: string
           phase_order?: number
+          phase_type?: string | null
           progress?: number | null
           project_id?: string | null
           status?: string | null
@@ -137,31 +140,40 @@ export type Database = {
       }
       projects: {
         Row: {
+          actual_launch_date: string | null
           client_name: string
           created_at: string | null
           description: string | null
+          estimated_launch_date: string | null
           id: string
           project_name: string
+          start_date: string | null
           status: string | null
           updated_at: string | null
           user_id: string | null
         }
         Insert: {
+          actual_launch_date?: string | null
           client_name: string
           created_at?: string | null
           description?: string | null
+          estimated_launch_date?: string | null
           id?: string
           project_name: string
+          start_date?: string | null
           status?: string | null
           updated_at?: string | null
           user_id?: string | null
         }
         Update: {
+          actual_launch_date?: string | null
           client_name?: string
           created_at?: string | null
           description?: string | null
+          estimated_launch_date?: string | null
           id?: string
           project_name?: string
+          start_date?: string | null
           status?: string | null
           updated_at?: string | null
           user_id?: string | null
@@ -268,6 +280,14 @@ export type Database = {
       get_current_user_role: {
         Args: Record<PropertyKey, never>
         Returns: string
+      }
+      update_project_timeline: {
+        Args: {
+          project_id_param: string
+          start_date_param: string
+          estimated_launch_date_param: string
+        }
+        Returns: boolean
       }
       update_user_role_admin: {
         Args: { target_user_id: string; new_role: string }
