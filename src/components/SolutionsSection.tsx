@@ -75,7 +75,7 @@ const SolutionsSection = () => {
           <h2 className="text-4xl md:text-5xl font-bold mb-6 text-fjord">
             Vores løsninger
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+          <p className="text-xl text-muted-foreground dark:text-gray-300 max-w-3xl mx-auto">
             Vi tilbyder omfattende webløsninger der hjælper din virksomhed med
             at vokse online. Fra design til drift - vi håndterer det hele.
           </p>
@@ -96,7 +96,7 @@ const SolutionsSection = () => {
                 {solution.title}
               </h3>
 
-              <p className="text-muted-foreground mb-6">
+              <p className="text-muted-foreground dark:text-gray-300 mb-6">
                 {solution.description}
               </p>
 
@@ -104,7 +104,7 @@ const SolutionsSection = () => {
                 {solution.features.map((feature, featureIndex) => (
                   <li
                     key={featureIndex}
-                    className="flex items-center text-sm text-muted-foreground"
+                    className="flex items-center text-sm text-muted-foreground dark:text-gray-300"
                   >
                     <div className="w-2 h-2 rounded-full bg-nordic-gold mr-3"></div>
                     {feature}
@@ -136,7 +136,7 @@ const SolutionsSection = () => {
                 ⚠️ Vigtig: Tjek dit domænenavn først!
               </h3>
 
-              <p className="text-base md:text-lg text-muted-foreground mb-6 max-w-2xl mx-auto px-4 leading-relaxed">
+              <p className="text-base md:text-lg text-muted-foreground dark:text-gray-300 mb-6 max-w-2xl mx-auto px-4 leading-relaxed">
                 Inden du booker et møde med os, skal du sikre dig at dit ønskede
                 domænenavn (f.eks. ditfirma.dk) ikke allerede er optaget. Det
                 sparer os alle for tid og undgår skuffelser senere i processen.
@@ -148,15 +148,15 @@ const SolutionsSection = () => {
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.2 }}
-                className="bg-white/50 rounded-xl p-4 md:p-6"
+                className="bg-white/50 dark:bg-gray-800/60 rounded-xl p-4 md:p-6 border border-gray-200/50 dark:border-gray-700/50"
               >
-                <h4 className="font-semibold text-fjord mb-3 flex items-center flex-wrap">
-                  <span className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-white text-sm mr-2 flex-shrink-0">
+                <h4 className="font-semibold text-fjord dark:text-gray-100 mb-3 flex items-center flex-wrap">
+                  <span className="w-6 h-6 bg-green-500 dark:bg-green-400 rounded-full flex items-center justify-center text-white text-sm mr-2 flex-shrink-0">
                     ✓
                   </span>
                   <span>Hvordan tjekker jeg?</span>
                 </h4>
-                <ul className="text-sm text-muted-foreground space-y-2">
+                <ul className="text-sm text-muted-foreground dark:text-gray-300 space-y-2">
                   <li className="break-words">
                     • Gå til <strong>dk-hostmaster.dk</strong> eller{" "}
                     <strong>one.com</strong>
@@ -171,15 +171,15 @@ const SolutionsSection = () => {
                 initial={{ opacity: 0, x: 20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.4 }}
-                className="bg-white/50 rounded-xl p-4 md:p-6"
+                className="bg-white/50 dark:bg-gray-800/60 rounded-xl p-4 md:p-6 border border-gray-200/50 dark:border-gray-700/50"
               >
-                <h4 className="font-semibold text-fjord mb-3 flex items-center flex-wrap">
-                  <span className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm mr-2 flex-shrink-0">
+                <h4 className="font-semibold text-fjord dark:text-gray-100 mb-3 flex items-center flex-wrap">
+                  <span className="w-6 h-6 bg-blue-500 dark:bg-blue-400 rounded-full flex items-center justify-center text-white text-sm mr-2 flex-shrink-0">
                     i
                   </span>
                   <span>Gode råd</span>
                 </h4>
-                <ul className="text-sm text-muted-foreground space-y-2">
+                <ul className="text-sm text-muted-foreground dark:text-gray-300 space-y-2">
                   <li>• Vælg et kort og nemt navn</li>
                   <li>• Undgå bindestreger hvis muligt</li>
                   <li>• .dk er ofte bedst for danske virksomheder</li>
@@ -192,9 +192,9 @@ const SolutionsSection = () => {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6 }}
-              className="bg-amber-50 border border-amber-200 rounded-xl p-4 text-center"
+              className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800/50 rounded-xl p-4 text-center"
             >
-              <p className="text-amber-800 font-medium text-sm md:text-base leading-relaxed">
+              <p className="text-amber-800 dark:text-amber-200 font-medium text-sm md:text-base leading-relaxed">
                 <strong>Husk:</strong> Vi kan ikke starte dit projekt hvis dit
                 ønskede domæne ikke er ledigt. Tjek det derfor før vores møde,
                 så vi kan komme direkte i gang! 🚀
@@ -208,7 +208,7 @@ const SolutionsSection = () => {
           <h3 className="text-3xl font-bold text-fjord mb-4">
             Klar til at komme i gang?
           </h3>
-          <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+          <p className="text-xl text-muted-foreground dark:text-gray-300 mb-8 max-w-2xl mx-auto">
             Lad os skabe den perfekte digitale løsning til din virksomhed. Book
             et uforpligtende møde og hør hvordan vi kan hjælpe dig.
           </p>

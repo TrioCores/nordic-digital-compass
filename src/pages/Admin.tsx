@@ -58,7 +58,6 @@ import {
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { AdminProjectManagement } from "@/components/AdminProjectManagement";
-import axios from "axios";
 
 interface UserProfile {
   id: string;
@@ -690,24 +689,24 @@ export default function Admin() {
   const getRoleIcon = (role: string) => {
     switch (role) {
       case "owner":
-        return <Crown className="h-4 w-4 text-yellow-500" />;
+        return <Crown className="h-4 w-4 text-yellow-500 dark:text-yellow-400" />;
       case "admin":
-        return <Shield className="h-4 w-4 text-blue-500" />;
+        return <Shield className="h-4 w-4 text-blue-500 dark:text-blue-400" />;
       default:
-        return <Users className="h-4 w-4 text-gray-500" />;
+        return <Users className="h-4 w-4 text-gray-500 dark:text-gray-400" />;
     }
   };
 
   const getFileIcon = (fileType: string) => {
     if (fileType.startsWith("image/"))
-      return <Image className="h-5 w-5 text-green-500" />;
+      return <Image className="h-5 w-5 text-green-500 dark:text-green-400" />;
     if (fileType === "application/pdf")
-      return <FileText className="h-5 w-5 text-red-500" />;
+      return <FileText className="h-5 w-5 text-red-500 dark:text-red-400" />;
     if (fileType.includes("spreadsheet") || fileType.includes("excel"))
-      return <FileSpreadsheet className="h-5 w-5 text-green-600" />;
+      return <FileSpreadsheet className="h-5 w-5 text-green-600 dark:text-green-400" />;
     if (fileType.includes("document") || fileType.includes("word"))
-      return <File className="h-5 w-5 text-blue-500" />;
-    return <FileText className="h-5 w-5 text-gray-500" />;
+      return <File className="h-5 w-5 text-blue-500 dark:text-blue-400" />;
+    return <FileText className="h-5 w-5 text-gray-500 dark:text-gray-400" />;
   };
 
   const formatFileSize = (bytes: number) => {
@@ -847,7 +846,7 @@ export default function Admin() {
               <h1 className="text-3xl font-bold tracking-tight">
                 Administration
               </h1>
-              <p className="text-muted-foreground">
+              <p className="text-muted-foreground dark:text-gray-300">
                 Administrer brugere, projekter og dokumenter
               </p>
             </div>
@@ -1010,7 +1009,7 @@ export default function Admin() {
                     <CardTitle className="text-sm font-medium">
                       Total Brugere
                     </CardTitle>
-                    <Users className="h-4 w-4 text-muted-foreground" />
+                    <Users className="h-4 w-4 text-muted-foreground dark:text-gray-400" />
                   </CardHeader>
                   <CardContent>
                     <div className="text-2xl font-bold">{users.length}</div>
@@ -1048,7 +1047,7 @@ export default function Admin() {
                     <CardTitle className="text-sm font-medium">
                       Almindelige Brugere
                     </CardTitle>
-                    <Users className="h-4 w-4 text-gray-500" />
+                    <Users className="h-4 w-4 text-gray-500 dark:text-gray-400" />
                   </CardHeader>
                   <CardContent>
                     <div className="text-2xl font-bold">
@@ -1073,7 +1072,7 @@ export default function Admin() {
                     </div>
                     <div className="flex items-center gap-2">
                       <div className="relative">
-                        <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                        <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground dark:text-gray-400" />
                         <Input
                           placeholder="Søg brugere..."
                           className="pl-8 w-64"
@@ -1087,7 +1086,7 @@ export default function Admin() {
                     {users.map((userData) => (
                       <div
                         key={userData.id}
-                        className="flex items-center justify-between p-4 border rounded-lg hover:shadow-md transition-shadow"
+                        className="flex items-center justify-between p-4 border rounded-lg hover:shadow-md transition-shadow duration-200 will-change-transform"
                       >
                         <div className="flex items-center space-x-4">
                           <div className="flex-shrink-0">
@@ -1126,10 +1125,10 @@ export default function Admin() {
                                   : "Bruger"}
                               </Badge>
                             </div>
-                            <p className="text-sm text-muted-foreground">
+                            <p className="text-sm text-muted-foreground dark:text-gray-300">
                               {userData.email}
                             </p>
-                            <p className="text-xs text-muted-foreground">
+                            <p className="text-xs text-muted-foreground dark:text-gray-400">
                               Oprettet:{" "}
                               {new Date(userData.created_at).toLocaleDateString(
                                 "da-DK",
@@ -1239,7 +1238,7 @@ export default function Admin() {
                     <CardTitle className="text-sm font-medium">
                       Total Dokumenter
                     </CardTitle>
-                    <FileText className="h-4 w-4 text-muted-foreground" />
+                    <FileText className="h-4 w-4 text-muted-foreground dark:text-gray-400" />
                   </CardHeader>
                   <CardContent>
                     <div className="text-2xl font-bold">{documents.length}</div>
@@ -1287,7 +1286,7 @@ export default function Admin() {
                     <CardTitle className="text-sm font-medium">
                       Total Størrelse
                     </CardTitle>
-                    <BarChart3 className="h-4 w-4 text-muted-foreground" />
+                    <BarChart3 className="h-4 w-4 text-muted-foreground dark:text-gray-400" />
                   </CardHeader>
                   <CardContent>
                     <div className="text-2xl font-bold">
@@ -1318,7 +1317,7 @@ export default function Admin() {
                   <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-8 hover:border-muted-foreground/50 transition-colors">
                     <div className="flex flex-col items-center gap-4">
                       <div className="rounded-full bg-muted p-3">
-                        <Upload className="h-8 w-8 text-muted-foreground" />
+                        <Upload className="h-8 w-8 text-muted-foreground dark:text-gray-400" />
                       </div>
                       <div className="text-center">
                         <Label htmlFor="file-upload" className="cursor-pointer">
@@ -1326,11 +1325,11 @@ export default function Admin() {
                             Klik for at uploade filer
                           </span>
                           <br />
-                          <span className="text-sm text-muted-foreground">
+                          <span className="text-sm text-muted-foreground dark:text-gray-300">
                             eller træk og slip her
                           </span>
                         </Label>
-                        <p className="text-xs text-muted-foreground mt-2">
+                        <p className="text-xs text-muted-foreground dark:text-gray-400 mt-2">
                           Understøtter: PDF, Word, Excel, billeder (PNG, JPG,
                           GIF)
                         </p>
@@ -1347,7 +1346,7 @@ export default function Admin() {
                       {uploading && (
                         <div className="flex items-center gap-2">
                           <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary"></div>
-                          <p className="text-sm text-muted-foreground">
+                          <p className="text-sm text-muted-foreground dark:text-gray-300">
                             Uploader filer...
                           </p>
                         </div>
@@ -1372,7 +1371,7 @@ export default function Admin() {
                     </div>
                     <div className="flex items-center gap-2">
                       <div className="relative">
-                        <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                        <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground dark:text-gray-400" />
                         <Input
                           placeholder="Søg dokumenter..."
                           className="pl-8 w-64"
@@ -1383,7 +1382,7 @@ export default function Admin() {
 
                       {/* Tag filter */}
                       <div className="flex items-center gap-2">
-                        <Filter className="h-4 w-4 text-muted-foreground" />
+                        <Filter className="h-4 w-4 text-muted-foreground dark:text-gray-400" />
                         <Select
                           value=""
                           onValueChange={(tag) => {
@@ -1403,7 +1402,7 @@ export default function Admin() {
                                   {categoryIndex > 0 && (
                                     <Separator className="my-1" />
                                   )}
-                                  <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground">
+                                  <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground dark:text-gray-300">
                                     {categoryName}
                                   </div>
                                   {tags.map((tag) => (
@@ -1431,7 +1430,7 @@ export default function Admin() {
                                 return (
                                   <div>
                                     <Separator className="my-1" />
-                                    <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground">
+                                    <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground dark:text-gray-300">
                                       🔖 Eksisterende Tags
                                     </div>
                                     {existingTags.map((tag) => (
@@ -1459,7 +1458,7 @@ export default function Admin() {
                     {/* Active tag filters */}
                     {selectedTags.length > 0 && (
                       <div className="flex items-center gap-2 mt-2">
-                        <span className="text-sm text-muted-foreground">
+                        <span className="text-sm text-muted-foreground dark:text-gray-300">
                           Aktive filtre:
                         </span>
                         {selectedTags.map((tag) => (
@@ -1482,7 +1481,7 @@ export default function Admin() {
                           variant="ghost"
                           size="sm"
                           onClick={() => setSelectedTags([])}
-                          className="text-muted-foreground hover:text-foreground"
+                          className="text-muted-foreground hover:text-foreground dark:text-gray-400 dark:hover:text-gray-200"
                         >
                           Ryd alle
                         </Button>
@@ -1510,7 +1509,7 @@ export default function Admin() {
                       {getFilteredDocuments().map((doc) => (
                         <div
                           key={doc.id}
-                          className="flex items-start justify-between p-4 border rounded-lg hover:shadow-md transition-shadow"
+                          className="flex items-start justify-between p-4 border rounded-lg hover:shadow-md transition-shadow duration-200 will-change-transform"
                         >
                           <div className="flex items-start gap-4 flex-1">
                             <div className="flex-shrink-0 mt-1">
@@ -1523,10 +1522,10 @@ export default function Admin() {
                                   {getFileTypeLabel(doc.file_type)}
                                 </Badge>
                               </div>
-                              <p className="text-sm text-muted-foreground">
+                              <p className="text-sm text-muted-foreground dark:text-gray-300">
                                 {doc.original_name}
                               </p>
-                              <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                              <div className="flex items-center gap-4 text-xs text-muted-foreground dark:text-gray-400">
                                 <span>{formatFileSize(doc.file_size)}</span>
                                 <span>•</span>
                                 <span>
@@ -1547,7 +1546,7 @@ export default function Admin() {
                                 {/* Eksisterende tags */}
                                 {doc.tags && doc.tags.length > 0 && (
                                   <div className="flex items-center gap-2 flex-wrap">
-                                    <span className="text-xs text-muted-foreground">
+                                    <span className="text-xs text-muted-foreground dark:text-gray-400">
                                       Tags:
                                     </span>
                                     {doc.tags.map((tag) => (
@@ -1588,7 +1587,7 @@ export default function Admin() {
                                             {categoryIndex > 0 && (
                                               <Separator className="my-1" />
                                             )}
-                                            <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground">
+                                            <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground dark:text-gray-300">
                                               {categoryName}
                                             </div>
                                             {tags.map((tag) => (

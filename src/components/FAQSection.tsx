@@ -63,7 +63,7 @@ const FAQSection = () => {
             Ofte stillede spørgsmål
           </h2>
 
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-lg text-muted-foreground dark:text-gray-300 max-w-2xl mx-auto">
             Her finder du svar på de mest almindelige spørgsmål om vores
             tjenester og abonnementer.
           </p>
@@ -82,7 +82,7 @@ const FAQSection = () => {
                   <AccordionTrigger className="text-left font-semibold text-fjord hover:text-primary py-6">
                     {faq.question}
                   </AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground pb-6 pt-2">
+                  <AccordionContent className="text-muted-foreground dark:text-gray-300 pb-6 pt-2">
                     {faq.answer}
                   </AccordionContent>
                 </AccordionItem>

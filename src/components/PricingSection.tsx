@@ -58,11 +58,11 @@ const PricingSection = () => {
             Vores løsninger
           </h2>
 
-          <p className="text-xl text-muted-foreground mb-4">
+          <p className="text-xl text-muted-foreground dark:text-gray-300 mb-4">
             abonnement og opstart
           </p>
 
-          <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+          <p className="text-lg text-muted-foreground dark:text-gray-300 max-w-3xl mx-auto">
             Vi gør det simpelt: Du betaler en lav opstartspris og et fast
             månedligt abonnement – så sørger vi for alt det tekniske.
           </p>
