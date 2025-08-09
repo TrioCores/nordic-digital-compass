@@ -22,7 +22,7 @@ const SimpleHeroSection = () => {
           <h2 className="text-5xl md:text-7xl font-bold mb-8 bg-gradient-to-r from-fjord via-primary to-nordic-gold bg-clip-text text-transparent leading-tight">
             <span>Få en stærk digital base</span>
             <span className="block text-4xl md:text-6xl mt-2">
-              – bygget i Norden
+              – bygget i norden
             </span>
           </h2>
 

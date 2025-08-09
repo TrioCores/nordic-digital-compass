@@ -372,7 +372,7 @@ const OptimizedHeroSection = () => {
                   delay: 1,
                 }}
               >
-                – bygget i Norden
+                – bygget i norden
                 <br />
                 <br />
               </motion.span>

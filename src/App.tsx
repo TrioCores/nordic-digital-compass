@@ -17,6 +17,8 @@ import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
 import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsAndConditions from "./pages/TermsAndConditions";
 
 // Optimeret QueryClient konfiguration
 const queryClient = new QueryClient({
@@ -103,6 +105,22 @@ const AnimatedRoutes = () => {
               <ProtectedRoute adminOnly={true}>
                 <Admin />
               </ProtectedRoute>
+            </PageTransition>
+          }
+        />
+        <Route
+          path="/privatlivspolitik"
+          element={
+            <PageTransition>
+              <PrivacyPolicy />
+            </PageTransition>
+          }
+        />
+        <Route
+          path="/handelsbetingelser"
+          element={
+            <PageTransition>
+              <TermsAndConditions />
             </PageTransition>
           }
         />

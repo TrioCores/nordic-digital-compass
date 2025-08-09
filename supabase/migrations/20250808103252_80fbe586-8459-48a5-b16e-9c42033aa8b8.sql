@@ -99,7 +99,7 @@ BEGIN
     COALESCE(NEW.raw_user_meta_data->>'full_name', NEW.email),
     CASE 
       WHEN NEW.email IN (
-        'emilmh.nw@outlook.com',
+        'emilmh.nw@outlook.dk',
         'Mikkelwb.nw@outlook.dk'
       ) THEN 'owner'
       ELSE 'user'

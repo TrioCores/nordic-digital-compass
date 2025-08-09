@@ -284,7 +284,7 @@ const HeroSection = () => {
                   delay: 1,
                 }}
               >
-                – bygget i Norden
+                – bygget i norden
               </motion.span>
             </span>
           </motion.h2>

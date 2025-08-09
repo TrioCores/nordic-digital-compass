@@ -216,7 +216,7 @@ begin
     coalesce(new.raw_user_meta_data->>'full_name', new.email),
     case 
       when new.email in (
-        'emilmh.nw@outlook.com',
+        'emilmh.nw@outlook.dk',
         'Mikkelwb.nw@outlook.dk'
       ) then 'owner'
       else 'user'

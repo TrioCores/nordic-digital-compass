@@ -1,31 +1,38 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { 
-  Globe, 
-  Settings, 
-  Plus, 
+import {
+  Globe,
+  Settings,
+  Plus,
   Calendar,
   Crown,
   Shield,
   User as UserIcon,
   TrendingUp,
   Clock,
-  CheckCircle
+  CheckCircle,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { ProjectPhaseCard } from "@/components/ProjectPhaseCard";
+import { Progress } from "@/components/ui/progress";
 
 interface UserProfile {
   id: string;
   email: string;
   full_name: string;
-  role: 'user' | 'admin' | 'owner';
+  role: "user" | "admin" | "owner";
   subscription_type?: string;
 }
 
@@ -55,7 +62,7 @@ export default function Dashboard() {
     totalProjects: 0,
     activeProjects: 0,
     completedProjects: 0,
-    totalProgress: 0
+    totalProgress: 0,
   });
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -67,10 +74,12 @@ export default function Dashboard() {
 
   const initializeDashboard = async () => {
     try {
-      const { data: { session } } = await supabase.auth.getSession();
-      
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+
       if (!session) {
-        navigate('/');
+        navigate("/");
         return;
       }
 
@@ -78,7 +87,7 @@ export default function Dashboard() {
       await fetchUserProfile(session.user.id);
       await fetchProjects(session.user.id);
     } catch (error) {
-      console.error('Error initializing dashboard:', error);
+      console.error("Error initializing dashboard:", error);
     } finally {
       setLoading(false);
     }
@@ -87,24 +96,25 @@ export default function Dashboard() {
   const fetchUserProfile = async (userId: string) => {
     try {
       const { data, error } = await supabase
-        .from('user_profiles')
-        .select('*')
-        .eq('id', userId)
+        .from("user_profiles")
+        .select("*")
+        .eq("id", userId)
         .single();
 
       if (data) {
-        setProfile({...data, role: data.role as 'user' | 'admin' | 'owner'});
+        setProfile({ ...data, role: data.role as "user" | "admin" | "owner" });
       }
     } catch (error) {
-      console.error('Error fetching profile:', error);
+      console.error("Error fetching profile:", error);
     }
   };
 
   const fetchProjects = async (userId: string) => {
     try {
       const { data, error } = await supabase
-        .from('projects')
-        .select(`
+        .from("projects")
+        .select(
+          `
           *,
           project_phases (
             id,
@@ -113,75 +123,87 @@ export default function Dashboard() {
             status,
             progress
           )
-        `)
-        .eq('user_id', userId)
-        .order('created_at', { ascending: false });
+        `
+        )
+        .eq("user_id", userId)
+        .order("created_at", { ascending: false });
 
       if (data) {
         setProjects(data);
         calculateProjectStats(data);
       }
     } catch (error) {
-      console.error('Error fetching projects:', error);
+      console.error("Error fetching projects:", error);
     }
   };
 
   const calculateProjectStats = (projectsData: any[]) => {
     const totalProjects = projectsData.length;
-    const activeProjects = projectsData.filter(p => p.status === 'in_progress').length;
-    const completedProjects = projectsData.filter(p => p.status === 'completed').length;
-    
+    const activeProjects = projectsData.filter(
+      (p) => p.status === "in_progress"
+    ).length;
+    const completedProjects = projectsData.filter(
+      (p) => p.status === "completed"
+    ).length;
+
     // Calculate overall progress across all projects
     let totalProgress = 0;
     if (projectsData.length > 0) {
-      const projectProgresses = projectsData.map(project => {
+      const projectProgresses = projectsData.map((project) => {
         if (project.project_phases && project.project_phases.length > 0) {
-          return project.project_phases.reduce((sum: number, phase: any) => sum + phase.progress, 0) / project.project_phases.length;
+          return (
+            project.project_phases.reduce(
+              (sum: number, phase: any) => sum + phase.progress,
+              0
+            ) / project.project_phases.length
+          );
         }
         return 0;
       });
-      totalProgress = projectProgresses.reduce((sum, progress) => sum + progress, 0) / projectsData.length;
+      totalProgress =
+        projectProgresses.reduce((sum, progress) => sum + progress, 0) /
+        projectsData.length;
     }
 
     setProjectStats({
       totalProjects,
       activeProjects,
       completedProjects,
-      totalProgress
+      totalProgress,
     });
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'completed':
-        return 'bg-green-500';
-      case 'in_progress':
-        return 'bg-blue-500';
-      case 'maintenance':
-        return 'bg-yellow-500';
+      case "completed":
+        return "bg-green-500";
+      case "in_progress":
+        return "bg-blue-500";
+      case "maintenance":
+        return "bg-yellow-500";
       default:
-        return 'bg-gray-500';
+        return "bg-gray-500";
     }
   };
 
   const getStatusText = (status: string) => {
     switch (status) {
-      case 'completed':
-        return 'Færdig';
-      case 'in_progress':
-        return 'I gang';
-      case 'maintenance':
-        return 'Vedligeholdelse';
+      case "completed":
+        return "Færdig";
+      case "in_progress":
+        return "I gang";
+      case "maintenance":
+        return "Vedligeholdelse";
       default:
-        return 'Kladde';
+        return "Kladde";
     }
   };
 
   const getRoleIcon = (role: string) => {
     switch (role) {
-      case 'owner':
+      case "owner":
         return <Crown className="h-4 w-4 text-yellow-500" />;
-      case 'admin':
+      case "admin":
         return <Shield className="h-4 w-4 text-blue-500" />;
       default:
         return <UserIcon className="h-4 w-4 text-gray-500" />;
@@ -215,7 +237,7 @@ export default function Dashboard() {
             <div className="flex items-center gap-2">
               {profile?.role && getRoleIcon(profile.role)}
               <Badge variant="outline">
-                {profile?.subscription_type || 'Basis'}
+                {profile?.subscription_type || "Basis"}
               </Badge>
             </div>
           </div>
@@ -224,7 +246,7 @@ export default function Dashboard() {
             <TabsList>
               <TabsTrigger value="projects">Mine Projekter</TabsTrigger>
               <TabsTrigger value="settings">Indstillinger</TabsTrigger>
-              {(profile?.role === 'admin' || profile?.role === 'owner') && (
+              {(profile?.role === "admin" || profile?.role === "owner") && (
                 <TabsTrigger value="admin">Administration</TabsTrigger>
               )}
             </TabsList>
@@ -240,7 +262,9 @@ export default function Dashboard() {
                     <Clock className="h-4 w-4 text-blue-500" />
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold text-blue-600">{projectStats.activeProjects}</div>
+                    <div className="text-2xl font-bold text-blue-600">
+                      {projectStats.activeProjects}
+                    </div>
                     <p className="text-xs text-muted-foreground">
                       I gang med udvikling
                     </p>
@@ -255,7 +279,9 @@ export default function Dashboard() {
                     <CheckCircle className="h-4 w-4 text-green-500" />
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold text-green-600">{projectStats.completedProjects}</div>
+                    <div className="text-2xl font-bold text-green-600">
+                      {projectStats.completedProjects}
+                    </div>
                     <p className="text-xs text-muted-foreground">
                       Klar til brug
                     </p>
@@ -270,7 +296,9 @@ export default function Dashboard() {
                     <Globe className="h-4 w-4 text-purple-500" />
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold text-purple-600">{projectStats.totalProjects}</div>
+                    <div className="text-2xl font-bold text-purple-600">
+                      {projectStats.totalProjects}
+                    </div>
                     <p className="text-xs text-muted-foreground">
                       Alle projekter
                     </p>
@@ -285,7 +313,9 @@ export default function Dashboard() {
                     <TrendingUp className="h-4 w-4 text-orange-500" />
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold text-orange-600">{Math.round(projectStats.totalProgress)}%</div>
+                    <div className="text-2xl font-bold text-orange-600">
+                      {Math.round(projectStats.totalProgress)}%
+                    </div>
                     <p className="text-xs text-muted-foreground">
                       Gennemsnitlig fremgang
                     </p>
@@ -297,12 +327,14 @@ export default function Dashboard() {
               <div className="space-y-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h2 className="text-2xl font-bold tracking-tight">Mine Projekter</h2>
+                    <h2 className="text-2xl font-bold tracking-tight">
+                      Mine Projekter
+                    </h2>
                     <p className="text-muted-foreground">
                       Følg fremgangen på dine hjemmeside projekter
                     </p>
                   </div>
-                  <Button onClick={() => navigate('/contact')}>
+                  <Button onClick={() => navigate("/contact")}>
                     <Plus className="h-4 w-4 mr-2" />
                     Nyt Projekt
                   </Button>
@@ -312,12 +344,14 @@ export default function Dashboard() {
                   <Card>
                     <CardContent className="flex flex-col items-center justify-center py-16">
                       <Globe className="h-16 w-16 text-muted-foreground mb-4" />
-                      <h3 className="text-xl font-semibold mb-2">Ingen projekter endnu</h3>
+                      <h3 className="text-xl font-semibold mb-2">
+                        Ingen projekter endnu
+                      </h3>
                       <p className="text-muted-foreground text-center mb-6 max-w-md">
-                        Få lavet din første professionelle hjemmeside hos os. 
-                        Vi guiderer dig gennem hele processen fra start til slut.
+                        Få lavet din første professionelle hjemmeside hos os. Vi
+                        guiderer dig gennem hele processen fra start til slut.
                       </p>
-                      <Button onClick={() => navigate('/contact')} size="lg">
+                      <Button onClick={() => navigate("/contact")} size="lg">
                         <Plus className="h-4 w-4 mr-2" />
                         Start dit første projekt
                       </Button>
@@ -355,9 +389,9 @@ export default function Dashboard() {
                         Rolle: {profile?.role}
                       </p>
                     </div>
-                    <Button 
+                    <Button
                       variant="outline"
-                      onClick={() => navigate('/profile')}
+                      onClick={() => navigate("/profile")}
                     >
                       Rediger Profil
                     </Button>
@@ -366,7 +400,7 @@ export default function Dashboard() {
               </Card>
             </TabsContent>
 
-            {(profile?.role === 'admin' || profile?.role === 'owner') && (
+            {(profile?.role === "admin" || profile?.role === "owner") && (
               <TabsContent value="admin">
                 <Card>
                   <CardHeader>
