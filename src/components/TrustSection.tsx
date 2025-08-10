@@ -19,8 +19,8 @@ const TrustSection = () => {
     },
     {
       icon: FileText,
-      title: "Ingen binding – kun 1 måneds opsigelse",
-      description: "Fleksibilitet og frihed",
+      title: "12 måneders binding",
+      description: "Derefter kun 1 måneds opsigelse",
     },
     {
       icon: RefreshCw,
@@ -29,8 +29,8 @@ const TrustSection = () => {
     },
     {
       icon: Coins,
-      title: "Ingen skjulte gebyrer – fast lav pris",
-      description: "Gennemsigtighed i alt hvad vi gør",
+      title: "Fast pris fra 399 kr/md",
+      description: "Ingen skjulte gebyrer eller overraskelser",
     },
   ];
 

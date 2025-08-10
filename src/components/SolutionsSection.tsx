@@ -202,43 +202,6 @@ const SolutionsSection = () => {
             </motion.div>
           </motion.div>
         </div>
-
-        {/* CTA Section */}
-        <div className="text-center nordic-card rounded-3xl p-12 bg-gradient-to-br from-primary/5 via-card to-nordic-gold/5 border border-primary/10">
-          <h3 className="text-3xl font-bold text-fjord mb-4">
-            Klar til at komme i gang?
-          </h3>
-          <p className="text-xl text-muted-foreground dark:text-gray-300 mb-8 max-w-2xl mx-auto">
-            Lad os skabe den perfekte digitale løsning til din virksomhed. Book
-            et uforpligtende møde og hør hvordan vi kan hjælpe dig.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button
-              size="lg"
-              className="nordic-button-primary px-8 py-6 text-lg"
-              onClick={() =>
-                document
-                  .getElementById("contact")
-                  ?.scrollIntoView({ behavior: "smooth" })
-              }
-            >
-              Book gratis samtale
-              <ArrowRight className="ml-2" size={20} />
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="px-8 py-6 text-lg border-primary/20 hover:bg-primary/5"
-              onClick={() =>
-                document
-                  .getElementById("pricing")
-                  ?.scrollIntoView({ behavior: "smooth" })
-              }
-            >
-              Se vores priser
-            </Button>
-          </div>
-        </div>
       </div>
     </section>
   );

@@ -381,14 +381,14 @@ const OptimizedHeroSection = () => {
 
           {/* Subtitle */}
           <motion.p
-            className="text-xl md:text-2xl text-muted-foreground mb-12 leading-relaxed max-w-3xl mx-auto"
+            className="text-xl md:text-2xl text-muted-foreground dark:text-gray-200 mb-12 leading-relaxed max-w-3xl mx-auto"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 1 }}
           >
             Hos Nordweb hjælper vi nystartede og mindre virksomheder med at
-            komme professionelt online. Vi bygger hjemmesider med nordisk
-            enkelhed, æstetik og en fast pris – uden bøvl.
+            komme professionelt online. <strong className="text-fjord dark:text-white">Fra kun 399 kr/md</strong> bygger vi hjemmesider med nordisk
+            enkelhed, æstetik og en fast pris – <span className="text-primary">alt inkluderet</span>.
           </motion.p>
 
           {/* CTA Buttons with hover animations */}
@@ -471,16 +471,16 @@ const OptimizedHeroSection = () => {
 
           {/* Features preview with staggered animation */}
           <motion.div
-            className="flex flex-wrap justify-center gap-8 mt-16 text-muted-foreground"
+            className="flex flex-wrap justify-center gap-8 mt-16 text-muted-foreground dark:text-gray-300"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 1.5 }}
           >
             {[
-              "✓ Fast pris",
-              "✓ Ingen binding",
-              "✓ 24/7 support",
-              "✓ GDPR sikret",
+              "✓ Fast månedlig pris",
+              "✓ 12 måneders binding",
+              "✓ Support inden for 2 arbejdsdage",
+              "✓ GDPR-sikret hosting",
             ].map((feature, index) => (
               <motion.span
                 key={feature}

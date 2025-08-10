@@ -10,12 +10,16 @@ const ContactSection = () => {
         
         {/* Header */}
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-fjord">
-            Kontakt os
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-fjord dark:text-white">
+            Klar til at komme i gang?
           </h2>
           
           <p className="text-xl text-primary mb-4 font-semibold">
-            Har du spørgsmål? Klar til at komme i gang?
+            📧 Få dit gratis tilbud på under 24 timer
+          </p>
+
+          <p className="text-lg text-muted-foreground dark:text-gray-200 max-w-3xl mx-auto">
+            Skriv til os nedenfor, så vender vi tilbage med et skræddersyet tilbud til din virksomhed.
           </p>
         </div>
 
