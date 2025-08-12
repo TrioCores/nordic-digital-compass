@@ -165,9 +165,9 @@ const AboutSection = () => {
 
             {/* Team Member 2 */}
             <motion.div
-              initial={{ opacity: 0, y: 50, rotateY: -15 }}
+              initial={{ opacity: 0, y: 50, rotateY: 15 }}
               whileInView={{ opacity: 1, y: 0, rotateY: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
               whileHover={{
                 y: -8,
                 transition: { type: "spring", stiffness: 400, damping: 25 },
@@ -182,110 +182,6 @@ const AboutSection = () => {
                 }}
               >
                 <User className="text-primary" size={32} />
-              </motion.div>
-
-              <motion.h4
-                className="text-2xl font-bold text-fjord mb-2"
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                transition={{ delay: 0.4 }}
-              >
-                Emil Hytting
-              </motion.h4>
-              <motion.p
-                className="text-primary font-semibold mb-4"
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                transition={{ delay: 0.5 }}
-              >
-                Direktør & Udvikler
-              </motion.p>
-
-              <motion.div
-                className="flex justify-center gap-2 mb-6"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6 }}
-              >
-                {["React", "Design", "UX/UI"].map((skill, index) => (
-                  <motion.div
-                    key={skill}
-                    className="px-3 py-1 bg-primary/10 rounded-full text-sm text-primary hover:bg-primary/20 transition-colors duration-200"
-                    whileHover={{
-                      scale: 1.05,
-                      transition: {
-                        type: "spring",
-                        stiffness: 500,
-                        damping: 25,
-                      },
-                    }}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.7 + index * 0.1 }}
-                  >
-                    {skill}
-                  </motion.div>
-                ))}
-              </motion.div>
-
-              <motion.p
-                className="text-muted-foreground mb-6 leading-relaxed"
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                transition={{ delay: 0.8 }}
-              >
-                Specialist i moderne frontend-teknologier og brugervenligt
-                design. Elsker at skabe intuitive oplevelser der får brugerne
-                til at smile.
-              </motion.p>
-
-              <motion.div
-                className="border-t pt-4"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.9 }}
-              >
-                <p className="text-sm text-fjord font-medium mb-2">
-                  Seneste projekter:
-                </p>
-                <ul className="text-sm text-muted-foreground space-y-1">
-                  {[
-                    "E-commerce platform for lokal forhandler",
-                    "Portfolio hjemmeside for arkitekt",
-                    "Booking system for wellness center",
-                  ].map((project, index) => (
-                    <motion.li
-                      key={index}
-                      initial={{ opacity: 0, x: -20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 1.0 + index * 0.1 }}
-                    >
-                      • {project}
-                    </motion.li>
-                  ))}
-                </ul>
-              </motion.div>
-            </motion.div>
-
-            {/* Team Member 2 */}
-            <motion.div
-              initial={{ opacity: 0, y: 50, rotateY: 15 }}
-              whileInView={{ opacity: 1, y: 0, rotateY: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              whileHover={{
-                y: -8,
-                transition: { type: "spring", stiffness: 400, damping: 25 },
-              }}
-              className="nordic-card rounded-2xl p-8 text-center hover:shadow-xl transition-shadow duration-300"
-            >
-              <motion.div
-                className="w-20 h-20 bg-nordic-gold/10 rounded-full flex items-center justify-center mx-auto mb-6"
-                whileHover={{
-                  scale: 1.1,
-                  transition: { type: "spring", stiffness: 500, damping: 20 },
-                }}
-              >
-                <Code className="text-nordic-gold" size={32} />
               </motion.div>
 
               <motion.h4

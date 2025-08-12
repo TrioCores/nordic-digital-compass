@@ -414,7 +414,7 @@ export default function Admin() {
       if (error) throw error;
 
       toast({
-        title: "Tag tilføjet",
+        title: "✅ Tag tilføjet",
         description: `Tag "${tag}" er tilføjet til dokumentet.`,
       });
 
@@ -689,7 +689,9 @@ export default function Admin() {
   const getRoleIcon = (role: string) => {
     switch (role) {
       case "owner":
-        return <Crown className="h-4 w-4 text-yellow-500 dark:text-yellow-400" />;
+        return (
+          <Crown className="h-4 w-4 text-yellow-500 dark:text-yellow-400" />
+        );
       case "admin":
         return <Shield className="h-4 w-4 text-blue-500 dark:text-blue-400" />;
       default:
@@ -703,7 +705,9 @@ export default function Admin() {
     if (fileType === "application/pdf")
       return <FileText className="h-5 w-5 text-red-500 dark:text-red-400" />;
     if (fileType.includes("spreadsheet") || fileType.includes("excel"))
-      return <FileSpreadsheet className="h-5 w-5 text-green-600 dark:text-green-400" />;
+      return (
+        <FileSpreadsheet className="h-5 w-5 text-green-600 dark:text-green-400" />
+      );
     if (fileType.includes("document") || fileType.includes("word"))
       return <File className="h-5 w-5 text-blue-500 dark:text-blue-400" />;
     return <FileText className="h-5 w-5 text-gray-500 dark:text-gray-400" />;
