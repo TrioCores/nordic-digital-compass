@@ -10,12 +10,16 @@ const ContactSection = () => {
         
         {/* Header */}
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-fjord">
-            Kontakt os
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-fjord dark:text-white">
+            Klar til at komme i gang?
           </h2>
           
           <p className="text-xl text-primary mb-4 font-semibold">
-            Har du spørgsmål? Klar til at komme i gang?
+            📧 Få dit gratis tilbud på under 24 timer
+          </p>
+
+          <p className="text-lg text-muted-foreground dark:text-gray-200 max-w-3xl mx-auto">
+            Skriv til os nedenfor, så vender vi tilbage med et skræddersyet tilbud til din virksomhed.
           </p>
         </div>
 
@@ -34,7 +38,7 @@ const ContactSection = () => {
                   </div>
                   <div>
                     <p className="font-semibold text-fjord">Aalborg, Danmark</p>
-                    <p className="text-muted-foreground">Vi arbejder med hele Danmark remote.</p>
+                    <p className="text-muted-foreground dark:text-gray-300">Vi arbejder med hele Danmark remote.</p>
                   </div>
                 </div>
                 
@@ -44,7 +48,7 @@ const ContactSection = () => {
                   </div>
                   <div>
                     <p className="font-semibold text-fjord">kontakt@nordweb.dk</p>
-                    <p className="text-muted-foreground">Vi svarer inden for 24 timer</p>
+                    <p className="text-muted-foreground dark:text-gray-300">Vi svarer inden for 24 timer</p>
                   </div>
                 </div>
                 
@@ -54,7 +58,7 @@ const ContactSection = () => {
                   </div>
                   <div>
                     <p className="font-semibold text-fjord">+45 XX XX XX XX</p>
-                    <p className="text-muted-foreground">Hverdage 17-00:00</p>
+                    <p className="text-muted-foreground dark:text-gray-300">Hverdage 17-00:00</p>
                   </div>
                 </div>
               </div>
@@ -66,7 +70,7 @@ const ContactSection = () => {
                 <div className="w-3 h-3 rounded-full bg-nordic-gold mr-3 animate-pulse"></div>
                 <h4 className="font-semibold text-fjord">Live support</h4>
               </div>
-              <p className="text-muted-foreground text-sm">
+              <p className="text-muted-foreground dark:text-gray-400 text-sm">
                 "Har du spørgsmål? Skriv direkte til os – vi svarer hurtigt."
               </p>
             </div>

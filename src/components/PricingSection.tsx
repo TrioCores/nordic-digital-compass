@@ -5,41 +5,43 @@ import {
   Anchor,
   HeartHandshake,
   Star,
-  Minus,
+  Shield,
+  Clock,
+  Users,
+  AlertTriangle,
+  ArrowRight,
 } from "lucide-react";
 
 const PricingSection = () => {
+  const basisFeatures = [
+    "Hosting af hjemmeside og domæneadministration",
+    "Basal SEO-optimering (ved opstart og efter behov)",
+    "Teknisk vedligeholdelse og opdateringer",
+    "Support efter behov via e-mail eller telefon",
+    "Backup og sikkerhedsovervågning",
+    "Responsivt design til alle enheder",
+    "Grundlæggende kontaktformular",
+  ];
+
   const standardFeatures = [
-    "Op til 5 sider (fx forside, ydelser, kontakt)",
-    "Mobilvenligt responsivt design",
-    "Kontaktformular",
-    "Hosting & domæneopsætning",
-    "Basis SEO",
-    "1 times support hver måned",
-    "Løbende opdateringer & backups",
-  ];
-
-  const mediumFeatures = [
-    "Alt fra Standard-pakken",
+    "Alt fra Basis-pakken",
+    "Udvidet SEO-optimering",
+    "Google Analytics integration",
+    "Flere sider og undersider",
     "Blog eller nyhedssektion",
-    "Google Analytics",
     "Integration af sociale medier",
-    "Flere design-tilpasninger",
-    "2 timers support pr. måned",
-    "Løbende performance-optimering",
+    "Prioriteret support (responstid: 1 arbejdsdag)",
   ];
 
-  const premiumFeatures = [
-    // "Alt fra Medium-løsningen",
-    // "Komplet webshop med betalingsløsning",
-    // "Avanceret produkt- og lagerstyring",
-    // "Integration til fragt og regnskabssystemer",
-    // "Flere sprog og avanceret SEO",
-    // "Automatiserede e-mails og rabatkoder",
-    // "Prioriteret support og rådgivning",
-    // "Større lagerplads og trafik",
-    // "Mulighed for specialudvikling og API",
-    "Stadig under udvikling",
+  const proFeatures = [
+    "Alt fra Standard-pakken",
+    "Avanceret SEO og performance-optimering",
+    "E-commerce funktionalitet (webshop)",
+    "Avanceret analyser og rapportering",
+    "Specialudvikling og custom features",
+    "Prioriteret support (responstid: 4 timer)",
+    "Månedlig konsultation og rådgivning",
+    "API integrationer og tredjepartssystemer",
   ];
 
   return (
@@ -54,23 +56,30 @@ const PricingSection = () => {
             <Compass className="text-primary mr-2" size={36} />
           </div>
 
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-fjord">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-fjord dark:text-white">
             Vores løsninger
           </h2>
 
-          <p className="text-xl text-muted-foreground mb-4">
-            abonnement og opstart
+          <p className="text-xl text-muted-foreground dark:text-gray-200 mb-4">
+            Abonnement og opstart
           </p>
 
-          <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-            Vi gør det simpelt: Du betaler en lav opstartspris og et fast
-            månedligt abonnement – så sørger vi for alt det tekniske.
+          <p className="text-lg text-muted-foreground dark:text-gray-200 max-w-3xl mx-auto mb-6">
+            Fast opstartspris og månedligt abonnement – vi sørger for alt det
+            tekniske.
           </p>
+
+          {/* Simple social proof */}
+          <div className="text-center">
+            <p className="text-sm text-primary font-medium">
+              ⭐ 4.9/5 stjerner | 25+ danske virksomheder har valgt os
+            </p>
+          </div>
         </div>
 
         {/* Pricing cards */}
         <div className="grid md:grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {/* Fyrtårn Package */}
+          {/* Basis Package */}
           <div className="nordic-hover-card nordic-card rounded-3xl p-8 border-2 border-transparent hover:border-primary/20 relative overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-primary/10 to-transparent rounded-full -mr-16 -mt-16"></div>
 
@@ -80,50 +89,50 @@ const PricingSection = () => {
                   <Anchor className="text-primary" size={32} />
                 </div>
                 <div>
-                  <h3 className="text-2xl font-bold text-fjord">
-                    Standard-løsningen
+                  <h3 className="text-2xl font-bold text-fjord dark:text-white">
+                    Basis
                   </h3>
-                  <p className="text-muted-foreground">
-                    Perfekt til dig, der skal online for første gang
+                  <p className="text-muted-foreground dark:text-gray-200">
+                    Perfekt til mindre virksomheder
                   </p>
                 </div>
               </div>
 
               <div className="mb-8">
                 <div className="flex items-baseline mb-2">
-                  <span className="text-3xl font-bold text-fjord">
-                    2.495 kr.
+                  <span className="text-3xl font-bold text-fjord dark:text-white">
+                    9.999 kr.
                   </span>
-                  <span className="text-muted-foreground ml-2">opstart</span>
+                  <span className="text-muted-foreground dark:text-gray-300 ml-2">opstart</span>
                 </div>
                 <div className="flex items-baseline">
                   <span className="text-3xl font-bold text-primary">
-                    249 kr.
+                    Fra 399 kr.
                   </span>
-                  <span className="text-muted-foreground ml-2">/md.</span>
+                  <span className="text-muted-foreground dark:text-gray-300 ml-2">/md. ekskl. moms</span>
                 </div>
               </div>
 
               <ul className="space-y-3 mb-8">
-                {standardFeatures.map((feature, index) => (
+                {basisFeatures.map((feature, index) => (
                   <li key={index} className="flex items-start">
                     <Check
                       className="text-nordic-gold mr-3 mt-0.5 flex-shrink-0"
                       size={18}
                     />
-                    <span className="text-muted-foreground">{feature}</span>
+                    <span className="text-muted-foreground dark:text-gray-200">{feature}</span>
                   </li>
                 ))}
               </ul>
 
               <Button className="w-full nordic-button-primary py-6 text-lg font-semibold">
-                Vælg Standard
+                Vælg Basis
                 <Anchor className="ml-2" size={20} />
               </Button>
             </div>
           </div>
 
-          {/* Kompas Package - Featured */}
+          {/* Standard Package - Featured */}
           <div className="nordic-hover-card nordic-card rounded-3xl p-8 border-2 border-nordic-gold/50 relative overflow-hidden bg-gradient-to-br from-card via-card to-nordic-gold/5">
             <div className="absolute top-2 right-6 bg-nordic-gold text-nordic-gold-foreground px-4 py-1 rounded-full text-sm font-semibold shadow-md">
               POPULÆR
@@ -137,53 +146,53 @@ const PricingSection = () => {
                   <Compass className="text-nordic-gold" size={32} />
                 </div>
                 <div>
-                  <h3 className="text-2xl font-bold text-fjord">
-                    Medium-løsningen
+                  <h3 className="text-2xl font-bold text-fjord dark:text-white">
+                    Standard
                   </h3>
-                  <p className="text-muted-foreground">
-                    Til dig, der ønsker mere funktionalitet og fleksibilitet
+                  <p className="text-muted-foreground dark:text-gray-200">
+                    Til voksende virksomheder med flere behov
                   </p>
                 </div>
               </div>
 
               <div className="mb-8">
                 <div className="flex items-baseline mb-2">
-                  <span className="text-3xl font-bold text-fjord">
-                    3.995 kr.
+                  <span className="text-3xl font-bold text-fjord dark:text-white">
+                    9.999 kr.
                   </span>
-                  <span className="text-muted-foreground ml-2">opstart</span>
+                  <span className="text-muted-foreground dark:text-gray-300 ml-2">opstart</span>
                 </div>
                 <div className="flex items-baseline">
                   <span className="text-3xl font-bold text-primary">
-                    349 kr.
+                    Fra 599 kr.
                   </span>
-                  <span className="text-muted-foreground ml-2">/md.</span>
+                  <span className="text-muted-foreground dark:text-gray-300 ml-2">/md. ekskl. moms</span>
                 </div>
               </div>
 
               <ul className="space-y-3 mb-8">
-                {mediumFeatures.map((feature, index) => (
+                {standardFeatures.map((feature, index) => (
                   <li key={index} className="flex items-start">
                     <Check
                       className="text-nordic-gold mr-3 mt-0.5 flex-shrink-0"
                       size={18}
                     />
-                    <span className="text-muted-foreground">{feature}</span>
+                    <span className="text-muted-foreground dark:text-gray-200">{feature}</span>
                   </li>
                 ))}
               </ul>
 
               <Button className="w-full nordic-button-primary py-6 text-lg font-semibold">
-                Vælg Medium
+                Vælg Standard
                 <Compass className="ml-2" size={20} />
               </Button>
             </div>
           </div>
 
-          {/* Nordisk Premium - Stor løsning */}
+          {/* Pro Package */}
           <div className="nordic-hover-card nordic-card rounded-3xl p-8 border-2 border-transparent hover:border-primary/20 relative overflow-hidden">
             <div className="absolute top-2 right-6 bg-primary text-primary-foreground px-4 py-1 rounded-full text-sm font-semibold shadow-md">
-              EKSKLUSIV
+              PREMIUM
             </div>
 
             <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-primary/15 to-transparent rounded-full -mr-16 -mt-16"></div>
@@ -194,82 +203,152 @@ const PricingSection = () => {
                   <Star className="text-primary" size={32} />
                 </div>
                 <div>
-                  <h3 className="text-2xl font-bold text-fjord">
-                    Premium-løsningen
+                  <h3 className="text-2xl font-bold text-fjord dark:text-white">
+                    Pro
                   </h3>
-                  <p className="text-muted-foreground">
-                    Til dig, der vil have en professionel webshop med alt
-                    inkluderet – maksimal frihed, support og specialudvikling
+                  <p className="text-muted-foreground dark:text-gray-200">
+                    Komplet løsning til større virksomheder
                   </p>
                 </div>
               </div>
 
               <div className="mb-8">
                 <div className="flex items-baseline mb-2">
-                  <span className="text-3xl font-bold text-fjord">
-                    7.995 kr.
+                  <span className="text-3xl font-bold text-fjord dark:text-white">
+                    9.999 kr.
                   </span>
-                  <span className="text-muted-foreground ml-2">opstart</span>
+                  <span className="text-muted-foreground dark:text-gray-300 ml-2">opstart</span>
                 </div>
                 <div className="flex items-baseline">
                   <span className="text-3xl font-bold text-primary">
-                    599 kr.
+                    Fra 999 kr.
                   </span>
-                  <span className="text-muted-foreground ml-2">/md.</span>
+                  <span className="text-muted-foreground dark:text-gray-300 ml-2">/md. ekskl. moms</span>
                 </div>
               </div>
 
               <ul className="space-y-3 mb-8">
-                {premiumFeatures.map((feature, index) => (
+                {proFeatures.map((feature, index) => (
                   <li key={index} className="flex items-start">
-                    <Minus
-                      className="text-primary mr-3 mt-0.5 flex-shrink-0"
+                    <Check
+                      className="text-nordic-gold mr-3 mt-0.5 flex-shrink-0"
                       size={18}
                     />
-                    <span className="text-muted-foreground">{feature}</span>
+                    <span className="text-muted-foreground dark:text-gray-200">{feature}</span>
                   </li>
                 ))}
               </ul>
 
               <Button className="w-full nordic-button-primary py-6 text-lg font-semibold">
-                Vælg Premium
+                Vælg Pro
                 <Star className="ml-2" size={20} />
               </Button>
             </div>
           </div>
         </div>
-
+                <br />
+{/* CTA Section */}
+        <div className="text-center nordic-card rounded-3xl p-12 bg-gradient-to-br from-primary/5 via-card to-nordic-gold/5 border border-primary/10">
+          <h3 className="text-3xl font-bold text-fjord mb-4">
+            Klar til at komme i gang?
+          </h3>
+          <p className="text-xl text-muted-foreground dark:text-gray-300 mb-8 max-w-2xl mx-auto">
+            Lad os skabe den perfekte digitale løsning til din virksomhed. Book
+            et uforpligtende møde og hør hvordan vi kan hjælpe dig.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button
+              size="lg"
+              className="nordic-button-primary px-8 py-6 text-lg"
+              onClick={() =>
+                document
+                  .getElementById("contact")
+                  ?.scrollIntoView({ behavior: "smooth" })
+              }
+            >
+              Book gratis samtale
+              <ArrowRight className="ml-2" size={20} />
+            </Button>
+            <Button
+              size="lg"
+              variant="outline"
+              className="px-8 py-6 text-lg border-primary/20 hover:bg-primary/5"
+              onClick={() =>
+                document
+                  .getElementById("pricing")
+                  ?.scrollIntoView({ behavior: "smooth" })
+              }
+            >
+              Se vores priser
+            </Button>
+          </div>
+        </div>
         {/* Subscription benefits */}
         <div className="mt-16 p-8 nordic-card rounded-2xl max-w-4xl mx-auto">
           <div className="text-center mb-8">
             <HeartHandshake className="text-primary mx-auto mb-4" size={40} />
-            <h3 className="text-2xl font-bold text-fjord mb-4">
-              Hvad får du i dit abonnement?
+            <h3 className="text-2xl font-bold text-fjord dark:text-white mb-4">
+              Hvad inkluderer abonnementet?
             </h3>
+            <p className="text-muted-foreground dark:text-gray-200">
+              Alle pakker inkluderer følgende ydelser som standard:
+            </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 text-center">
             {[
-              "Hosting og drift",
-              "Sikkerhedsopdateringer",
-              "Tekniske rettelser",
-              "Support på mail/chat",
-              "Designjusteringer",
-              "Fremtidig adgang til kundeportal",
-              "Altid adgang til din hjemmeside",
-              "Vi passer på den",
+              "Hosting af hjemmeside og domæneadministration",
+              "Teknisk vedligeholdelse og opdateringer",
+              "Backup og sikkerhedsovervågning",
+              "Support efter behov",
+              "Basal SEO-optimering",
+              "12 måneders binding",
+              "Du ejer din hjemmeside",
+              "Responstid: 2 arbejdsdage",
             ].map((benefit, index) => (
               <div key={index} className="flex flex-col items-center">
                 <div className="w-3 h-3 rounded-full bg-nordic-gold mb-2"></div>
-                <span className="text-sm text-muted-foreground">{benefit}</span>
+                <span className="text-sm text-muted-foreground dark:text-gray-200">{benefit}</span>
               </div>
             ))}
           </div>
 
-          <div className="mt-8 p-4 bg-primary/5 rounded-xl border border-primary/20">
-            <p className="text-center text-fjord/80 text-sm">
-              <strong>🛡️ Du ejer din hjemmeside.</strong> Ønsker du at stoppe
-              abonnementet, kan vi overlevere den til dig.
+          <div className="mt-8 p-4 bg-green-50 dark:bg-green-900/20 rounded-xl border border-green-200 dark:border-green-800/50">
+            <div className="flex items-center justify-center gap-2 mb-2">
+              <Shield className="text-green-600 dark:text-green-400" size={20} />
+              <span className="font-semibold text-green-800 dark:text-green-200">
+                Du ejer din hjemmeside
+              </span>
+            </div>
+            <p className="text-center text-green-700 dark:text-green-300 text-sm">
+              Ønsker du at stoppe abonnementet efter bindingsperioden, kan vi
+              overlevere hjemmesiden til dig.
+            </p>
+          </div>
+
+          <div className="mt-4 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-200 dark:border-blue-800/50">
+            <div className="flex items-center justify-center gap-2 mb-2">
+              <Clock className="text-blue-600 dark:text-blue-400" size={20} />
+              <span className="font-semibold text-blue-800 dark:text-blue-200">
+                Support og responstid
+              </span>
+            </div>
+            <p className="text-center text-blue-700 dark:text-blue-300 text-sm">
+              Vi svarer inden for 2 arbejdsdage i normal arbejdstid og håndterer 
+              fejlrettelser, mindre ændringer og tekniske spørgsmål.
+            </p>
+          </div>
+
+          <div className="mt-4 p-4 bg-red-50 dark:bg-red-900/20 rounded-xl border border-red-200 dark:border-red-800/50">
+            <div className="flex items-center justify-center gap-2 mb-2">
+              <AlertTriangle className="text-red-600 dark:text-red-400" size={20} />
+              <span className="font-semibold text-red-800 dark:text-red-200">
+                Vigtig information om binding
+              </span>
+            </div>
+            <p className="text-center text-red-700 dark:text-red-300 text-sm">
+              Ved opsigelse inden bindingsperiodens udløb forfalder resterende 
+              betalinger for hele bindingsperioden til betaling.
             </p>
           </div>
         </div>

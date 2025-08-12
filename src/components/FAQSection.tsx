@@ -11,32 +11,37 @@ const FAQSection = () => {
     {
       question: "Er der binding?",
       answer:
-        "Nej, vi tror ikke på lange bindingsperioder. Du har kun løbende måned + 1 måneds opsigelse. Dette giver dig frihed til at vælge til og fra, baseret på hvordan vores service fungerer for dig. Vi foretrækker at beholde vores kunder gennem god service frem for tvang.",
+        "Ja, vi har 12 måneders binding på alle vores abonnementer. Bindingsperioden skyldes blandt andet domænekøb, som har en standard løbetid på 12 måneder. Dette giver os også mulighed for at holde priserne lave og investere fuldt ud i din succes. Efter bindingsperioden kan du opsige med blot 1 måneds varsel. Hvis du opsiger inden bindingsperiodens udløb, forfalder de resterende månedlige betalinger til betaling.",
     },
     {
-      question: "Kan jeg opsige når som helst?",
+      question: "Hvad koster det at komme i gang?",
       answer:
-        "Ja, du kan opsige dit abonnement når som helst med blot 1 måneds varsel. Send os en mail, og vi sørger for en smidig afvikling. Der er ingen skjulte gebyrer eller komplicerede procedurer – vi gør det så enkelt som muligt for dig.",
+        "Du betaler en engangspris på 9.999 kr. ekskl. moms for opsætning, design og initial konfiguration. Derefter betaler du en fast månedlig pris fra 399 kr. ekskl. moms afhængig af den pakke du vælger. Alle priser er transparente - ingen skjulte gebyrer.",
     },
     {
-      question: "Hvad sker der hvis jeg opsiger?",
+      question: "Kan jeg opsige efter bindingsperioden?",
       answer:
-        "Du beholder fuldt ejerskab til din hjemmeside, indhold og domæne. Vi leverer alle filer, billeder og data til dig i et format, du kan bruge videre. Hosting og løbende support stopper naturligvis, men du kan selv overtage driften eller finde en anden leverandør. Vi hjælper gerne med overlevering.",
+        "Ja, efter de første 12 måneder kan du opsige dit abonnement med blot 1 måneds varsel. Send os en mail, og vi sørger for en smidig afvikling. Du beholder fuldt ejerskab til din hjemmeside og kan overtage driften selv eller finde en anden leverandør.",
     },
     {
-      question: "Er hosting inkluderet?",
+      question: "Hvad sker der hvis jeg opsiger tidligt?",
       answer:
-        "Ja, hosting er inkluderet i alle vores abonnementer. Vi sørger for hurtig, sikker hosting i EU med automatiske backups, SSL-certifikater og regelmæssige opdateringer. Du skal ikke bekymre dig om tekniske detaljer – vi håndterer det hele, så din hjemmeside altid kører optimalt.",
+        "Hvis du opsiger inden de 12 måneder er gået, forfalder de resterende månedlige betalinger for hele bindingsperioden til betaling. Dette er for at sikre en fair aftale for begge parter, da vi investerer betydeligt i opsætning og udvikling af din hjemmeside.",
     },
     {
-      question: "Kan I lave specialfunktioner?",
+      question: "Hvad er inkluderet i den månedlige pris?",
       answer:
-        "Absolut! Ud over vores standardpakker kan vi skræddersy løsninger til dine specifikke behov. Det kan være booking-systemer, medlemsområder, e-commerce funktioner eller integration med eksisterende systemer. Kontakt os med dine ønsker, så laver vi et tilbud der passer til dit budget og behov.",
+        "Alt det tekniske er inkluderet: hosting i EU, SSL-certifikater, automatiske backups, sikkerhedsopdateringer, teknisk vedligeholdelse og support inden for 2 arbejdsdage. Du skal ikke bekymre dig om noget teknisk - vi håndterer det hele.",
     },
     {
       question: "Hvor hurtigt kan I levere en hjemmeside?",
       answer:
-        "Typisk har vi en funktionel hjemmeside klar inden for 1-2 uger efter vi har modtaget alt indhold fra dig (tekster, billeder, logo etc.). Mere komplekse sider kan tage 3-4 uger. Vi starter altid med en grundig briefing, så du ved præcis hvad du kan forvente og hvornår.",
+        "Typisk har vi en funktionel hjemmeside klar inden for 2-3 uger efter vi har modtaget alt indhold fra dig (tekster, billeder, logo etc.). Vi starter altid med en grundig briefing, så du ved præcis hvad du kan forvente og hvornår.",
+    },
+    {
+      question: "Kan I lave specialfunktioner?",
+      answer:
+        "Absolut! Ud over vores standardpakker kan vi skræddersy løsninger til dine specifikke behov. Det kan være booking-systemer, medlemsområder, e-commerce funktioner eller integration med eksisterende systemer. Kontakt os med dine ønsker, så laver vi et tilbud der passer til dit budget.",
     },
     {
       question: "Hvad hvis jeg har brug for ændringer?",
@@ -44,9 +49,14 @@ const FAQSection = () => {
         "Mindre ændringer og justeringer er inkluderet i dit månedlige abonnement. Det kan være opdatering af tekster, nye billeder eller mindre designjusteringer. Større ændringer som nye sider eller funktioner prissættes separat, men vi giver altid et klart tilbud på forhånd.",
     },
     {
-      question: "Får jeg hjælp til at skrive indhold?",
+      question: "Får jeg support og hjælp?",
       answer:
-        "Vi hjælper gerne med at strukturere dit indhold og giver råd om tekster der konverterer godt. Har du brug for professionel tekstforfatning, kan vi henvise til dygtige copywriters vi samarbejder med. Vores fokus er at sikre din hjemmeside kommunikerer tydeligt og effektivt.",
+        "Ja, support er inkluderet i alle pakker. Vi svarer inden for 2 arbejdsdage i normal arbejdstid og håndterer fejlrettelser, mindre ændringer og tekniske spørgsmål. Vi hjælper også gerne med råd om optimering og forbedringer af din hjemmeside.",
+    },
+    {
+      question: "Ejer jeg min hjemmeside?",
+      answer:
+        "Ja, du ejer din hjemmeside fuldt ud. Efter bindingsperioden kan vi overlevere alle filer, billeder og data til dig, hvis du ønsker at overtage driften selv. Vi holder aldrig din hjemmeside som 'gidsel' - du har altid fuld kontrol og ejerskab.",
     },
   ];
 
@@ -63,7 +73,7 @@ const FAQSection = () => {
             Ofte stillede spørgsmål
           </h2>
 
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-lg text-muted-foreground dark:text-gray-300 max-w-2xl mx-auto">
             Her finder du svar på de mest almindelige spørgsmål om vores
             tjenester og abonnementer.
           </p>
@@ -82,7 +92,7 @@ const FAQSection = () => {
                   <AccordionTrigger className="text-left font-semibold text-fjord hover:text-primary py-6">
                     {faq.question}
                   </AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground pb-6 pt-2">
+                  <AccordionContent className="text-muted-foreground dark:text-gray-300 pb-6 pt-2">
                     {faq.answer}
                   </AccordionContent>
                 </AccordionItem>

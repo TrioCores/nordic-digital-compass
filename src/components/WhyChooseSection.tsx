@@ -66,7 +66,7 @@ const WhyChooseSection = () => {
             Vi guider dig hele vejen – som dit digitale kompas.
           </p>
 
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-lg text-muted-foreground dark:text-gray-300 max-w-2xl mx-auto">
             Med Nordweb får du mere end bare en hjemmeside. Du får:
           </p>
         </div>
@@ -96,7 +96,7 @@ const WhyChooseSection = () => {
                     </h3>
                   </div>
 
-                  <p className="text-muted-foreground group-hover:text-fjord/80 transition-colors duration-300">
+                  <p className="text-muted-foreground dark:text-gray-300 group-hover:text-fjord/80 dark:group-hover:text-gray-200 transition-colors duration-300">
                     {feature.description}
                   </p>
                 </div>
