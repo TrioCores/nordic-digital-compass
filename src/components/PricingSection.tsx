@@ -14,34 +14,37 @@ import {
 
 const PricingSection = () => {
   const basisFeatures = [
-    "Hosting af hjemmeside og domæneadministration",
-    "Basal SEO-optimering (ved opstart og efter behov)",
-    "Teknisk vedligeholdelse og opdateringer",
-    "Support efter behov via e-mail eller telefon",
-    "Backup og sikkerhedsovervågning",
-    "Responsivt design til alle enheder",
-    "Grundlæggende kontaktformular",
+    "Simpel hjemmeside med forside + kontakt/om os side",
+    "Grundlæggende responsivt design",
+    "Hosting og domæne inkluderet",
+    "Basal SEO-optimering",
+    "E-mail support",
   ];
 
   const standardFeatures = [
-    "Alt fra Basis-pakken",
-    "Udvidet SEO-optimering",
-    "Google Analytics integration",
-    "Flere sider og undersider",
-    "Blog eller nyhedssektion",
-    "Integration af sociale medier",
-    "Prioriteret support (responstid: 1 arbejdsdag)",
+    "Alt det du får i Basis-pakken – plus mere",
+    "Op til 10 sider og undersider", 
+    "Mere avanceret hjælp til at blive fundet på Google",
+    "Opsætning af Google Analytics, så du kan se hvem der besøger din side",
+    "En blog eller nyhedssektion til at dele indhold",
+    "Forbindelse til dine sociale medier",
+    "Kontaktformular og andre interaktive elementer",
+    "Hurtigere support – vi svarer inden for 1 arbejdsdag",
+    "Månedlig backup og sikkerhedsovervågning",
   ];
 
   const proFeatures = [
-    "Alt fra Standard-pakken",
-    "Avanceret SEO og performance-optimering",
-    "E-commerce funktionalitet (webshop)",
-    "Avanceret analyser og rapportering",
-    "Specialudvikling og custom features",
-    "Prioriteret support (responstid: 4 timer)",
-    "Månedlig konsultation og rådgivning",
-    "API integrationer og tredjepartssystemer",
+    "Alt det du får i Standard-pakken – plus det hele taget til næste niveau",
+    "Ubegrænset antal sider og avanceret funktionalitet",
+    "Admin panel til selv at redigere indhold og billeder",
+    "Avanceret hjælp til at blive fundet på Google og få din side til at køre lynhurtigt",
+    "Webshop-funktion, så du kan sælge online",
+    "Detaljerede analyser og rapporter, så du kan følge med i alt",
+    "Skræddersyede funktioner bygget specielt til dig",
+    "Ekstra hurtig support – svar inden for 4 timer",
+    "Fast månedlig rådgivning og sparring",
+    "Integration med andre systemer og apps via API",
+    "Prioriteret teknisk support og vedligeholdelse",
   ];
 
   return (
@@ -50,7 +53,7 @@ const PricingSection = () => {
       className="py-24 bg-gradient-to-b from-secondary/30 via-background to-secondary/30"
     >
       <div className="container mx-auto px-6">
-        {/* Header */}
+
         <div className="text-center mb-16">
           <div className="flex items-center justify-center mb-6">
             <Compass className="text-primary mr-2" size={36} />
@@ -68,13 +71,6 @@ const PricingSection = () => {
             Fast opstartspris og månedligt abonnement – vi sørger for alt det
             tekniske.
           </p>
-
-          {/* Simple social proof */}
-          <div className="text-center">
-            <p className="text-sm text-primary font-medium">
-              ⭐ 4.9/5 stjerner | 25+ danske virksomheder har valgt os
-            </p>
-          </div>
         </div>
 
         {/* Pricing cards */}
@@ -93,7 +89,7 @@ const PricingSection = () => {
                     Basis
                   </h3>
                   <p className="text-muted-foreground dark:text-gray-200">
-                    Perfekt til mindre virksomheder
+                    Simpel startpakke til små virksomheder
                   </p>
                 </div>
               </div>
@@ -101,13 +97,13 @@ const PricingSection = () => {
               <div className="mb-8">
                 <div className="flex items-baseline mb-2">
                   <span className="text-3xl font-bold text-fjord dark:text-white">
-                    9.999 kr.
+                    4.999 kr.
                   </span>
                   <span className="text-muted-foreground dark:text-gray-300 ml-2">opstart</span>
                 </div>
                 <div className="flex items-baseline">
                   <span className="text-3xl font-bold text-primary">
-                    Fra 399 kr.
+                    Fra 299 kr.
                   </span>
                   <span className="text-muted-foreground dark:text-gray-300 ml-2">/md. ekskl. moms</span>
                 </div>
@@ -207,7 +203,7 @@ const PricingSection = () => {
                     Pro
                   </h3>
                   <p className="text-muted-foreground dark:text-gray-200">
-                    Komplet løsning til større virksomheder
+                    Komplet løsning til større virksomheder som har hensigt i en webshop.
                   </p>
                 </div>
               </div>

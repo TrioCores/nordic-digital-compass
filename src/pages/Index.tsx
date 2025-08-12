@@ -32,9 +32,9 @@ const Index = () => {
           <LazyWhyChooseSection />
         </Suspense>
 
-        <Suspense fallback={<SectionLoadingFallback />}>
+        {/* <Suspense fallback={<SectionLoadingFallback />}>
           <LazySolutionsSection />
-        </Suspense>
+        </Suspense> */}
 
         <Suspense fallback={<SectionLoadingFallback />}>
           <LazyPricingSection />

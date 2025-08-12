@@ -29,7 +29,7 @@ const TrustSection = () => {
     },
     {
       icon: Coins,
-      title: "Fast pris fra 399 kr/md",
+      title: "Fast pris fra 299 kr/md",
       description: "Ingen skjulte gebyrer eller overraskelser",
     },
   ];
