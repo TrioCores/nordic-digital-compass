@@ -290,7 +290,6 @@ const AboutSection = () => {
 
               <motion.h4
                 className="text-2xl font-bold text-fjord mb-2"
-                className="text-2xl font-bold  mb-2"
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 transition={{ delay: 0.6 }}
