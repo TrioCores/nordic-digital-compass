@@ -69,15 +69,15 @@ const AboutSection = () => {
               transition={{ duration: 0.6, delay: 0.2 }}
               whileHover={{
                 y: -8,
-                transition: { type: "spring", stiffness: 400, damping: 25 }
+                transition: { type: "spring", stiffness: 400, damping: 25 },
               }}
               className="nordic-card rounded-2xl p-8 text-center hover:shadow-xl transition-shadow duration-300"
             >
               <motion.div
                 className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6"
-                whileHover={{ 
+                whileHover={{
                   scale: 1.1,
-                  transition: { type: "spring", stiffness: 500, damping: 20 }
+                  transition: { type: "spring", stiffness: 500, damping: 20 },
                 }}
               >
                 <User className="text-primary" size={32} />
@@ -112,7 +112,11 @@ const AboutSection = () => {
                     className="px-3 py-1 bg-primary/10 rounded-full text-sm text-primary hover:bg-primary/20 transition-colors duration-200"
                     whileHover={{
                       scale: 1.05,
-                      transition: { type: "spring", stiffness: 500, damping: 25 }
+                      transition: {
+                        type: "spring",
+                        stiffness: 500,
+                        damping: 25,
+                      },
                     }}
                     initial={{ opacity: 0, scale: 0.8 }}
                     whileInView={{ opacity: 1, scale: 1 }}
@@ -169,15 +173,15 @@ const AboutSection = () => {
               transition={{ duration: 0.6, delay: 0.4 }}
               whileHover={{
                 y: -8,
-                transition: { type: "spring", stiffness: 400, damping: 25 }
+                transition: { type: "spring", stiffness: 400, damping: 25 },
               }}
               className="nordic-card rounded-2xl p-8 text-center hover:shadow-xl transition-shadow duration-300"
             >
               <motion.div
                 className="w-20 h-20 bg-nordic-gold/10 rounded-full flex items-center justify-center mx-auto mb-6"
-                whileHover={{ 
+                whileHover={{
                   scale: 1.1,
-                  transition: { type: "spring", stiffness: 500, damping: 20 }
+                  transition: { type: "spring", stiffness: 500, damping: 20 },
                 }}
               >
                 <Code className="text-nordic-gold" size={32} />
@@ -212,7 +216,11 @@ const AboutSection = () => {
                     className="px-3 py-1 bg-nordic-gold/10 rounded-full text-sm text-nordic-gold hover:bg-nordic-gold/20 transition-colors duration-200"
                     whileHover={{
                       scale: 1.05,
-                      transition: { type: "spring", stiffness: 500, damping: 25 }
+                      transition: {
+                        type: "spring",
+                        stiffness: 500,
+                        damping: 25,
+                      },
                     }}
                     initial={{ opacity: 0, scale: 0.8 }}
                     whileInView={{ opacity: 1, scale: 1 }}
