@@ -16,7 +16,7 @@ const FAQSection = () => {
     {
       question: "Hvad koster det at komme i gang?",
       answer:
-        "Du betaler en engangspris på 9.999 kr. ekskl. moms for opsætning, design og initial konfiguration. Derefter betaler du en fast månedlig pris fra 399 kr. ekskl. moms afhængig af den pakke du vælger. Alle priser er transparente - ingen skjulte gebyrer.",
+        "Du betaler en engangspris på 9.999 kr. ekskl. moms for opsætning, design og initial konfiguration. Derefter betaler du en fast månedlig pris fra 299 kr. ekskl. moms afhængig af den pakke du vælger. Alle priser er transparente - ingen skjulte gebyrer.",
     },
     {
       question: "Kan jeg opsige efter bindingsperioden?",

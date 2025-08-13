@@ -387,7 +387,7 @@ const OptimizedHeroSection = () => {
             transition={{ duration: 1, delay: 1 }}
           >
             Hos Nordweb hjælper vi nystartede og mindre virksomheder med at
-            komme professionelt online. <strong className="text-fjord dark:text-white">Fra kun 399 kr/md</strong> bygger vi hjemmesider med nordisk
+            komme professionelt online. <strong className="text-fjord dark:text-white">Fra kun 299 kr/md</strong> bygger vi hjemmesider med nordisk
             enkelhed, æstetik og en fast pris – <span className="text-primary">alt inkluderet</span>.
           </motion.p>
 

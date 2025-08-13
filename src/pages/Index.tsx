@@ -18,9 +18,9 @@ const Index = () => {
   return (
     <>
       <SEO
-        title="Nordweb - Professionel hjemmeside fra 399 kr/md | Dansk Webureau"
-        description="Få en professionel hjemmeside til din danske virksomhed. Fast pris fra 399 kr/md inkl. hosting, support og GDPR-sikkerhed. 12 måneders binding. Gratis konsultation."
-        keywords="hjemmeside 399 kr, website, dansk webureau, professionel hjemmeside, webdesign Danmark, hjemmeside pris, website udvikling, responsive design, SEO optimeret, hjemmeside abonnement"
+        title="Nordweb - Professionel hjemmeside fra 299 kr/md | Dansk Webureau"
+        description="Få en professionel hjemmeside til din danske virksomhed. Fast pris fra 299 kr/md inkl. hosting, support og GDPR-sikkerhed. 12 måneders binding. Gratis konsultation."
+        keywords="hjemmeside 299 kr, website, dansk webureau, professionel hjemmeside, webdesign Danmark, hjemmeside pris, website udvikling, responsive design, SEO optimeret, hjemmeside abonnement"
         canonical="https://nordweb.dk/"
       />
 
